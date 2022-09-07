@@ -6,6 +6,9 @@
     padding   : 0;
     list-style: none;
 }
+*::selection{
+    background-color: #396aff;
+}
 :root
 {
     --ant-primary-color: #1890ff;

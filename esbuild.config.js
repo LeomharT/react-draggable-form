@@ -16,4 +16,7 @@ await esbuild.build({
     plugins: [
         sassPlugin(),
     ]
-}).catch(e => console.error(error));
+}).then(v =>
+{
+    console.log("No issues found!");
+}).catch(e => console.error(e));
