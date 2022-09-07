@@ -31,7 +31,7 @@ export default function DraggableForm()
         //滚到底不触发
         if (!(scroll_top + main_el.clientHeight === main_el.scrollHeight)) setCurrentId(id);
 
-    }, 500, [ids.length]);
+    }, 200, [ids.length]);
 
     useEffect(() =>
     {
@@ -70,6 +70,7 @@ export default function DraggableForm()
                         }
                     </div>
                     <aside className='side-navi'>
+                        <p style={{ fontWeight: "bold", marginLeft: "18px" }}>TOC</p>
                         <ul>
                             {
                                 ids.map(v =>

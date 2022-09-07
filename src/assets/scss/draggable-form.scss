@@ -90,6 +90,12 @@
         &[data-fold="true"]
         {
             margin-left: 0;
+            transform  : translateX(-16px);
+            transition : transform 0.5s ease;
+            &:hover
+            {
+                transform : translateX(0);
+            }
         }
     }
 
