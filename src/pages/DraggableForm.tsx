@@ -1,3 +1,4 @@
+import { EllipsisOutlined, SearchOutlined, ShareAltOutlined, StarOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -54,12 +55,21 @@ export default function DraggableForm()
             <FormComponents />
             <div className='exercise-area' >
                 <header>
-                    456
+                    <Button icon={<EllipsisOutlined />} shape='circle' size='small' />
+                    <Button type='primary'>保存</Button>
+                    {
+                        [
+                            <ShareAltOutlined />,
+                            <UserAddOutlined />,
+                            <StarOutlined />,
+                            <SearchOutlined />,
+                        ].map(v => <Button icon={v} key={v.key} type='text' />)
+                    }
+                    <div style={{ marginRight: 'auto' }}>
+                        XXX课程
+                    </div>
                 </header>
-                <main onScroll={e =>
-                {
-                    switchAnchor(e);
-                }}>
+                <main onScroll={switchAnchor}>
                     <div>
                         {
                             ids.map(v =>
