@@ -28,12 +28,13 @@
         }
         >main
         {
-            width     : 100%;
-            height    : calc(100% - 60px);
-            overflow-y: scroll;
-            overflow-x: hidden;
-            display   : flex;
-            flex-flow : row nowrap;
+            width          : 100%;
+            height         : calc(100% - 60px);
+            overflow-y     : scroll;
+            overflow-x     : hidden;
+            padding-left   : 20px;
+            display        : flex;
+            flex-flow      : row nowrap;
             scroll-behavior: smooth;
             >div
             {
@@ -63,15 +64,21 @@
                 }
                 a
                 {
-                    height        : 25px;
-                    line-height   : 25px;
-                    padding-left  : 20px;
-                    padding-bottom: 5px;
-                    white-space   : nowrap;
-                    text-overflow : ellipsis;
-                    border-radius : 0px;
-                    border-left   : 1px solid transparent;
-                    margin-left   : -1px;
+                    width        : 100%;
+                    height       : 30px;
+                    line-height  : 30px;
+                    padding      : 0 20px 5px 20px;
+                    border-radius: 0px;
+                    border-left  : 1px solid transparent;
+                    margin-left  : -1px;
+                    >span
+                    {
+                        width        : 100%;
+                        height       : 100%;
+                        white-space  : nowrap;
+                        text-overflow: ellipsis;
+                        overflow     : hidden;
+                    }
                     &[data-current="true"]
                     {
                         border-left: 1px solid var(--ant-primary-color);
@@ -162,6 +169,55 @@
                 background-color: var(--ant-primary-color);
             }
         }
+        //组件
+        .drag-components
+        {
+            >header
+            {
+                display  : flex;
+                flex-flow: row nowrap;
+                gap      : 5px;
+            }
+            >div:not(.ant-divider)
+            {
+                user-select  : none;
+                width        : 100%;
+                border-radius: 5px;
+                line-height  : 30px;
+                padding      : 5px;
+                margin-bottom: 10px;
+                cursor       : grab;
+                >button:hover
+                {
+                    background-color: transparent;
+                }
+                &:hover
+                {
+                    background   : rgba(0,0,0,.028);
+                }
+                &:active
+                {
+                    cursor: grabbing;
+                }
+            }
+        }
     }
+}
 
+
+.position-identifier
+{
+    width        : 100%;
+    border-top   : 3px solid rgba($color: #000000, $alpha: 0);
+    border-right : 3px solid rgba($color: #000000, $alpha: 0);
+    border-bottom: 3px solid rgba($color: #000000, $alpha: 0);
+    border-left  : 4px solid rgba($color: #1672f3, $alpha: 1);
+    border-radius: 2px;
+
+    >div
+    {
+        width           : calc(100% - 6px);
+        height          : 2px;
+        background-color: #1672f3;
+    }
 }

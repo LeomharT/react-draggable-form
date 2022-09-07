@@ -1,7 +1,16 @@
-import { DoubleLeftOutlined, DoubleRightOutlined, LeftOutlined } from "@ant-design/icons";
-import { Button, Card, Divider } from "antd";
+import { AlignLeftOutlined, CheckCircleOutlined, CheckSquareOutlined, DoubleLeftOutlined, DoubleRightOutlined, EditOutlined, LeftOutlined, OrderedListOutlined, SearchOutlined, SyncOutlined, UnorderedListOutlined, UploadOutlined } from "@ant-design/icons";
+import { Button, Card, Divider, Input } from "antd";
 import React, { RefObject, useCallback, useRef, useState } from "react";
 import BookSvg from "./BookSvg";
+
+const ExerciseType = [
+    { type: '填空题', icon: <EditOutlined /> },
+    { type: '选择题', icon: <CheckSquareOutlined /> },
+    { type: '多选题', icon: <OrderedListOutlined /> },
+    { type: '简答题', icon: <AlignLeftOutlined /> },
+    { type: '判断题', icon: <CheckCircleOutlined /> },
+    { type: '上传附件', icon: <UploadOutlined /> },
+];
 
 export default function FormComponents()
 {
@@ -63,31 +72,22 @@ export default function FormComponents()
                     <span>课程名称xxx</span>
                 </header>
                 <Divider />
-
                 <main className="drag-components">
                     <header>
-                        <div
-                            style={{
-                                width: '100%',
-                                height: '30px',
-                                borderRadius: '5px',
-                                background: 'rgba(0,0,0,.028)',
-                                lineHeight: '30px'
-                            }}
-                            onPointerDown={e =>
-                            {
-
-                            }}
-                            onDragEnd={e =>
-                            {
-                                console.log(e);
-                            }}
-                        >来点内容哦</div>
+                        <Input prefix={<SearchOutlined />} placeholder='搜索组件' />
+                        <Button icon={<UnorderedListOutlined />} type='text' />
+                        <Button icon={<SyncOutlined />} type='text' />
                     </header>
+                    <Divider />
+                    {ExerciseType.map(v => (
+                        <div onPointerDown={onDragFormComponents}>
+                            <Button icon={v.icon} size='large' type="text" />
+                            {v.type}
+                        </div>
+                    ))}
                 </main>
                 <div className="drag-resize" onPointerDown={onResize} />
             </Card>
-
             <Button
                 data-fold={isFold}
                 className="fold-button"

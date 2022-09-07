@@ -1,6 +1,6 @@
 import { EllipsisOutlined, SearchOutlined, ShareAltOutlined, StarOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
@@ -34,11 +34,20 @@ export default function DraggableForm()
 
     }, 200, [ids.length]);
 
+    const identifier = useMemo(() =>
+    {
+        const identifier = document.createElement('div');
+        identifier.classList.add('position-identifier');
+        identifier.appendChild(document.createElement('div'));
+
+        return identifier;
+    }, [ids.length]);
+
     useEffect(() =>
     {
         const arr: string[] = [];
 
-        for (let i = 0; i < 30; i++)
+        for (let i = 0; i < 25; i++)
         {
             const id = uuidv4().substring(0, 8);
 
@@ -73,7 +82,19 @@ export default function DraggableForm()
                     <div>
                         {
                             ids.map(v =>
-                                <p id={v} key={v} style={{ height: "90px" }}>
+                                <p id={v}
+                                    key={v}
+                                    style={{ height: "90px" }}
+                                    onMouseEnter={e =>
+                                    {
+                                        e.stopPropagation();
+                                        (e.target as HTMLPreElement).appendChild(identifier);
+                                    }}
+                                    onMouseLeave={e =>
+                                    {
+                                        (e.target as HTMLPreElement).removeChild(identifier);
+                                    }}
+                                >
                                     {v}
                                 </p>
                             )
@@ -95,7 +116,7 @@ export default function DraggableForm()
                                             {
                                                 setCurrentId(v);
                                             }}>
-                                            {v}
+                                            {v + v + v + v}
                                         </Button>
                                     </li>
                                 )
