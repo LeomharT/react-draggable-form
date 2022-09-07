@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
@@ -9,7 +9,7 @@ export default function DraggableForm()
 
     const [currentId, setCurrentId] = useState<string>('');
 
-    const switchAnchor = useCallback((e: React.UIEvent) =>
+    const switchAnchor = useDebounce((e: React.UIEvent) =>
     {
         const main_el = e.target as HTMLDivElement;
 
@@ -22,14 +22,11 @@ export default function DraggableForm()
             //减头部 减滚动条高度
             const offect = el.offsetTop - scroll_top - 60;
 
-            // if (offect <= 0) setCurrentId(ids[i]);
+            if (offect <= 0) setCurrentId(ids[i]);
         }
-    }, [ids.length]);
 
-    const test = useDebounce((e: React.UIEvent) =>
-    {
-        console.log(e);
-    }, 1000);
+        console.log('yes');
+    }, 500, [ids.length]);
 
     useEffect(() =>
     {
@@ -54,7 +51,7 @@ export default function DraggableForm()
                 <header>
                     456
                 </header>
-                <main onScroll={test}>
+                <main onScroll={switchAnchor}>
                     <div>
                         {
                             ids.map(v =>
