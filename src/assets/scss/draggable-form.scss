@@ -30,7 +30,13 @@
             scroll-behavior: smooth;
             >div
             {
-                width: 100%;
+                width    : 100%;
+                display  : flex;
+                flex-flow: column nowrap;
+                >p
+                {
+                    flex-shrink: 0;
+                }
             }
             .side-navi
             {
@@ -58,6 +64,7 @@
                     text-overflow : ellipsis;
                     border-radius : 0px;
                     border-left   : 1px solid transparent;
+                    margin-left   : -1px;
                     &[data-current="true"]
                     {
                         border-left: 1px solid var(--ant-primary-color);

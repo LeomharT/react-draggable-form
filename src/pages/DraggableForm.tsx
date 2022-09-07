@@ -1,13 +1,35 @@
 import { Button } from 'antd';
-import { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import FormComponents from '../components/FormComponents';
+import useDebounce from '../hooks/useDebounce';
 export default function DraggableForm()
 {
-
     const [ids, setIds] = useState<string[]>([]);
 
     const [currentId, setCurrentId] = useState<string>('');
+
+    const switchAnchor = useCallback((e: React.UIEvent) =>
+    {
+        const main_el = e.target as HTMLDivElement;
+
+        const scroll_top = main_el.scrollTop;
+
+        for (let i = 0; i < ids.length; i++)
+        {
+            const el = document.getElementById(ids[i]) as HTMLDivElement;
+
+            //减头部 减滚动条高度
+            const offect = el.offsetTop - scroll_top - 60;
+
+            // if (offect <= 0) setCurrentId(ids[i]);
+        }
+    }, [ids.length]);
+
+    const test = useDebounce((e: React.UIEvent) =>
+    {
+        console.log(e);
+    }, 1000);
 
     useEffect(() =>
     {
@@ -28,11 +50,11 @@ export default function DraggableForm()
     return (
         <div className="draggable-form">
             <FormComponents />
-            <div className='exercise-area'>
+            <div className='exercise-area' >
                 <header>
                     456
                 </header>
-                <main>
+                <main onScroll={test}>
                     <div>
                         {
                             ids.map(v =>
@@ -62,8 +84,7 @@ export default function DraggableForm()
                         </ul>
                     </aside>
                 </main>
-
             </div>
-        </div>
+        </div >
     );
 }

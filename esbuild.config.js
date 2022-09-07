@@ -1,6 +1,8 @@
 import esbuild from 'esbuild';
 import { sassPlugin } from 'esbuild-sass-plugin';
 
+console.time('Total time');
+
 await esbuild.build({
     entryPoints: ['./src/index.tsx'],
     outdir: 'dist',
@@ -20,3 +22,5 @@ await esbuild.build({
 {
     console.log("No issues found!");
 }).catch(e => console.error(e));
+
+console.timeEnd('Total time');
