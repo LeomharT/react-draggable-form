@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
+
 export default function DraggableForm()
 {
     const [ids, setIds] = useState<string[]>([]);
@@ -15,6 +16,8 @@ export default function DraggableForm()
 
         const scroll_top = main_el.scrollTop;
 
+        let id = '';
+
         for (let i = 0; i < ids.length; i++)
         {
             const el = document.getElementById(ids[i]) as HTMLDivElement;
@@ -22,10 +25,12 @@ export default function DraggableForm()
             //减头部 减滚动条高度
             const offect = el.offsetTop - scroll_top - 60;
 
-            if (offect <= 0) setCurrentId(ids[i]);
+            if (offect <= 0) id = ids[i];
         }
 
-        console.log('yes');
+        //滚到底不触发
+        if (!(scroll_top + main_el.clientHeight === main_el.scrollHeight)) setCurrentId(id);
+
     }, 500, [ids.length]);
 
     useEffect(() =>
@@ -51,7 +56,10 @@ export default function DraggableForm()
                 <header>
                     456
                 </header>
-                <main onScroll={switchAnchor}>
+                <main onScroll={e =>
+                {
+                    switchAnchor(e);
+                }}>
                     <div>
                         {
                             ids.map(v =>
@@ -72,7 +80,10 @@ export default function DraggableForm()
                                             key={v}
                                             href={`#${v}`}
                                             data-current={v === currentId}
-                                            onClick={e => setCurrentId(v)}>
+                                            onClick={e =>
+                                            {
+                                                setCurrentId(v);
+                                            }}>
                                             {v}
                                         </Button>
                                     </li>
