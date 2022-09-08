@@ -1,6 +1,6 @@
 import { EllipsisOutlined, SearchOutlined, ShareAltOutlined, StarOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
@@ -34,14 +34,14 @@ export default function DraggableForm()
 
     }, 200, [ids.length]);
 
-    const identifier = useMemo(() =>
+    const identifier: RefObject<HTMLDivElement> = useRef<HTMLDivElement>((() =>
     {
         const identifier = document.createElement('div');
         identifier.classList.add('position-identifier');
         identifier.appendChild(document.createElement('div'));
 
         return identifier;
-    }, [ids.length]);
+    })());
 
     useEffect(() =>
     {
@@ -88,11 +88,12 @@ export default function DraggableForm()
                                     onMouseEnter={e =>
                                     {
                                         e.stopPropagation();
-                                        (e.target as HTMLPreElement).appendChild(identifier);
+                                        (e.target as HTMLPreElement).appendChild(identifier.current as HTMLElement);
                                     }}
                                     onMouseLeave={e =>
                                     {
-                                        (e.target as HTMLPreElement).removeChild(identifier);
+                                        e.stopPropagation();
+                                        (e.target as HTMLPreElement).removeChild(identifier.current as HTMLElement);
                                     }}
                                 >
                                     {v}

@@ -44,6 +44,11 @@
                 >p
                 {
                     flex-shrink: 0;
+                    transition: all 0.2s ease 0s;
+                    &:hover
+                    {
+                        margin-bottom: 40px;
+                    }
                 }
             }
             .side-navi
@@ -190,6 +195,7 @@
                 >button:hover
                 {
                     background-color: transparent;
+                    pointer-events  : none;
                 }
                 &:hover
                 {

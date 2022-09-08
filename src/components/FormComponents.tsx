@@ -54,11 +54,60 @@ export default function FormComponents()
     {
         const div = e.target as HTMLDivElement;
 
-        //卸载事件
-        div.onpointerup = (e: PointerEvent) =>
+        const clone: HTMLDivElement = div.cloneNode(true) as HTMLDivElement;
+
+        clone.style.position = 'absolute';
+        clone.style.opacity = '0.8';
+        clone.style.width = div.clientWidth + 'px';
+        clone.style.backgroundColor = 'rgba(0,0,0,.028)';
+        clone.style.boxShadow = '-1px -1px 8px 2px rgba(0,0,0,.028), 1px -1px 8px 2px rgba(0,0,0,.028),0 1px 8px 2px rgba(0,0,0,.028)';
+        clone.style.cursor = 'grabbing';
+
+        let downX = e.clientX; //鼠标X
+        let downY = e.clientY; //鼠标Y
+
+        let offsetX = div.offsetLeft;
+        let offsetY = div.offsetTop;
+
+        //初始位置
+        clone.style.left = offsetX + 'px';
+        clone.style.top = offsetY + 'px';
+
+        div.parentNode?.appendChild(clone);
+
+        window.onmousemove = (event: MouseEvent) =>
         {
-            div.onpointerup = null;
-            div.onmousemove = null;
+            let moveX = event.clientX;
+            let moveY = event.clientY;
+
+            let positionX = moveX - downX;
+            let positionY = moveY - downY;
+
+            clone.style.left = offsetX + positionX + 'px';
+            clone.style.top = offsetY + positionY + 'px';
+
+        };
+
+        //卸载事件
+        window.onpointerup = (e: PointerEvent) =>
+        {
+            //@ts-ignore
+            if (e.path[1] === div.parentNode)
+            {
+                clone.style.transition = 'all 0.2s ease 0s';
+                clone.style.left = offsetX + 'px';
+                clone.style.top = offsetY + 'px';
+                setTimeout(() =>
+                {
+                    div.parentNode?.removeChild(clone);
+                }, 200);
+            }
+            else
+            {
+                div.parentNode?.removeChild(clone);
+            }
+            window.onmousemove = null;
+            window.onpointerup = null;
         };
 
     }, []);
