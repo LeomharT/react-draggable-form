@@ -58,19 +58,17 @@ export default function DraggableForm()
         }
     }, [identifier.current]);
 
-    const insertNewComponent = useCallback((e: React.MouseEvent) =>
+    const insertNewComponent = useCallback((e: React.MouseEvent, targetId: string) =>
     {
         e.stopPropagation();
 
         clearIdentifier(e);
 
-        const target = e.currentTarget as HTMLPreElement;
-
         const id = uuidv4().substring(0, 8);
 
         setIds(prve =>
         {
-            const index: number = prve.indexOf(target.id);
+            const index: number = prve.indexOf(targetId);
 
             const before: string[] = [];
             const after: string[] = [];
@@ -87,6 +85,7 @@ export default function DraggableForm()
 
     const appendNewComponent = useCallback((e: React.MouseEvent) =>
     {
+        e.stopPropagation();
         const id = uuidv4().substring(0, 8);
         setIds(prve => [...prve, id]);
     }, []);
@@ -95,7 +94,7 @@ export default function DraggableForm()
     {
         const arr: string[] = [];
 
-        for (let i = 0; i < 0; i++)
+        for (let i = 0; i < 1; i++)
         {
             const id = uuidv4().substring(0, 8);
 
@@ -151,10 +150,10 @@ export default function DraggableForm()
                                         if (!dragging) return;
                                         clearIdentifier(e);
                                     }}
-                                    onMouseUp={e =>
+                                    onMouseUp={(e, id) =>
                                     {
                                         if (!dragging) return;
-                                        insertNewComponent(e);
+                                        insertNewComponent(e, id);
                                     }}
                                 />
                             )
