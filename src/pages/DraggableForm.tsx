@@ -1,7 +1,8 @@
 import { EllipsisOutlined, SearchOutlined, ShareAltOutlined, StarOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import React, { RefObject, useEffect, useRef, useState } from 'react';
+import React, { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import AppContext from '../app/app-context';
 import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
 
@@ -10,6 +11,8 @@ export default function DraggableForm()
     const [ids, setIds] = useState<string[]>([]);
 
     const [currentId, setCurrentId] = useState<string>('');
+
+    const { dragging } = useContext(AppContext);
 
     const switchAnchor = useDebounce((e: React.UIEvent) =>
     {
@@ -42,6 +45,33 @@ export default function DraggableForm()
 
         return identifier;
     })());
+
+    const clearIdentifier = useCallback((e: React.MouseEvent) =>
+    {
+        e.stopPropagation();
+        const container = (e.currentTarget as HTMLPreElement);
+        if (container.contains(identifier.current))
+        {
+            container.removeChild(identifier.current as HTMLElement);
+        }
+    }, [identifier.current]);
+
+    const insertNewComponent = useCallback((e: React.MouseEvent) =>
+    {
+        clearIdentifier(e);
+
+        const target = e.currentTarget as HTMLPreElement;
+
+        const d = document.createElement('div');
+        d.style.width = '100%';
+        d.style.height = '200px';
+        d.style.background = 'red';
+
+
+        console.log(d);
+
+        target.insertAdjacentElement('afterend', d);
+    }, []);
 
     useEffect(() =>
     {
@@ -87,13 +117,15 @@ export default function DraggableForm()
                                     style={{ height: "90px" }}
                                     onMouseEnter={e =>
                                     {
+                                        if (!dragging) return;
                                         e.stopPropagation();
                                         (e.target as HTMLPreElement).appendChild(identifier.current as HTMLElement);
                                     }}
-                                    onMouseLeave={e =>
+                                    onMouseLeave={clearIdentifier}
+                                    onMouseUp={e =>
                                     {
-                                        e.stopPropagation();
-                                        (e.target as HTMLPreElement).removeChild(identifier.current as HTMLElement);
+                                        if (!dragging) return;
+                                        insertNewComponent(e);
                                     }}
                                 >
                                     {v}

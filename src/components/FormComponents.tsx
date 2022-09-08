@@ -1,6 +1,7 @@
 import { AlignLeftOutlined, CheckCircleOutlined, CheckSquareOutlined, DoubleLeftOutlined, DoubleRightOutlined, EditOutlined, LeftOutlined, OrderedListOutlined, SearchOutlined, SyncOutlined, UnorderedListOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Card, Divider, Input } from "antd";
-import React, { RefObject, useCallback, useRef, useState } from "react";
+import React, { RefObject, useCallback, useContext, useRef, useState } from "react";
+import AppContext, { AppContextType } from "../app/app-context";
 import BookSvg from "./BookSvg";
 
 const ExerciseType = [
@@ -17,6 +18,8 @@ export default function FormComponents()
     const cardRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const [isFold, setIsFold] = useState<boolean>(false);
+
+    const { setDragging } = useContext<AppContextType>(AppContext);
 
     /** - 注意 `flex-shrink:0;` */
     const onResize = useCallback((e: React.PointerEvent<HTMLDivElement>) =>
@@ -52,6 +55,8 @@ export default function FormComponents()
 
     const onDragFormComponents = useCallback((e: React.PointerEvent<HTMLDivElement>) =>
     {
+        setDragging(true);
+
         const div = e.target as HTMLDivElement;
 
         const clone: HTMLDivElement = div.cloneNode(true) as HTMLDivElement;
@@ -91,8 +96,7 @@ export default function FormComponents()
         //卸载事件
         window.onpointerup = (e: PointerEvent) =>
         {
-            //@ts-ignore
-            if (e.path[1] === div.parentNode)
+            if (e.composedPath()[1] === div.parentNode)
             {
                 clone.style.transition = 'all 0.2s ease 0s';
                 clone.style.left = offsetX + 'px';
@@ -106,8 +110,15 @@ export default function FormComponents()
             {
                 div.parentNode?.removeChild(clone);
             }
+
             window.onmousemove = null;
             window.onpointerup = null;
+
+            //下轮宏任务开始在设为false
+            setTimeout(() =>
+            {
+                setDragging(false);
+            }, 10);
         };
 
     }, []);
