@@ -12,7 +12,7 @@ export default function DraggableForm()
 
     const [currentId, setCurrentId] = useState<string>('');
 
-    const { dragging } = useContext(AppContext);
+    const { dragging, dragType } = useContext(AppContext);
 
     const switchAnchor = useDebounce((e: React.UIEvent) =>
     {
@@ -50,6 +50,7 @@ export default function DraggableForm()
     {
         e.stopPropagation();
         const container = (e.currentTarget as HTMLPreElement);
+        container.style.marginBottom = '0px';
         if (container.contains(identifier.current))
         {
             container.removeChild(identifier.current as HTMLElement);
@@ -58,26 +59,42 @@ export default function DraggableForm()
 
     const insertNewComponent = useCallback((e: React.MouseEvent) =>
     {
+        e.stopPropagation();
+
         clearIdentifier(e);
 
         const target = e.currentTarget as HTMLPreElement;
 
-        const d = document.createElement('div');
-        d.style.width = '100%';
-        d.style.height = '200px';
-        d.style.background = 'red';
+        const id = uuidv4().substring(0, 8);
 
+        setIds(prve =>
+        {
+            const index: number = prve.indexOf(target.id);
 
-        console.log(d);
+            const before: string[] = [];
+            const after: string[] = [];
 
-        target.insertAdjacentElement('afterend', d);
+            for (let i = 0; i < prve.length; i++)
+            {
+                if (i <= index) before.push(prve[i]);
+                else after.push(prve[i]);
+            }
+            return [...before, id, ...after];
+        });
+
+    }, []);
+
+    const appendNewComponent = useCallback((e: React.MouseEvent) =>
+    {
+        const id = uuidv4().substring(0, 8);
+        setIds(prve => [...prve, id]);
     }, []);
 
     useEffect(() =>
     {
         const arr: string[] = [];
 
-        for (let i = 0; i < 25; i++)
+        for (let i = 0; i < 5; i++)
         {
             const id = uuidv4().substring(0, 8);
 
@@ -109,19 +126,29 @@ export default function DraggableForm()
                     </div>
                 </header>
                 <main onScroll={switchAnchor}>
-                    <div>
+                    <div onMouseUp={e =>
+                    {
+                        if (!dragging) return;
+                        appendNewComponent(e);
+                    }}>
                         {
                             ids.map(v =>
-                                <p id={v}
+                                <div id={v}
                                     key={v}
                                     style={{ height: "90px" }}
                                     onMouseEnter={e =>
                                     {
                                         if (!dragging) return;
                                         e.stopPropagation();
-                                        (e.target as HTMLPreElement).appendChild(identifier.current as HTMLElement);
+                                        const target = e.currentTarget as HTMLDivElement;
+                                        target.appendChild(identifier.current as HTMLElement);
+                                        target.style.marginBottom = "40px";
                                     }}
-                                    onMouseLeave={clearIdentifier}
+                                    onMouseLeave={e =>
+                                    {
+                                        if (!dragging) return;
+                                        clearIdentifier(e);
+                                    }}
                                     onMouseUp={e =>
                                     {
                                         if (!dragging) return;
@@ -129,7 +156,7 @@ export default function DraggableForm()
                                     }}
                                 >
                                     {v}
-                                </p>
+                                </div>
                             )
                         }
                     </div>

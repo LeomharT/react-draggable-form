@@ -1,16 +1,17 @@
 import { AlignLeftOutlined, CheckCircleOutlined, CheckSquareOutlined, DoubleLeftOutlined, DoubleRightOutlined, EditOutlined, LeftOutlined, OrderedListOutlined, SearchOutlined, SyncOutlined, UnorderedListOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Card, Divider, Input } from "antd";
 import React, { RefObject, useCallback, useContext, useRef, useState } from "react";
-import AppContext, { AppContextType } from "../app/app-context";
+import AppContext, { AppContextType, ExerciseType } from "../app/app-context";
 import BookSvg from "./BookSvg";
 
-const ExerciseType = [
-    { type: '填空题', icon: <EditOutlined /> },
-    { type: '选择题', icon: <CheckSquareOutlined /> },
-    { type: '多选题', icon: <OrderedListOutlined /> },
-    { type: '简答题', icon: <AlignLeftOutlined /> },
-    { type: '判断题', icon: <CheckCircleOutlined /> },
-    { type: '上传附件', icon: <UploadOutlined /> },
+
+const Exercises: { type: ExerciseType, icon: React.ReactNode; }[] = [
+    { type: ExerciseType.BLANK, icon: <EditOutlined /> },
+    { type: ExerciseType.CHOICE, icon: <CheckSquareOutlined /> },
+    { type: ExerciseType.MULTICHOICE, icon: <OrderedListOutlined /> },
+    { type: ExerciseType.SHORTANSWER, icon: <AlignLeftOutlined /> },
+    { type: ExerciseType.JUDGE, icon: <CheckCircleOutlined /> },
+    { type: ExerciseType.UPLOAD, icon: <UploadOutlined /> },
 ];
 
 export default function FormComponents()
@@ -19,7 +20,7 @@ export default function FormComponents()
 
     const [isFold, setIsFold] = useState<boolean>(false);
 
-    const { setDragging } = useContext<AppContextType>(AppContext);
+    const { setDragging, dragType } = useContext<AppContextType>(AppContext);
 
     /** - 注意 `flex-shrink:0;` */
     const onResize = useCallback((e: React.PointerEvent<HTMLDivElement>) =>
@@ -53,9 +54,11 @@ export default function FormComponents()
 
     }, [cardRef.current]);
 
-    const onDragFormComponents = useCallback((e: React.PointerEvent<HTMLDivElement>) =>
+    const onDragFormComponents = useCallback((e: React.PointerEvent<HTMLDivElement>, type: ExerciseType) =>
     {
         setDragging(true);
+
+        dragType.current = type;
 
         const div = e.target as HTMLDivElement;
 
@@ -139,9 +142,12 @@ export default function FormComponents()
                         <Button icon={<SyncOutlined />} type='text' />
                     </header>
                     <Divider />
-                    {ExerciseType.map(v => (
-                        <div onPointerDown={onDragFormComponents}>
-                            <Button icon={v.icon} size='large' type="text" />
+                    {Exercises.map(v => (
+                        <div onPointerDown={e =>
+                        {
+                            onDragFormComponents(e, v.type);
+                        }}>
+                            <Button style={{ cursor: 'grab', pointerEvents: "none" }} icon={v.icon} size='large' type="text" />
                             {v.type}
                         </div>
                     ))}
