@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import React, { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import AppContext from '../app/app-context';
+import ExerciseComponent from '../components/ExerciseComponent';
 import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
 
@@ -13,6 +14,15 @@ export default function DraggableForm()
     const [currentId, setCurrentId] = useState<string>('');
 
     const { dragging, dragType } = useContext(AppContext);
+
+    const identifier: RefObject<HTMLDivElement> = useRef<HTMLDivElement>((() =>
+    {
+        const identifier = document.createElement('div');
+        identifier.classList.add('position-identifier');
+        identifier.appendChild(document.createElement('div'));
+
+        return identifier;
+    })());
 
     const switchAnchor = useDebounce((e: React.UIEvent) =>
     {
@@ -36,15 +46,6 @@ export default function DraggableForm()
         if (!(scroll_top + main_el.clientHeight === main_el.scrollHeight)) setCurrentId(id);
 
     }, 200, [ids.length]);
-
-    const identifier: RefObject<HTMLDivElement> = useRef<HTMLDivElement>((() =>
-    {
-        const identifier = document.createElement('div');
-        identifier.classList.add('position-identifier');
-        identifier.appendChild(document.createElement('div'));
-
-        return identifier;
-    })());
 
     const clearIdentifier = useCallback((e: React.MouseEvent) =>
     {
@@ -94,7 +95,7 @@ export default function DraggableForm()
     {
         const arr: string[] = [];
 
-        for (let i = 0; i < 5; i++)
+        for (let i = 0; i < 0; i++)
         {
             const id = uuidv4().substring(0, 8);
 
@@ -133,9 +134,10 @@ export default function DraggableForm()
                     }}>
                         {
                             ids.map(v =>
-                                <div id={v}
+                                <ExerciseComponent
+                                    id={v}
                                     key={v}
-                                    style={{ height: "90px" }}
+                                    identifier={identifier}
                                     onMouseEnter={e =>
                                     {
                                         if (!dragging) return;
@@ -154,9 +156,7 @@ export default function DraggableForm()
                                         if (!dragging) return;
                                         insertNewComponent(e);
                                     }}
-                                >
-                                    {v}
-                                </div>
+                                />
                             )
                         }
                     </div>

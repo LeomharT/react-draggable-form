@@ -12,7 +12,6 @@ export default function App()
 
     const dragType: MutableRefObject<ExerciseType> = useRef(ExerciseType.BLANK);
 
-
     return (
         <Provider store={store}>
             <AppContext.Provider value={{
