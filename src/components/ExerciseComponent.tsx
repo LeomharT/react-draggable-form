@@ -36,7 +36,7 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
             ref={domEl}
             id={props.id}
             key={props.id}
-            style={{ height: "90px", boxSizing: 'content-box' }}
+            className='exercise-components'
             onMouseUp={props.onMouseUp}
             onMouseEnter={props.onMouseEnter}
             onMouseLeave={props.onMouseLeave}

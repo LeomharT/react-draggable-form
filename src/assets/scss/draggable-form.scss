@@ -213,6 +213,8 @@
     border-left   : 4px solid rgba($color: #1672f3, $alpha: 1);
     border-radius : 2px;
     pointer-events: none;
+    position      : absolute;
+    bottom        : 0;
     >div
     {
         width           : calc(100% - 6px);
