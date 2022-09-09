@@ -15,6 +15,8 @@ export default function DraggableForm()
 
     const { dragging, dragType } = useContext(AppContext);
 
+    const [isBefore, setIsBefore] = useState<boolean>(false);
+
     const identifier: RefObject<HTMLDivElement> = useRef<HTMLDivElement>((() =>
     {
         const identifier = document.createElement('div');
@@ -24,6 +26,7 @@ export default function DraggableForm()
         return identifier;
     })());
 
+    /** 切换锚点 */
     const switchAnchor = useDebounce((e: React.UIEvent) =>
     {
         const main_el = e.target as HTMLDivElement;
@@ -47,18 +50,34 @@ export default function DraggableForm()
 
     }, 200, [ids.length]);
 
+    /** 添加定位 */
+    const positionIdentifier = useCallback((e: React.MouseEvent) =>
+    {
+        const target = e.currentTarget as HTMLDivElement;
+        target.appendChild(identifier.current as HTMLElement);
+        target.style.marginBottom = "40px";
+    }, [identifier.current]);
+
+    /** 清除定位 */
     const clearIdentifier = useCallback((e: React.MouseEvent) =>
     {
         e.stopPropagation();
-        const container = (e.currentTarget as HTMLPreElement);
-        container.style.marginBottom = '0px';
-        if (container.contains(identifier.current))
+        const target = (e.currentTarget as HTMLPreElement);
+        target.style.marginBottom = '0px';
+
+        if (target.style.paddingTop === '40px')
         {
-            container.removeChild(identifier.current as HTMLElement);
+            target.style.paddingTop = '0px';
+        }
+
+        if (target.contains(identifier.current))
+        {
+            target.removeChild(identifier.current as HTMLElement);
         }
     }, [identifier.current]);
 
-    const insertNewComponent = useCallback((e: React.MouseEvent, targetId: string) =>
+    /** 插入新组件 */
+    const insertNewComponent = useCallback((e: React.MouseEvent, targetId: string, isBefore: boolean) =>
     {
         e.stopPropagation();
 
@@ -78,17 +97,46 @@ export default function DraggableForm()
                 if (i <= index) before.push(prve[i]);
                 else after.push(prve[i]);
             }
+            if (isBefore)
+            {
+                setIsBefore(false);
+                return [id, ...prve];
+            }
+
             return [...before, id, ...after];
         });
 
-    }, []);
+    }, [setIds, setIsBefore, isBefore]);
 
+    /** 如果想在头部插入 */
+    const insertBefore = useCallback((e: React.MouseEvent) =>
+    {
+        const target = e.currentTarget as HTMLDivElement;
+
+        if ((e.pageY - 60) < (target.clientHeight / 2))
+        {
+            setIsBefore(true);
+            target.style.paddingTop = "40px";
+            target.style.marginBottom = "0px";
+            if (target.contains(identifier.current))
+            {
+                target.removeChild(identifier.current as HTMLElement);
+            }
+        } else
+        {
+            setIsBefore(false);
+            target.style.paddingTop = "0px";
+            positionIdentifier(e);
+        }
+    }, [positionIdentifier]);
+
+    /** 添加新组件 */
     const appendNewComponent = useCallback((e: React.MouseEvent) =>
     {
         e.stopPropagation();
         const id = uuidv4().substring(0, 8);
         setIds(prve => [...prve, id]);
-    }, []);
+    }, [setIds]);
 
     useEffect(() =>
     {
@@ -132,7 +180,7 @@ export default function DraggableForm()
                         appendNewComponent(e);
                     }}>
                         {
-                            ids.map(v =>
+                            ids.map((v, _, arr) =>
                                 <ExerciseComponent
                                     id={v}
                                     key={v}
@@ -140,20 +188,24 @@ export default function DraggableForm()
                                     onMouseEnter={e =>
                                     {
                                         if (!dragging) return;
+                                        positionIdentifier(e);
                                         e.stopPropagation();
-                                        const target = e.currentTarget as HTMLDivElement;
-                                        target.appendChild(identifier.current as HTMLElement);
-                                        target.style.marginBottom = "40px";
                                     }}
                                     onMouseLeave={e =>
                                     {
                                         if (!dragging) return;
                                         clearIdentifier(e);
                                     }}
-                                    onMouseUp={(e, id) =>
+                                    onMouseUp={e =>
                                     {
                                         if (!dragging) return;
-                                        insertNewComponent(e, id);
+                                        insertNewComponent(e, v, isBefore);
+                                    }}
+                                    onMouseMove={e =>
+                                    {
+                                        if (!dragging) return;
+                                        if (arr.indexOf(v) !== 0) return;
+                                        insertBefore(e);
                                     }}
                                 />
                             )
@@ -164,11 +216,9 @@ export default function DraggableForm()
                         <ul>
                             {
                                 ids.map(v =>
-                                    <li>
+                                    <li key={v}>
                                         <Button
                                             type={v === currentId ? 'link' : 'text'}
-                                            id={v}
-                                            key={v}
                                             href={`#${v}`}
                                             data-current={v === currentId}
                                             onClick={e =>

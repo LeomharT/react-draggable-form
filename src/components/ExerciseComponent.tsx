@@ -1,22 +1,16 @@
-import { RefObject, useEffect, useRef } from "react";
-import { ExerciseType } from "../app/app-context";
+import React, { RefObject, useEffect, useRef } from "react";
 
 type ExerciseComponentProps = {
     id: string;
     identifier: RefObject<HTMLDivElement>;
     onMouseEnter: (e: React.MouseEvent) => void;
     onMouseLeave: (e: React.MouseEvent) => void;
-    onMouseUp: (e: React.MouseEvent, id: string) => void;
-};
-
-export type ExerciseComponentType = {
-    id: string;
-    type: ExerciseType;
-    request: boolean;
-    title: string;
-    score: number;
+    onMouseUp: (e: React.MouseEvent) => void;
+    onMouseMove: (e: React.MouseEvent) => void;
 
 };
+
+
 
 export default function ExerciseComponent(props: ExerciseComponentProps)
 {
@@ -40,14 +34,13 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
     return (
         <div
             ref={domEl}
+            id={props.id}
             key={props.id}
-            style={{ height: "90px" }}
-            onMouseUp={e =>
-            {
-                props.onMouseUp(e, props.id);
-            }}
+            style={{ height: "90px", boxSizing: 'content-box' }}
+            onMouseUp={props.onMouseUp}
             onMouseEnter={props.onMouseEnter}
             onMouseLeave={props.onMouseLeave}
+            onMouseMove={props.onMouseMove}
         >
             {props.id}
         </div>
