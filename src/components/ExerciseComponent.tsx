@@ -35,41 +35,48 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
     }, [domEl.current?.childElementCount]);
 
     return (
-        <section
-            ref={domEl}
-            id={props.id}
-            key={props.id}
-            className='exercise-components'
-            onMouseUp={props.onMouseUp}
-            onMouseEnter={props.onMouseEnter}
-            onMouseLeave={props.onMouseLeave}
-            onMouseMove={props.onMouseMove}
-        >
-            {/* 头部 */}
-            <header>
-                <div>题目类型 xx分</div>
-                <Form onFinish={e =>
-                {
-                    console.log(e);
-                }}>
+        <Form onFinish={e =>
+        {
+            console.log(e);
+        }}>
+            <section
+                ref={domEl}
+                id={props.id}
+                key={props.id}
+                className='exercise-components'
+                onMouseUp={props.onMouseUp}
+                onMouseEnter={props.onMouseEnter}
+                onMouseLeave={props.onMouseLeave}
+                onMouseMove={props.onMouseMove}
+            >
+
+                {/* 头部 */}
+                <header>
+                    <div className="exercise-tags">
+                        <span>
+                            类型
+                        </span>
+                        <span>
+                            分数
+                        </span>
+                    </div>
                     <Form.Item name={'haha'} label={(props.index + 1).toString().padStart(2, '0')}>
                         <EditAbleText autoSize placeholder="请输入题目" size="large" />
                     </Form.Item>
+                </header>
+                {/* 选项 */}
+                <main>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit">GO</Button>
+                        <Input />
                     </Form.Item>
-                </Form>
-            </header>
-            {/* 选项 */}
-            <main>
-                123
-            </main>
-            {/* 选项 */}
-            <div className="component-options">
-                <Button icon={<EditOutlined />} type='text' />
-                <Button icon={<StarOutlined />} type='text' />
-                <Button icon={<DeleteOutlined />} danger type='text' />
-            </div>
-        </section>
+                </main>
+                {/* 选项 */}
+                <div className="component-options">
+                    <Button icon={<EditOutlined />} type='text' />
+                    <Button icon={<StarOutlined />} type='text' />
+                    <Button icon={<DeleteOutlined />} danger type='text' />
+                </div>
+            </section>
+        </Form>
     );
 }

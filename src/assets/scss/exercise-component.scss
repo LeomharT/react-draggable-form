@@ -1,11 +1,12 @@
 .exercise-components
 {
-    width           : calc(100% - 50px);
-    height          : fit-content;
-    box-sizing      : content-box;
-    position        : relative;
-    padding-right   : 50px;
-    background-color: rgba(0,0,0,.028);
+    width         : calc(100% - 50px);
+    height        : fit-content;
+    box-sizing    : content-box;
+    position      : relative;
+    padding-right : 50px;
+    padding-bottom: 20px;
+    transition    : all 0.2s ease 0s;
     &:hover .component-options
     {
         visibility: visible;
@@ -28,11 +29,39 @@
     }
     >header
     {
-        width           : 100%;
-        height          : fit-content;
+        width : 100%;
+        height: fit-content;
+        .exercise-tags
+        {
+            display      : flex;
+            flex-flow    : row nowrap;
+            gap          : 5px;
+            margin-bottom: 20px;
+            >span
+            {
+                height          : 100%;
+                background-color: rgba(0,0,0,.028);
+                font-size       : 14px;
+                padding         : 0 7px;
+            }
+        }
+        .ant-form-item-label
+        {
+            padding-top: 6.5px;
+            font-weight: bold;
+            >label
+            {
+                font-size: 20px;
+            }
+        }
     }
     >main
     {
-        width           : 100%;
+        width: 100%;
+        position: relative;
+        input
+        {
+            background-color: transparent;
+        }
     }
 }
