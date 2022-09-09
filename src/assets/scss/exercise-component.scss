@@ -1,7 +1,7 @@
 .exercise-components
 {
     width           : calc(100% - 50px);
-    height          : 90px;
+    height          : fit-content;
     box-sizing      : content-box;
     position        : relative;
     padding-right   : 50px;

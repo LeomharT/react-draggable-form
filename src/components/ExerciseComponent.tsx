@@ -1,8 +1,9 @@
 import { DeleteOutlined, EditOutlined, StarOutlined } from "@ant-design/icons";
-import { Button, Form } from "antd";
+import { Button, Form, Input } from "antd";
 import React, { RefObject, useEffect, useRef } from "react";
 import EditAbleText from "./EditAbleText";
 
+const { TextArea } = Input;
 type ExerciseComponentProps = {
     id: string;
     index: number,
@@ -51,8 +52,8 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 {
                     console.log(e);
                 }}>
-                    <Form.Item name={'haha'} label='asd'>
-                        <EditAbleText placeholder="请输入题目" size="large" name="haha" />
+                    <Form.Item name={'haha'} label={(props.index + 1).toString().padStart(2, '0')}>
+                        <EditAbleText autoSize placeholder="请输入题目" size="large" />
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit">GO</Button>

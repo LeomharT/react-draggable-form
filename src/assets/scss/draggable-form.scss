@@ -38,11 +38,7 @@
             scroll-behavior: smooth;
             >div
             {
-                width    : 100%;
-                >div
-                {
-                    transition: all 0.2s ease 0s;
-                }
+                width    : calc(100% - 280px);
             }
             .side-navi
             {
@@ -52,6 +48,7 @@
                 margin-left: auto;
                 overflow-y : auto;
                 overflow-x : hidden;
+                flex       : 0 0 280px;
                 &::-webkit-scrollbar
                 {
                     width: 0;
