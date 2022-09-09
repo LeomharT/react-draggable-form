@@ -1,7 +1,38 @@
 .exercise-components
 {
-    width     : 100%;
-    height    : 90px;
-    box-sizing: content-box;
-    position  : relative;
+    width           : calc(100% - 50px);
+    height          : 90px;
+    box-sizing      : content-box;
+    position        : relative;
+    padding-right   : 50px;
+    background-color: rgba(0,0,0,.028);
+    &:hover .component-options
+    {
+        visibility: visible;
+    }
+    .component-options
+    {
+        width           : 50px;
+        height          : 100%;
+        position        : absolute;
+        right           : 0;
+        top             : 0;
+        display         : flex;
+        flex-flow       : column nowrap;
+        // visibility      : hidden;
+        align-items     : center;
+        >button
+        {
+            transition: none;
+        }
+    }
+    >header
+    {
+        width           : 100%;
+        height          : fit-content;
+    }
+    >main
+    {
+        width           : 100%;
+    }
 }

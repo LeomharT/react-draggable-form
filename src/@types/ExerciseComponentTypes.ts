@@ -9,3 +9,8 @@ export interface ExerciseComponentType
     score: number;
     anwser: number;
 };
+
+export interface ExerciseComponentBlank extends ExerciseComponentType
+{
+
+}

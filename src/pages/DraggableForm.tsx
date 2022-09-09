@@ -180,10 +180,11 @@ export default function DraggableForm()
                         appendNewComponent(e);
                     }}>
                         {
-                            ids.map((v, _, arr) =>
+                            ids.map((v, index, arr) =>
                                 <ExerciseComponent
                                     id={v}
                                     key={v}
+                                    index={index}
                                     identifier={identifier}
                                     onMouseEnter={e =>
                                     {
