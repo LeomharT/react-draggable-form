@@ -6,7 +6,8 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node esbuild.config.js"
+        "start": "node esbuild.config.js",
+        "dev": "http-server -P http://localhost:6025? -p 6025 ./dist"
     },
     "keywords": [],
     "author": "",
