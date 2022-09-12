@@ -1,6 +1,7 @@
 import { DeleteOutlined, EditOutlined, StarOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
-import React, { RefObject, useEffect, useRef } from "react";
+import React, { RefObject, useCallback, useEffect, useRef } from "react";
+import { ExerciseType } from "../app/app-context";
 import EditAbleText from "./EditAbleText";
 
 const { TextArea } = Input;
@@ -8,6 +9,7 @@ type ExerciseComponentProps = {
     id: string;
     index: number,
     identifier: RefObject<HTMLDivElement>;
+    componentType: ExerciseType,
     onMouseEnter: (e: React.MouseEvent) => void;
     onMouseLeave: (e: React.MouseEvent) => void;
     onMouseUp: (e: React.MouseEvent) => void;
@@ -18,6 +20,15 @@ type ExerciseComponentProps = {
 export default function ExerciseComponent(props: ExerciseComponentProps)
 {
     const domEl: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+
+    const renderMainSection = useCallback(() =>
+    {
+        switch (props.componentType)
+        {
+            default:
+                break;
+        }
+    }, [props.componentType]);
 
     //保证定位效果
     useEffect(() =>

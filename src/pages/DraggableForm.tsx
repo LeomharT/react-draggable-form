@@ -184,6 +184,7 @@ export default function DraggableForm()
                                 <ExerciseComponent
                                     id={v}
                                     key={v}
+                                    componentType={dragType.current}
                                     index={index}
                                     identifier={identifier}
                                     onMouseEnter={e =>
