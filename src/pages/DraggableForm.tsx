@@ -1,6 +1,7 @@
 import { EllipsisOutlined, SearchOutlined, ShareAltOutlined, StarOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React, { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import AppContext from '../app/app-context';
 import EditExercise from '../components/EditExercise';
@@ -10,6 +11,8 @@ import useDebounce from '../hooks/useDebounce';
 
 export default function DraggableForm()
 {
+    const dispatch = useDispatch();
+
     const [ids, setIds] = useState<string[]>([]);
 
     /** 但前锚点 */
