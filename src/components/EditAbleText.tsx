@@ -18,7 +18,7 @@ export default function EditAbleText(props: EditAbleTextProps)
     return (
         <div
             className="editable-text"
-            onPointerDown={e =>
+            onPointerDown={() =>
             {
                 setTimeout(() =>
                 {

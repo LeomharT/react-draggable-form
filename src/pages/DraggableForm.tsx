@@ -48,7 +48,7 @@ export default function DraggableForm()
         //滚到底不触发
         if (!(scroll_top + main_el.clientHeight === main_el.scrollHeight)) setCurrentId(id);
 
-    }, 200, [ids.length]);
+    }, 200);
 
     /** 添加定位 */
     const positionIdentifier = useCallback((e: React.MouseEvent) =>
@@ -56,7 +56,7 @@ export default function DraggableForm()
         const target = e.currentTarget as HTMLDivElement;
         target.appendChild(identifier.current as HTMLElement);
         target.style.marginBottom = "40px";
-    }, [identifier.current]);
+    }, []);
 
     /** 清除定位 */
     const clearIdentifier = useCallback((e: React.MouseEvent) =>
@@ -74,7 +74,7 @@ export default function DraggableForm()
         {
             target.removeChild(identifier.current as HTMLElement);
         }
-    }, [identifier.current]);
+    }, []);
 
     /** 插入新组件 */
     const insertNewComponent = useCallback((e: React.MouseEvent, targetId: string, isBefore: boolean) =>
@@ -106,7 +106,7 @@ export default function DraggableForm()
             return [...before, id, ...after];
         });
 
-    }, [setIds, setIsBefore, isBefore]);
+    }, [setIds, setIsBefore, clearIdentifier]);
 
     /** 如果想在头部插入 */
     const insertBefore = useCallback((e: React.MouseEvent) =>
@@ -152,7 +152,7 @@ export default function DraggableForm()
 
         setCurrentId(arr[0]);
 
-    }, [setIds, setCurrentId]);
+    }, [setIds]);
 
     return (
         <div className="draggable-form">
@@ -223,7 +223,7 @@ export default function DraggableForm()
                                             type={v === currentId ? 'link' : 'text'}
                                             href={`#${v}`}
                                             data-current={v === currentId}
-                                            onClick={e =>
+                                            onClick={() =>
                                             {
                                                 setCurrentId(v);
                                             }}>

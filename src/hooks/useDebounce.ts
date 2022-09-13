@@ -1,6 +1,6 @@
-import { DependencyList, MutableRefObject, useCallback, useRef } from "react";
+import { MutableRefObject, useCallback, useRef } from "react";
 
-export default function useDebounce<T extends (...args: any[]) => any>(fn: T, time: number = 50, dep: DependencyList): T
+export default function useDebounce<T extends (...args: any[]) => any>(fn: T, time: number = 50): T
 {
     const timer: MutableRefObject<number | null> = useRef<number | null>(null);
 
@@ -22,7 +22,7 @@ export default function useDebounce<T extends (...args: any[]) => any>(fn: T, ti
             timer.current = null;
         }, time);
 
-    }, [timer.current, debounceFn.current, ...dep]);
+    }, [fn, time]);
 
     return debounce as T;
 }

@@ -46,13 +46,13 @@ export default function FormComponents()
         };
 
         //卸载事件
-        div.onpointerup = (e: PointerEvent) =>
+        div.onpointerup = () =>
         {
             div.onpointerup = null;
             div.onmousemove = null;
         };
 
-    }, [cardRef.current]);
+    }, []);
 
     const onDragFormComponents = useCallback((e: React.PointerEvent<HTMLDivElement>, type: ExerciseType) =>
     {
@@ -71,11 +71,11 @@ export default function FormComponents()
         clone.style.boxShadow = '-1px -1px 8px 2px rgba(0,0,0,.028), 1px -1px 8px 2px rgba(0,0,0,.028),0 1px 8px 2px rgba(0,0,0,.028)';
         clone.style.cursor = 'grabbing';
 
-        let downX = e.clientX; //鼠标X
-        let downY = e.clientY; //鼠标Y
+        const downX = e.clientX; //鼠标X
+        const downY = e.clientY; //鼠标Y
 
-        let offsetX = div.offsetLeft;
-        let offsetY = div.offsetTop;
+        const offsetX = div.offsetLeft;
+        const offsetY = div.offsetTop;
 
         //初始位置
         clone.style.left = offsetX + 'px';
@@ -85,11 +85,11 @@ export default function FormComponents()
 
         window.onmousemove = (event: MouseEvent) =>
         {
-            let moveX = event.clientX;
-            let moveY = event.clientY;
+            const moveX = event.clientX;
+            const moveY = event.clientY;
 
-            let positionX = moveX - downX;
-            let positionY = moveY - downY;
+            const positionX = moveX - downX;
+            const positionY = moveY - downY;
 
             clone.style.left = offsetX + positionX + 'px';
             clone.style.top = offsetY + positionY + 'px';
@@ -124,7 +124,7 @@ export default function FormComponents()
             }, 10);
         };
 
-    }, []);
+    }, [dragType, setDragging]);
 
     return (
         <>

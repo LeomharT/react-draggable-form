@@ -4,7 +4,6 @@ import React, { RefObject, useCallback, useEffect, useRef } from "react";
 import { ExerciseType } from "../app/app-context";
 import EditAbleText from "./EditAbleText";
 
-const { TextArea } = Input;
 type ExerciseComponentProps = {
     id: string;
     index: number,
@@ -43,7 +42,7 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
         {
             props.identifier!.current!.style.opacity = '1';
         }, 10);
-    }, [domEl.current?.childElementCount]);
+    }, [domEl.current?.childElementCount, props.identifier]);
 
     return (
         <Form onFinish={e =>
