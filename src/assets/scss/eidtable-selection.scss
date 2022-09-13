@@ -1,0 +1,20 @@
+.eidtable-selection
+{
+    margin-bottom: 1px;
+    .ant-input-group-addon:first-child
+    {
+        position        : absolute;
+        background-color: transparent;
+        border          : 1px solid transparent;
+        padding         : 0;
+        margin-right    : 0;
+        top             : calc(50% - 12px);
+        left            : 10px;
+    }
+    input
+    {
+        width       : 100%;
+        border      : 1px solid transparent;
+        padding-left: 40px;
+    }
+}

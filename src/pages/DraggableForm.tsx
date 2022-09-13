@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import React, { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import AppContext from '../app/app-context';
+import EditExercise from '../components/EditExercise';
 import ExerciseComponent from '../components/ExerciseComponent';
 import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
@@ -11,11 +12,15 @@ export default function DraggableForm()
 {
     const [ids, setIds] = useState<string[]>([]);
 
+    /** 但前锚点 */
     const [currentId, setCurrentId] = useState<string>('');
 
     const { dragging, dragType } = useContext(AppContext);
 
+    /** 是否在列表头部插入 */
     const [isBefore, setIsBefore] = useState<boolean>(false);
+
+    const [open, setOpen] = useState<boolean>(false);
 
     const identifier: RefObject<HTMLDivElement> = useRef<HTMLDivElement>((() =>
     {
@@ -152,7 +157,7 @@ export default function DraggableForm()
 
         setCurrentId(arr[0]);
 
-    }, [setIds]);
+    }, [setIds, setCurrentId]);
 
     return (
         <div className="draggable-form">
@@ -187,6 +192,7 @@ export default function DraggableForm()
                                     componentType={dragType.current}
                                     index={index}
                                     identifier={identifier}
+                                    setOpen={setOpen}
                                     onMouseEnter={e =>
                                     {
                                         if (!dragging) return;
@@ -236,6 +242,7 @@ export default function DraggableForm()
                     </aside>
                 </main>
             </div>
+            <EditExercise open={open} setOpen={setOpen} />
         </div >
     );
 }

@@ -57,11 +57,15 @@
     }
     >main
     {
-        width: 100%;
+        width   : 100%;
         position: relative;
-        input
+        *
         {
             background-color: transparent;
+        }
+        .ant-checkbox-group,.ant-radio-group
+        {
+            width: 100%;
         }
     }
 }

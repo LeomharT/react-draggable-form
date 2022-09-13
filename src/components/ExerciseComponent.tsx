@@ -1,20 +1,24 @@
-import { DeleteOutlined, EditOutlined, StarOutlined } from "@ant-design/icons";
-import { Button, Form, Input } from "antd";
-import React, { RefObject, useCallback, useEffect, useRef } from "react";
+import { DeleteOutlined, EditOutlined, StarOutlined, UploadOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Form, Input, Radio, Space, Upload } from "antd";
+import React, { Dispatch, RefObject, useCallback, useEffect, useRef } from "react";
 import { ExerciseType } from "../app/app-context";
-import EditAbleText from "./EditAbleText";
+import EditableSelection from "./EditableSelection";
+import EditableText from "./EditableText";
 
 type ExerciseComponentProps = {
     id: string;
     index: number,
     identifier: RefObject<HTMLDivElement>;
     componentType: ExerciseType,
+    setOpen: Dispatch<React.SetStateAction<boolean>>,
     onMouseEnter: (e: React.MouseEvent) => void;
     onMouseLeave: (e: React.MouseEvent) => void;
     onMouseUp: (e: React.MouseEvent) => void;
     onMouseMove: (e: React.MouseEvent) => void;
 
 };
+
+const { TextArea } = Input;
 
 export default function ExerciseComponent(props: ExerciseComponentProps)
 {
@@ -24,8 +28,59 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
     {
         switch (props.componentType)
         {
+            case ExerciseType.CHOICE:
+                return (
+                    <Radio.Group value={3}>
+                        <EditableSelection value={1} type='radio'></EditableSelection>
+                        <EditableSelection value={2} type='radio'></EditableSelection>
+                        <EditableSelection value={3} type='radio'></EditableSelection>
+                        <EditableSelection value={4} type='radio'></EditableSelection>
+                    </Radio.Group>
+                );
+            case ExerciseType.MULTICHOICE:
+                return (
+                    <Checkbox.Group value={[1, 2]}>
+                        <EditableSelection value={1} type='checkbox' />
+                        <EditableSelection value={2} type='checkbox' />
+                        <EditableSelection value={3} type='checkbox' />
+                        <EditableSelection value={4} type='checkbox' />
+                    </Checkbox.Group>
+                );
+            case ExerciseType.JUDGE:
+                return (
+                    <Radio.Group>
+                        <Space direction='vertical'>
+                            <Radio value={1}>√</Radio>
+                            <Radio value={2}>x</Radio>
+                        </Space>
+                    </Radio.Group>
+                );
+            case ExerciseType.SHORTANSWER:
+                return (
+                    <TextArea autoSize={{ minRows: 5 }}>
+
+                    </TextArea>
+                );
+            case ExerciseType.UPLOAD:
+                return (
+                    <Upload >
+                        <Button icon={<UploadOutlined />}>点击上传</Button>
+                    </Upload>
+                );
+            case ExerciseType.JUDGE:
+                return (
+                    <Radio.Group>
+                        <Space direction='vertical'>
+                            <Radio value={1}>√</Radio>
+                            <Radio value={2}>x</Radio>
+                        </Space>
+                    </Radio.Group>
+                );
+            case ExerciseType.BLANK:
             default:
-                break;
+                return (
+                    <Input />
+                );
         }
     }, [props.componentType]);
 
@@ -59,7 +114,6 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 onMouseLeave={props.onMouseLeave}
                 onMouseMove={props.onMouseMove}
             >
-
                 {/* 头部 */}
                 <header>
                     <div className="exercise-tags">
@@ -70,19 +124,22 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                             分数
                         </span>
                     </div>
-                    <Form.Item name={'haha'} label={(props.index + 1).toString().padStart(2, '0')}>
-                        <EditAbleText autoSize placeholder="请输入题目" size="large" />
+                    <Form.Item label={(props.index + 1).toString().padStart(2, '0')}>
+                        <EditableText autoSize placeholder="请输入题目" size="large" />
+                    </Form.Item>
+                    <Form.Item >
+                        <EditableText autoSize placeholder="题目说明(选填)" size="middle" />
                     </Form.Item>
                 </header>
-                {/* 选项 */}
+                {/* 题型输入 */}
                 <main>
                     <Form.Item>
-                        <Input />
+                        {renderMainSection()}
                     </Form.Item>
                 </main>
                 {/* 选项 */}
                 <div className="component-options">
-                    <Button icon={<EditOutlined />} type='text' />
+                    <Button icon={<EditOutlined />} type='text' onClick={() => props.setOpen(true)} />
                     <Button icon={<StarOutlined />} type='text' />
                     <Button icon={<DeleteOutlined />} danger type='text' />
                 </div>

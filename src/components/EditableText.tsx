@@ -3,13 +3,13 @@ import { TextAreaProps } from "antd/lib/input";
 import { TextAreaRef } from "antd/lib/input/TextArea";
 import { RefObject, useRef, useState } from "react";
 
-export interface EditAbleTextProps extends TextAreaProps
+export interface EditableTextProps extends TextAreaProps
 {
 
 }
 
 const { TextArea } = Input;
-export default function EditAbleText(props: EditAbleTextProps)
+export default function EditableText(props: EditableTextProps)
 {
     const inputRef: RefObject<TextAreaRef> = useRef<TextAreaRef>(null);
 
