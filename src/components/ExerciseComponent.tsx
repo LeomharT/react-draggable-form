@@ -31,19 +31,19 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
             case ExerciseType.CHOICE:
                 return (
                     <Radio.Group value={3}>
-                        <EditableSelection value={1} type='radio'></EditableSelection>
-                        <EditableSelection value={2} type='radio'></EditableSelection>
-                        <EditableSelection value={3} type='radio'></EditableSelection>
-                        <EditableSelection value={4} type='radio'></EditableSelection>
+                        <EditableSelection value={1} type='radio' label="选项1" />
+                        <EditableSelection value={2} type='radio' label="选项2" />
+                        <EditableSelection value={3} type='radio' label="选项3" />
+                        <EditableSelection value={4} type='radio' label="选项4" />
                     </Radio.Group>
                 );
             case ExerciseType.MULTICHOICE:
                 return (
                     <Checkbox.Group value={[1, 2]}>
-                        <EditableSelection value={1} type='checkbox' />
-                        <EditableSelection value={2} type='checkbox' />
-                        <EditableSelection value={3} type='checkbox' />
-                        <EditableSelection value={4} type='checkbox' />
+                        <EditableSelection value={1} type='checkbox' label="选项1" />
+                        <EditableSelection value={2} type='checkbox' label="选项2" />
+                        <EditableSelection value={3} type='checkbox' label="选项3" />
+                        <EditableSelection value={4} type='checkbox' label="选项4" />
                     </Checkbox.Group>
                 );
             case ExerciseType.JUDGE:
