@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ExerciseComponentType } from '../@types/ExerciseComponentTypes';
 import AppContext, { ExerciseType } from '../app/app-context';
 import EditExercise from '../components/EditExercise';
-import ExerciseComponent from '../components/ExerciseComponent';
+import ExerciseComponent, { defalutSelection } from '../components/ExerciseComponent';
 import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
 import { fetchExeriseDetail } from '../service/exercise';
@@ -14,32 +14,38 @@ export default function DraggableForm()
 {
     const [exerciseData, setExerciseData] = useState<ExerciseComponentType[]>([]);
 
-    /** 但前锚点 */
+
+    /** 当前锚点 */
     const [currentId, setCurrentId] = useState<string>('');
 
+
     const { dragging, dragType } = useContext(AppContext);
+
 
     /** 是否在列表头部插入 */
     const [isBefore, setIsBefore] = useState<boolean>(false);
 
+
     const [open, setOpen] = useState<boolean>(false);
+
+
+    /** 传给抽屉的数据 */
+    const [currentExerciseData, setCurrentExerciseData] = useState<ExerciseComponentType>({} as ExerciseComponentType);
+
 
     const newComponent = useCallback((type = dragType.current) =>
     {
         const id = uuidv4().substring(0, 8);
-        let selection = '';
+        let selection;
+        let answer = '';
         if (type === ExerciseType.CHOICE || type === ExerciseType.MULTICHOICE)
         {
-            selection = JSON.stringify({
-                '1': '选项1',
-                '2': '选项2',
-                '3': '选项3',
-                '4': '选项4',
-            });
+            selection = defalutSelection;
+            answer = '0';
         }
         const newComponent: ExerciseComponentType = {
             exercise_id: id,
-            exercise_answer: '',
+            exercise_answer: answer,
             exercise_description: '',
             exercise_score: 1,
             exercise_selection: selection,
@@ -47,8 +53,10 @@ export default function DraggableForm()
             exercise_type: type,
             required: false
         };
+
         return newComponent;
     }, [dragType]);
+
 
     const identifier: RefObject<HTMLDivElement> = useRef<HTMLDivElement>((() =>
     {
@@ -58,6 +66,7 @@ export default function DraggableForm()
 
         return identifier;
     })());
+
 
     /** 切换锚点 */
     const switchAnchor = useDebounce((e: React.UIEvent) =>
@@ -83,6 +92,7 @@ export default function DraggableForm()
 
     }, 200);
 
+
     /** 添加定位 */
     const positionIdentifier = useCallback((e: React.MouseEvent) =>
     {
@@ -90,6 +100,7 @@ export default function DraggableForm()
         target.appendChild(identifier.current as HTMLElement);
         target.style.marginBottom = "40px";
     }, []);
+
 
     /** 清除定位 */
     const clearIdentifier = useCallback((e: React.MouseEvent) =>
@@ -109,12 +120,15 @@ export default function DraggableForm()
         }
     }, []);
 
+
     /** 插入新组件 */
     const insertNewComponent = useCallback((e: React.MouseEvent, index: number, type: ExerciseType, isBefore: boolean) =>
     {
         e.stopPropagation();
 
         clearIdentifier(e);
+
+        const new_component = newComponent(type);
 
         setExerciseData(prve =>
         {
@@ -131,11 +145,20 @@ export default function DraggableForm()
             {
                 setIsBefore(false);
 
-                return [newComponent(), ...prve];
+                return [new_component, ...prve];
             }
-            return [...before, newComponent(), ...after];
+            return [...before, new_component, ...after];
         });
+
+        setTimeout(() =>
+        {
+            const el = document.getElementById(new_component.exercise_id);
+
+            el?.scrollIntoView();
+        }, 200);
+
     }, [setIsBefore, clearIdentifier, newComponent]);
+
 
     /** 如果想在头部插入 */
     const insertBefore = useCallback((e: React.MouseEvent) =>
@@ -159,12 +182,40 @@ export default function DraggableForm()
         }
     }, [positionIdentifier]);
 
+
     /** 添加新组件 */
     const appendNewComponent = useCallback((e: React.MouseEvent, type: ExerciseType) =>
     {
         e.stopPropagation();
         setExerciseData(prve => [...prve, newComponent(type)]);
     }, [setExerciseData, newComponent]);
+
+
+    /** 更新题目 */
+    const updateExerciseDetailData = useCallback((value: any, index: number, field: keyof ExerciseComponentType) =>
+    {
+        setExerciseData(prve =>
+        {
+            const data = prve[index];
+
+            prve[index] = {
+                ...data,
+                [field]: value
+            };
+            return [...prve];
+        });
+    }, [setExerciseData]);
+
+
+    /** 删除题目 */
+    const deleteExercise = useCallback((index: number) =>
+    {
+        setExerciseData(prve =>
+        {
+            return [...prve.slice(0, index), ...prve.slice(index + 1)];
+        });
+    }, [setExerciseData]);
+
 
     useEffect(() =>
     {
@@ -212,7 +263,9 @@ export default function DraggableForm()
                                     index={index}
                                     identifier={identifier}
                                     setOpen={setOpen}
-                                    setExerciseData={setExerciseData}
+                                    deleteExercise={deleteExercise}
+                                    updateExerciseDetailData={updateExerciseDetailData}
+                                    setCurrentExerciseData={setCurrentExerciseData}
                                     onMouseEnter={e =>
                                     {
                                         if (!dragging) return;
@@ -262,7 +315,12 @@ export default function DraggableForm()
                     </aside>
                 </main>
             </div>
-            <EditExercise open={open} setOpen={setOpen} />
+            <EditExercise
+                open={open}
+                currentExerciseData={currentExerciseData}
+                setOpen={setOpen}
+                updateExerciseDetailData={updateExerciseDetailData}
+            />
         </div >
     );
 }

@@ -12,7 +12,9 @@ type ExerciseComponentProps = {
     identifier: RefObject<HTMLDivElement>;
     data: ExerciseComponentType,
     setOpen: Dispatch<React.SetStateAction<boolean>>,
-    setExerciseData: Dispatch<React.SetStateAction<ExerciseComponentType[]>>,
+    deleteExercise: (index: number) => void;
+    updateExerciseDetailData: (value: any, index: number, field: keyof ExerciseComponentType) => void;
+    setCurrentExerciseData: Dispatch<React.SetStateAction<ExerciseComponentType>>,
     onMouseEnter: (e: React.MouseEvent) => void;
     onMouseLeave: (e: React.MouseEvent) => void;
     onMouseUp: (e: React.MouseEvent) => void;
@@ -22,38 +24,28 @@ type ExerciseComponentProps = {
 
 const { TextArea } = Input;
 
+export const defalutSelection = [
+    {
+        value: '0',
+        label: '选项1'
+    }, {
+        value: '1',
+        label: '选项2'
+    }, {
+        value: '2',
+        label: '选项3'
+    }, {
+        value: '3',
+        label: '选项4'
+    },
+];
+
 export default function ExerciseComponent(props: ExerciseComponentProps)
 {
     const domEl: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
-    const { setExerciseData } = props;
-
-    const deleteExercise = (index: number) =>
-    {
-        props.setExerciseData(prve =>
-        {
-            return [...prve.slice(0, index), ...prve.slice(index + 1)];
-        });
-    };
-
     const renderMainSection = useCallback(() =>
     {
-        const defalutSelection = [
-            {
-                value: '0',
-                label: '选项1'
-            }, {
-                value: '1',
-                label: '选项2'
-            }, {
-                value: '2',
-                label: '选项3'
-            }, {
-                value: '3',
-                label: '选项4'
-            },
-        ];
-
         switch (props.data.exercise_type)
         {
             case ExerciseType.CHOICE: {
@@ -120,19 +112,7 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
         }
     }, [props.data.exercise_type, props.data.exercise_answer, props.data.exercise_selection]);
 
-    const updateExerciseDetailData = useCallback((value: any, index: number, field: keyof ExerciseComponentType) =>
-    {
-        setExerciseData(prve =>
-        {
-            const data = prve[index];
-
-            prve[index] = {
-                ...data,
-                [field]: value
-            };
-            return [...prve];
-        });
-    }, [setExerciseData]);
+    const { deleteExercise, updateExerciseDetailData } = props;
 
     //保证定位效果
     useEffect(() =>
@@ -213,7 +193,11 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 </main>
                 {/* 选项 */}
                 <div className="component-options">
-                    <Button icon={<EditOutlined />} type='text' onClick={() => props.setOpen(true)} />
+                    <Button icon={<EditOutlined />} type='link' onClick={() =>
+                    {
+                        props.setCurrentExerciseData(props.data);
+                        props.setOpen(true);
+                    }} />
                     <Button icon={<DeleteOutlined />} danger type='text' onClick={() => deleteExercise(props.index)} />
                 </div>
             </section>
