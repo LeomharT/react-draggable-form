@@ -2,6 +2,7 @@ import { Button, Drawer, Form, Input, InputNumber, Select, Space, Switch } from 
 import { FormInstance } from "antd/es/form/Form";
 import React, { Dispatch, RefObject, useCallback, useRef } from "react";
 import { ExerciseComponentType } from "../@types/ExerciseComponentTypes";
+import { ExerciseType } from "../app/app-context";
 
 export type EditExerciseProps = {
     open: boolean;
@@ -12,17 +13,40 @@ export type EditExerciseProps = {
 
 const { Option } = Select;
 
+const renderAnswerSelections = (props: ExerciseComponentType): JSX.Element =>
+{
+    if (props.exercise_type === ExerciseType.CHOICE)
+    {
+        return (
+            <Select>
+                {props.exercise_selection.map((v: any) => <Option key={v.value} value={v.value}>{v.label}</Option>)}
+            </Select>
+        );
+    }
+    if (props.exercise_type === ExerciseType.MULTICHOICE)
+    {
+        return (
+
+            <Select mode="multiple" allowClear>
+                {props.exercise_selection.map((v: any) => <Option key={v.value} value={v.value}>{v.label}</Option>)}
+            </Select>
+        );
+    }
+    return <Input />;
+};
+
 export default function EditExercise(props: EditExerciseProps)
 {
-
     const formRef: RefObject<FormInstance> = useRef<FormInstance>(null);
 
     const { currentExerciseData, updateExerciseDetailData } = props;
 
-    const onSubmit = useCallback((e: any) =>
+    const onSubmit = useCallback((e: Partial<ExerciseComponentType>) =>
     {
         console.log(e);
+
     }, []);
+
 
     return (
         <Drawer
@@ -63,13 +87,16 @@ export default function EditExercise(props: EditExerciseProps)
                 <Form.Item
                     label="正确答案"
                     name='exercise_answer'
+                    initialValue={(() =>
+                    {
+                        if (props.currentExerciseData.exercise_type === ExerciseType.MULTICHOICE)
+                        {
+                            return props.currentExerciseData.exercise_answer.split(',');
+                        }
+                        return props.currentExerciseData.exercise_answer;
+                    })()}
                 >
-                    <Select>
-                        <Option value="1">A</Option>
-                        <Option value="2">B</Option>
-                        <Option value="3">C</Option>
-                        <Option value="4">D</Option>
-                    </Select>
+                    {renderAnswerSelections(props.currentExerciseData)}
                 </Form.Item>
                 <Form.Item
                     label="是否必填"

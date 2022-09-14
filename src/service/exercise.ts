@@ -1,5 +1,6 @@
 import { message } from "antd";
 import { ExerciseComponentType, IResponse } from "../@types/ExerciseComponentTypes";
+import { defalutSelection } from "../components/ExerciseComponent";
 import { REQUESTURL } from "../data/requests";
 
 export const fetchExeriseDetail = async (): Promise<ExerciseComponentType[]> =>
@@ -20,6 +21,12 @@ export const fetchExeriseDetail = async (): Promise<ExerciseComponentType[]> =>
             data[index] = {
                 ...data[index],
                 exercise_selection: JSON.parse(v.exercise_selection)
+            };
+        } else
+        {
+            data[index] = {
+                ...data[index],
+                exercise_selection: defalutSelection
             };
         }
     }

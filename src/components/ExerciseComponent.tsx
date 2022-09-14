@@ -49,15 +49,10 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
         switch (props.data.exercise_type)
         {
             case ExerciseType.CHOICE: {
-                let selection = defalutSelection;
-                if (props.data.exercise_selection)
-                {
-                    selection = props.data.exercise_selection;
-                }
                 return (
                     <Radio.Group value={props.data.exercise_answer ?? '1'}>
                         {
-                            selection.map(v =>
+                            props.data.exercise_selection.map((v: any) =>
                                 <EditableSelection key={v.value} value={v.value} label={v.label} type='radio' />
                             )
                         }
@@ -74,7 +69,7 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 return (
                     <Checkbox.Group value={anwser}>
                         {
-                            selection.map(v =>
+                            props.data.exercise_selection.map((v: any) =>
                                 <EditableSelection key={v.value} value={v.value} label={v.label} type='checkbox' />
                             )
                         }
