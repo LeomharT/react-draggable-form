@@ -9,7 +9,7 @@ export interface ExerciseComponentType
     exercise_answer: string;
     exercise_type: ExerciseType;
     exercise_description: string;
-    exercise_selection: string;
+    exercise_selection: any;
     required: boolean;
 };
 

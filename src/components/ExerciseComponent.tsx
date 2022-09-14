@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined, StarOutlined, UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Radio, Space, Upload } from "antd";
 import React, { Dispatch, RefObject, useCallback, useEffect, useRef } from "react";
 import { ExerciseComponentType } from "../@types/ExerciseComponentTypes";
@@ -12,6 +12,7 @@ type ExerciseComponentProps = {
     identifier: RefObject<HTMLDivElement>;
     data: ExerciseComponentType,
     setOpen: Dispatch<React.SetStateAction<boolean>>,
+    setExerciseData: Dispatch<React.SetStateAction<ExerciseComponentType[]>>,
     onMouseEnter: (e: React.MouseEvent) => void;
     onMouseLeave: (e: React.MouseEvent) => void;
     onMouseUp: (e: React.MouseEvent) => void;
@@ -25,37 +26,80 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
 {
     const domEl: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
+    const { setExerciseData } = props;
+
+    const deleteExercise = (index: number) =>
+    {
+        props.setExerciseData(prve =>
+        {
+            return [...prve.slice(0, index), ...prve.slice(index + 1)];
+        });
+    };
+
     const renderMainSection = useCallback(() =>
     {
+        const defalutSelection = [
+            {
+                value: '0',
+                label: '选项1'
+            }, {
+                value: '1',
+                label: '选项2'
+            }, {
+                value: '2',
+                label: '选项3'
+            }, {
+                value: '3',
+                label: '选项4'
+            },
+        ];
+
         switch (props.data.exercise_type)
         {
-            case ExerciseType.CHOICE:
+            case ExerciseType.CHOICE: {
+                let selection = defalutSelection;
+                if (props.data.exercise_selection)
+                {
+                    selection = props.data.exercise_selection;
+                }
                 return (
-                    <Radio.Group value={3}>
-                        <EditableSelection value={1} type='radio' label="选项1" />
-                        <EditableSelection value={2} type='radio' label="选项2" />
-                        <EditableSelection value={3} type='radio' label="选项3" />
-                        <EditableSelection value={4} type='radio' label="选项4" />
+                    <Radio.Group value={props.data.exercise_answer ?? '1'}>
+                        {
+                            selection.map(v =>
+                                <EditableSelection key={v.value} value={v.value} label={v.label} type='radio' />
+                            )
+                        }
                     </Radio.Group>
                 );
-            case ExerciseType.MULTICHOICE:
+            }
+            case ExerciseType.MULTICHOICE: {
+                const anwser = props.data.exercise_answer.split(',');
+                let selection = defalutSelection;
+                if (props.data.exercise_selection)
+                {
+                    selection = props.data.exercise_selection;
+                }
                 return (
-                    <Checkbox.Group value={[1, 2]}>
-                        <EditableSelection value={1} type='checkbox' label="选项1" />
-                        <EditableSelection value={2} type='checkbox' label="选项2" />
-                        <EditableSelection value={3} type='checkbox' label="选项3" />
-                        <EditableSelection value={4} type='checkbox' label="选项4" />
+                    <Checkbox.Group value={anwser}>
+                        {
+                            selection.map(v =>
+                                <EditableSelection key={v.value} value={v.value} label={v.label} type='checkbox' />
+                            )
+                        }
                     </Checkbox.Group>
                 );
-            case ExerciseType.JUDGE:
+            }
+            case ExerciseType.JUDGE: {
+                const anwser = Number.parseInt(props.data.exercise_answer);
                 return (
-                    <Radio.Group>
+                    <Radio.Group value={Number.isNaN(anwser) ? 1 : anwser}>
                         <Space direction='vertical'>
                             <Radio value={1}>√</Radio>
                             <Radio value={2}>x</Radio>
                         </Space>
                     </Radio.Group>
                 );
+            }
             case ExerciseType.SHORTANSWER:
                 return (
                     <TextArea autoSize={{ minRows: 5 }}>
@@ -68,22 +112,27 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                         <Button icon={<UploadOutlined />}>点击上传</Button>
                     </Upload>
                 );
-            case ExerciseType.JUDGE:
-                return (
-                    <Radio.Group>
-                        <Space direction='vertical'>
-                            <Radio value={1}>√</Radio>
-                            <Radio value={2}>x</Radio>
-                        </Space>
-                    </Radio.Group>
-                );
             case ExerciseType.BLANK:
             default:
                 return (
                     <Input />
                 );
         }
-    }, [props.data.exercise_type]);
+    }, [props.data.exercise_type, props.data.exercise_answer, props.data.exercise_selection]);
+
+    const updateExerciseDetailData = useCallback((value: any, index: number, field: keyof ExerciseComponentType) =>
+    {
+        setExerciseData(prve =>
+        {
+            const data = prve[index];
+
+            prve[index] = {
+                ...data,
+                [field]: value
+            };
+            return [...prve];
+        });
+    }, [setExerciseData]);
 
     //保证定位效果
     useEffect(() =>
@@ -121,14 +170,39 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                             {props.data.exercise_type}
                         </span>
                         <span>
-                            {props.data.exercise_score.toString()}
+                            {props.data.exercise_score.toString()}分
                         </span>
                     </div>
-                    <Form.Item label={(props.index + 1).toString().padStart(2, '0')}>
-                        <EditableText autoSize placeholder="请输入题目" size="large" />
+                    <Form.Item
+                        name={'exercise_title'}
+                        initialValue={props.data.exercise_title}
+                        label={(props.index + 1).toString().padStart(2, '0')}
+                    >
+                        <EditableText
+                            autoSize
+                            size="large"
+                            placeholder="请输入题目"
+                            onBlur={e =>
+                            {
+                                const value = e.target.value;
+                                updateExerciseDetailData(value, props.index, 'exercise_title');
+                            }}
+                        />
                     </Form.Item>
-                    <Form.Item >
-                        <EditableText autoSize placeholder="题目说明(选填)" size="middle" />
+                    <Form.Item
+                        name={'exercise_description'}
+                        initialValue={props.data.exercise_description}
+                    >
+                        <EditableText
+                            autoSize
+                            size="middle"
+                            placeholder="题目说明(选填)"
+                            onBlur={e =>
+                            {
+                                const value = e.target.value;
+                                updateExerciseDetailData(value, props.index, 'exercise_description');
+                            }}
+                        />
                     </Form.Item>
                 </header>
                 {/* 题型输入 */}
@@ -140,8 +214,7 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 {/* 选项 */}
                 <div className="component-options">
                     <Button icon={<EditOutlined />} type='text' onClick={() => props.setOpen(true)} />
-                    <Button icon={<StarOutlined />} type='text' />
-                    <Button icon={<DeleteOutlined />} danger type='text' />
+                    <Button icon={<DeleteOutlined />} danger type='text' onClick={() => deleteExercise(props.index)} />
                 </div>
             </section>
         </Form>

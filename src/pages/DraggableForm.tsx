@@ -12,8 +12,6 @@ import { fetchExeriseDetail } from '../service/exercise';
 
 export default function DraggableForm()
 {
-    const [ids, setIds] = useState<string[]>([]);
-
     const [exerciseData, setExerciseData] = useState<ExerciseComponentType[]>([]);
 
     /** 但前锚点 */
@@ -25,6 +23,32 @@ export default function DraggableForm()
     const [isBefore, setIsBefore] = useState<boolean>(false);
 
     const [open, setOpen] = useState<boolean>(false);
+
+    const newComponent = useCallback((type = dragType.current) =>
+    {
+        const id = uuidv4().substring(0, 8);
+        let selection = '';
+        if (type === ExerciseType.CHOICE || type === ExerciseType.MULTICHOICE)
+        {
+            selection = JSON.stringify({
+                '1': '选项1',
+                '2': '选项2',
+                '3': '选项3',
+                '4': '选项4',
+            });
+        }
+        const newComponent: ExerciseComponentType = {
+            exercise_id: id,
+            exercise_answer: '',
+            exercise_description: '',
+            exercise_score: 1,
+            exercise_selection: selection,
+            exercise_title: '请输入题目',
+            exercise_type: type,
+            required: false
+        };
+        return newComponent;
+    }, [dragType]);
 
     const identifier: RefObject<HTMLDivElement> = useRef<HTMLDivElement>((() =>
     {
@@ -92,30 +116,6 @@ export default function DraggableForm()
 
         clearIdentifier(e);
 
-        const id = uuidv4().substring(0, 8);
-
-        let selection: string = '';
-
-        if (type === ExerciseType.CHOICE || type === ExerciseType.MULTICHOICE)
-        {
-            selection = JSON.stringify({
-                '1': '选项1',
-                '2': '选项2',
-                '3': '选项3',
-                '4': '选项4',
-            });
-        }
-
-        const newComponent: ExerciseComponentType = {
-            exercise_id: id,
-            exercise_answer: '',
-            exercise_description: '',
-            exercise_score: 1,
-            exercise_selection: selection,
-            exercise_title: '',
-            exercise_type: type,
-            required: false
-        };
         setExerciseData(prve =>
         {
             const before: ExerciseComponentType[] = [];
@@ -131,11 +131,11 @@ export default function DraggableForm()
             {
                 setIsBefore(false);
 
-                return [newComponent, ...prve];
+                return [newComponent(), ...prve];
             }
-            return [...before, newComponent, ...after];
+            return [...before, newComponent(), ...after];
         });
-    }, [setIsBefore, clearIdentifier]);
+    }, [setIsBefore, clearIdentifier, newComponent]);
 
     /** 如果想在头部插入 */
     const insertBefore = useCallback((e: React.MouseEvent) =>
@@ -160,33 +160,22 @@ export default function DraggableForm()
     }, [positionIdentifier]);
 
     /** 添加新组件 */
-    const appendNewComponent = useCallback((e: React.MouseEvent, tpye: ExerciseType) =>
+    const appendNewComponent = useCallback((e: React.MouseEvent, type: ExerciseType) =>
     {
         e.stopPropagation();
-        const id = uuidv4().substring(0, 8);
-        setIds(prve => [...prve, id]);
-    }, [setIds]);
+        setExerciseData(prve => [...prve, newComponent(type)]);
+    }, [setExerciseData, newComponent]);
 
     useEffect(() =>
     {
-        const arr: string[] = [];
-
-        for (let i = 0; i < 1; i++)
-        {
-            const id = uuidv4().substring(0, 8);
-
-            arr.push(id);
-        }
-        setIds([...arr]);
-
-        setCurrentId(arr[0]);
 
         fetchExeriseDetail().then(data =>
         {
+            setCurrentId(data[0].exercise_id);
             setExerciseData(data);
         });
 
-    }, [setIds, setCurrentId,]);
+    }, [setCurrentId]);
 
     return (
         <div className="draggable-form">
@@ -194,7 +183,7 @@ export default function DraggableForm()
             <div className='exercise-area' >
                 <header>
                     <Button icon={<EllipsisOutlined />} shape='circle' size='small' />
-                    <Button type='primary'>保存</Button>
+                    <Button type='primary' onClick={() => console.log(exerciseData)}>保存</Button>
                     {
                         [
                             <ShareAltOutlined />,
@@ -223,6 +212,7 @@ export default function DraggableForm()
                                     index={index}
                                     identifier={identifier}
                                     setOpen={setOpen}
+                                    setExerciseData={setExerciseData}
                                     onMouseEnter={e =>
                                     {
                                         if (!dragging) return;

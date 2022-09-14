@@ -11,6 +11,18 @@ export const fetchExeriseDetail = async (): Promise<ExerciseComponentType[]> =>
         message.error('请求出错请刷新重试');
         return [];
     }
+    const { data } = res.result;
 
-    return res.result.data;
+    for (const [index, v] of data.entries())
+    {
+        if (v.exercise_selection !== '')
+        {
+            data[index] = {
+                ...data[index],
+                exercise_selection: JSON.parse(v.exercise_selection)
+            };
+        }
+    }
+
+    return data;
 };
