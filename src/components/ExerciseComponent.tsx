@@ -14,7 +14,7 @@ type ExerciseComponentProps = {
     setOpen: Dispatch<React.SetStateAction<boolean>>,
     deleteExercise: (index: number) => void;
     updateExerciseDetailData: (value: any, index: number, field: keyof ExerciseComponentType) => void;
-    setCurrentExerciseData: Dispatch<React.SetStateAction<ExerciseComponentType>>,
+    setExerciseIndex: Dispatch<React.SetStateAction<number>>,
     onMouseEnter: (e: React.MouseEvent) => void;
     onMouseLeave: (e: React.MouseEvent) => void;
     onMouseUp: (e: React.MouseEvent) => void;
@@ -61,11 +61,6 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
             }
             case ExerciseType.MULTICHOICE: {
                 const anwser = props.data.exercise_answer.split(',');
-                let selection = defalutSelection;
-                if (props.data.exercise_selection)
-                {
-                    selection = props.data.exercise_selection;
-                }
                 return (
                     <Checkbox.Group value={anwser}>
                         {
@@ -190,7 +185,7 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 <div className="component-options">
                     <Button icon={<EditOutlined />} type='link' onClick={() =>
                     {
-                        props.setCurrentExerciseData(props.data);
+                        props.setExerciseIndex(props.index);
                         props.setOpen(true);
                     }} />
                     <Button icon={<DeleteOutlined />} danger type='text' onClick={() => deleteExercise(props.index)} />

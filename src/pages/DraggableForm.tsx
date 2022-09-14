@@ -30,7 +30,7 @@ export default function DraggableForm()
 
 
     /** 传给抽屉的数据 */
-    const [currentExerciseData, setCurrentExerciseData] = useState<ExerciseComponentType>({} as ExerciseComponentType);
+    const [exerciseIndex, setExerciseIndex] = useState<number>(0);
 
 
     const newComponent = useCallback((type = dragType.current) =>
@@ -265,7 +265,7 @@ export default function DraggableForm()
                                     setOpen={setOpen}
                                     deleteExercise={deleteExercise}
                                     updateExerciseDetailData={updateExerciseDetailData}
-                                    setCurrentExerciseData={setCurrentExerciseData}
+                                    setExerciseIndex={setExerciseIndex}
                                     onMouseEnter={e =>
                                     {
                                         if (!dragging) return;
@@ -317,7 +317,8 @@ export default function DraggableForm()
             </div>
             <EditExercise
                 open={open}
-                currentExerciseData={currentExerciseData}
+                currentExerciseData={exerciseData[exerciseIndex] ?? {}}
+                exerciseIndex={exerciseIndex}
                 setOpen={setOpen}
                 updateExerciseDetailData={updateExerciseDetailData}
             />

@@ -7,6 +7,7 @@ import { ExerciseType } from "../app/app-context";
 export type EditExerciseProps = {
     open: boolean;
     currentExerciseData: ExerciseComponentType,
+    exerciseIndex: number;
     setOpen: Dispatch<React.SetStateAction<boolean>>;
     updateExerciseDetailData: (value: any, index: number, field: keyof ExerciseComponentType) => void;
 };
@@ -41,10 +42,18 @@ export default function EditExercise(props: EditExerciseProps)
 
     const { currentExerciseData, updateExerciseDetailData } = props;
 
-    const onSubmit = useCallback((e: Partial<ExerciseComponentType>) =>
+    const onSubmit = useCallback((data: Partial<ExerciseComponentType>, index: number, type: ExerciseType) =>
     {
-        console.log(e);
-
+        if (type === ExerciseType.MULTICHOICE)
+        {
+            //@ts-ignore
+            data.exercise_answer = (data.exercise_answer).join(',');
+        }
+        for (const i in data)
+        {
+            // @ts-ignore
+            updateExerciseDetailData(data[i], index, i);
+        }
     }, []);
 
 
@@ -64,12 +73,15 @@ export default function EditExercise(props: EditExerciseProps)
                 </Space>
             }
         >
-            <Form onFinish={onSubmit} ref={formRef} layout='vertical'>
+            <Form onFinish={e =>
+            {
+                onSubmit(e, props.exerciseIndex, props.currentExerciseData.exercise_type);
+            }} ref={formRef} layout='vertical'>
                 <Form.Item
                     label="习题ID"
                     name='exercise_id'
                     initialValue={props.currentExerciseData.exercise_id}>
-                    <Input disabled />
+                    <Input readOnly />
                 </Form.Item>
                 <Form.Item
                     label="题目"
