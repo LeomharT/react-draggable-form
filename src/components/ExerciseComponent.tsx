@@ -107,7 +107,6 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
             <section
                 ref={domEl}
                 id={props.id}
-                key={props.id}
                 className='exercise-components'
                 onMouseUp={props.onMouseUp}
                 onMouseEnter={props.onMouseEnter}

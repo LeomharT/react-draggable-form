@@ -143,7 +143,7 @@ export default function FormComponents()
                     </header>
                     <Divider />
                     {Exercises.map(v => (
-                        <div onPointerDown={e =>
+                        <div key={v.type} onPointerDown={e =>
                         {
                             onDragFormComponents(e, v.type);
                         }}>

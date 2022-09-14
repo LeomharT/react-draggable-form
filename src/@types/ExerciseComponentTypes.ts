@@ -3,14 +3,23 @@ import { ExerciseType } from "../app/app-context";
 export interface ExerciseComponentType
 {
     id: string;
-    type: ExerciseType;
-    request: boolean;
-    title: string;
-    score: number;
-    anwser: number;
+    exercise_id: number;
+    exercise_score: number;
+    exercise_title: string;
+    exercise_answer: string;
+    exercise_type: ExerciseType;
+    exercise_description: string;
+    exercise_selection: string;
+    required: boolean;
 };
 
-export interface ExerciseComponentBlank extends ExerciseComponentType
-{
 
+export interface IResponse<T extends any = any>
+{
+    code: number;
+    msg: string;
+    result: {
+        [index: string]: any;
+        data: T;
+    };
 }

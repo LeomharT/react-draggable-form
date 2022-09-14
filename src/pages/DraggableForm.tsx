@@ -1,17 +1,20 @@
 import { EllipsisOutlined, SearchOutlined, ShareAltOutlined, StarOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React, { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import AppContext from '../app/app-context';
 import EditExercise from '../components/EditExercise';
 import ExerciseComponent from '../components/ExerciseComponent';
 import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
+import { fetchExeriseDetailSelector } from '../redux/selector';
 
 export default function DraggableForm()
 {
     const dispatch = useDispatch();
+
+    const selector = useSelector(fetchExeriseDetailSelector);
 
     const [ids, setIds] = useState<string[]>([]);
 
@@ -160,7 +163,9 @@ export default function DraggableForm()
 
         setCurrentId(arr[0]);
 
-    }, [setIds, setCurrentId]);
+        dispatch({ type: 'fetchExeriseDetail' });
+
+    }, [setIds, setCurrentId, dispatch]);
 
     return (
         <div className="draggable-form">
@@ -175,7 +180,7 @@ export default function DraggableForm()
                             <UserAddOutlined />,
                             <StarOutlined />,
                             <SearchOutlined />,
-                        ].map(v => <Button icon={v} key={v.key} type='text' />)
+                        ].map((v, index) => <Button icon={v} key={index} type='text' />)
                     }
                     <div style={{ marginRight: 'auto' }}>
                         XXX课程
