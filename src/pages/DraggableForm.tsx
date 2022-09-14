@@ -1,22 +1,20 @@
 import { EllipsisOutlined, SearchOutlined, ShareAltOutlined, StarOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React, { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import AppContext from '../app/app-context';
+import { ExerciseComponentType } from '../@types/ExerciseComponentTypes';
+import AppContext, { ExerciseType } from '../app/app-context';
 import EditExercise from '../components/EditExercise';
 import ExerciseComponent from '../components/ExerciseComponent';
 import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
-import { fetchExeriseDetailSelector } from '../redux/selector';
+import { fetchExeriseDetail } from '../service/exercise';
 
 export default function DraggableForm()
 {
-    const dispatch = useDispatch();
-
-    const selector = useSelector(fetchExeriseDetailSelector);
-
     const [ids, setIds] = useState<string[]>([]);
+
+    const [exerciseData, setExerciseData] = useState<ExerciseComponentType[]>([]);
 
     /** 但前锚点 */
     const [currentId, setCurrentId] = useState<string>('');
@@ -46,14 +44,14 @@ export default function DraggableForm()
 
         let id = '';
 
-        for (let i = 0; i < ids.length; i++)
+        for (let i = 0; i < exerciseData.length; i++)
         {
-            const el = document.getElementById(ids[i]) as HTMLDivElement;
+            const el = document.getElementById(exerciseData[i].exercise_id) as HTMLDivElement;
 
             //减头部 减滚动条高度
             const offect = el.offsetTop - scroll_top - 60;
 
-            if (offect <= 0) id = ids[i];
+            if (offect <= 0) id = exerciseData[i].exercise_id;
         }
 
         //滚到底不触发
@@ -88,7 +86,7 @@ export default function DraggableForm()
     }, []);
 
     /** 插入新组件 */
-    const insertNewComponent = useCallback((e: React.MouseEvent, targetId: string, isBefore: boolean) =>
+    const insertNewComponent = useCallback((e: React.MouseEvent, index: number, type: ExerciseType, isBefore: boolean) =>
     {
         e.stopPropagation();
 
@@ -96,28 +94,48 @@ export default function DraggableForm()
 
         const id = uuidv4().substring(0, 8);
 
-        setIds(prve =>
-        {
-            const index: number = prve.indexOf(targetId);
+        let selection: string = '';
 
-            const before: string[] = [];
-            const after: string[] = [];
+        if (type === ExerciseType.CHOICE || type === ExerciseType.MULTICHOICE)
+        {
+            selection = JSON.stringify({
+                '1': '选项1',
+                '2': '选项2',
+                '3': '选项3',
+                '4': '选项4',
+            });
+        }
+
+        const newComponent: ExerciseComponentType = {
+            exercise_id: id,
+            exercise_answer: '',
+            exercise_description: '',
+            exercise_score: 1,
+            exercise_selection: selection,
+            exercise_title: '',
+            exercise_type: type,
+            required: false
+        };
+        setExerciseData(prve =>
+        {
+            const before: ExerciseComponentType[] = [];
+            const after: ExerciseComponentType[] = [];
 
             for (let i = 0; i < prve.length; i++)
             {
                 if (i <= index) before.push(prve[i]);
                 else after.push(prve[i]);
             }
+
             if (isBefore)
             {
                 setIsBefore(false);
-                return [id, ...prve];
+
+                return [newComponent, ...prve];
             }
-
-            return [...before, id, ...after];
+            return [...before, newComponent, ...after];
         });
-
-    }, [setIds, setIsBefore, clearIdentifier]);
+    }, [setIsBefore, clearIdentifier]);
 
     /** 如果想在头部插入 */
     const insertBefore = useCallback((e: React.MouseEvent) =>
@@ -142,7 +160,7 @@ export default function DraggableForm()
     }, [positionIdentifier]);
 
     /** 添加新组件 */
-    const appendNewComponent = useCallback((e: React.MouseEvent) =>
+    const appendNewComponent = useCallback((e: React.MouseEvent, tpye: ExerciseType) =>
     {
         e.stopPropagation();
         const id = uuidv4().substring(0, 8);
@@ -163,9 +181,12 @@ export default function DraggableForm()
 
         setCurrentId(arr[0]);
 
-        dispatch({ type: 'fetchExeriseDetail' });
+        fetchExeriseDetail().then(data =>
+        {
+            setExerciseData(data);
+        });
 
-    }, [setIds, setCurrentId, dispatch]);
+    }, [setIds, setCurrentId,]);
 
     return (
         <div className="draggable-form">
@@ -190,14 +211,15 @@ export default function DraggableForm()
                     <div onMouseUp={e =>
                     {
                         if (!dragging) return;
-                        appendNewComponent(e);
+
+                        appendNewComponent(e, dragType.current);
                     }}>
                         {
-                            ids.map((v, index, arr) =>
+                            exerciseData.map((v, index, arr) =>
                                 <ExerciseComponent
-                                    id={v}
-                                    key={v}
-                                    componentType={dragType.current}
+                                    id={v.exercise_id}
+                                    key={v.exercise_id}
+                                    data={v}
                                     index={index}
                                     identifier={identifier}
                                     setOpen={setOpen}
@@ -215,7 +237,7 @@ export default function DraggableForm()
                                     onMouseUp={e =>
                                     {
                                         if (!dragging) return;
-                                        insertNewComponent(e, v, isBefore);
+                                        insertNewComponent(e, index, dragType.current, isBefore);
                                     }}
                                     onMouseMove={e =>
                                     {
@@ -231,17 +253,17 @@ export default function DraggableForm()
                         <p style={{ fontWeight: "bold", marginLeft: "18px" }}>TOC</p>
                         <ul>
                             {
-                                ids.map(v =>
-                                    <li key={v}>
+                                exerciseData.map(v =>
+                                    <li key={v.exercise_id}>
                                         <Button
-                                            type={v === currentId ? 'link' : 'text'}
-                                            href={`#${v}`}
-                                            data-current={v === currentId}
+                                            type={v.exercise_id === currentId ? 'link' : 'text'}
+                                            href={`#${v.exercise_id}`}
+                                            data-current={v.exercise_id === currentId}
                                             onClick={() =>
                                             {
-                                                setCurrentId(v);
+                                                setCurrentId(v.exercise_id);
                                             }}>
-                                            {v + v + v + v}
+                                            {v.exercise_title}
                                         </Button>
                                     </li>
                                 )

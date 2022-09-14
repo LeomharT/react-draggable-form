@@ -1,6 +1,7 @@
 import { DeleteOutlined, EditOutlined, StarOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Radio, Space, Upload } from "antd";
 import React, { Dispatch, RefObject, useCallback, useEffect, useRef } from "react";
+import { ExerciseComponentType } from "../@types/ExerciseComponentTypes";
 import { ExerciseType } from "../app/app-context";
 import EditableSelection from "./EditableSelection";
 import EditableText from "./EditableText";
@@ -9,7 +10,7 @@ type ExerciseComponentProps = {
     id: string;
     index: number,
     identifier: RefObject<HTMLDivElement>;
-    componentType: ExerciseType,
+    data: ExerciseComponentType,
     setOpen: Dispatch<React.SetStateAction<boolean>>,
     onMouseEnter: (e: React.MouseEvent) => void;
     onMouseLeave: (e: React.MouseEvent) => void;
@@ -26,7 +27,7 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
 
     const renderMainSection = useCallback(() =>
     {
-        switch (props.componentType)
+        switch (props.data.exercise_type)
         {
             case ExerciseType.CHOICE:
                 return (
@@ -82,7 +83,7 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                     <Input />
                 );
         }
-    }, [props.componentType]);
+    }, [props.data.exercise_type]);
 
     //保证定位效果
     useEffect(() =>
@@ -117,10 +118,10 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 <header>
                     <div className="exercise-tags">
                         <span>
-                            类型
+                            {props.data.exercise_type}
                         </span>
                         <span>
-                            分数
+                            {props.data.exercise_score.toString()}
                         </span>
                     </div>
                     <Form.Item label={(props.index + 1).toString().padStart(2, '0')}>

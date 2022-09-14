@@ -1,25 +1,23 @@
 import { combineReducers } from "redux";
-import { ExerciseComponentType } from "../@types/ExerciseComponentTypes";
 import { ActionProps } from "./store";
 
-export function fetchExeriseDetailReducer(state: ExerciseComponentType[] = [], action: ActionProps<string, ExerciseComponentType[]>): ExerciseComponentType[]
+function adminReducer(state: string, action: ActionProps<string, string>)
 {
-    if (typeof state === 'undefined') return [];
-
+    if (typeof state === 'undefined') return '';
     switch (action.type)
     {
-        case 'fetchExeriseDetailFail':
+        case 'setAmind':
+            state = action.payload;
             return state;
-        case 'fetchExeriseDetailSuccess':
+        case 'getAdmin':
         default:
-            if (action.payload)
-                state = action.payload;
+            state = '350000_admin';
             return state;
     }
-};
+}
 
 export const rootReduser = combineReducers({
-    fetchExeriseDetailReducer
+    adminReducer
 });
 
 export type RootState = ReturnType<typeof rootReduser>;

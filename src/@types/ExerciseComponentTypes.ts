@@ -2,8 +2,8 @@ import { ExerciseType } from "../app/app-context";
 
 export interface ExerciseComponentType
 {
-    id: string;
-    exercise_id: number;
+    id?: number;
+    exercise_id: string;
     exercise_score: number;
     exercise_title: string;
     exercise_answer: string;

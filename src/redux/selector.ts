@@ -1,3 +1,3 @@
 import { RootState } from "./reducer";
 
-export const fetchExeriseDetailSelector = (state: RootState) => state.fetchExeriseDetailReducer;
+export const adminSelector = (state: RootState) => state.adminReducer;
