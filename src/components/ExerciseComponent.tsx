@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, message, Radio, Space, Upload } from "antd";
 import React, { Dispatch, RefObject, useCallback, useEffect, useRef } from "react";
 import { ExerciseComponentType } from "../@types/ExerciseComponentTypes";
@@ -85,6 +85,26 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                                 />
                             )
                         }
+                        <Button
+                            icon={<PlusCircleOutlined />}
+                            style={{ marginTop: '10px' }}
+                            onClick={() =>
+                            {
+                                const selection = props.data.exercise_selection as any[];
+                                const index = selection.length;
+                                selection.push({
+                                    value: index.toString(),
+                                    label: `选项${index + 1}`
+                                });
+                                updateExerciseDetailData(
+                                    selection,
+                                    props.index,
+                                    'exercise_selection'
+                                );
+                            }}
+                        >
+                            添加选项
+                        </Button>
                     </Radio.Group>
                 );
             }
@@ -124,6 +144,26 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                                 />
                             )
                         }
+                        <Button
+                            icon={<PlusCircleOutlined />}
+                            style={{ marginTop: '10px' }}
+                            onClick={() =>
+                            {
+                                const selection = props.data.exercise_selection as any[];
+                                const index = selection.length;
+                                selection.push({
+                                    value: index.toString(),
+                                    label: `选项${index + 1}`
+                                });
+                                updateExerciseDetailData(
+                                    selection,
+                                    props.index,
+                                    'exercise_selection'
+                                );
+                            }}
+                        >
+                            添加选项
+                        </Button>
                     </Checkbox.Group>
                 );
             }
