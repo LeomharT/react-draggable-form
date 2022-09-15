@@ -1,4 +1,4 @@
-import { Button, Drawer, Form, Input, InputNumber, Select, Space, Switch } from "antd";
+import { Button, Drawer, Form, Input, InputNumber, message, Select, Space, Switch } from "antd";
 import { FormInstance } from "antd/es/form/Form";
 import React, { Dispatch, RefObject, useCallback, useRef } from "react";
 import { ExerciseComponentType } from "../@types/ExerciseComponentTypes";
@@ -54,6 +54,10 @@ export default function EditExercise(props: EditExerciseProps)
             // @ts-ignore
             updateExerciseDetailData(data[i], index, i);
         }
+
+        props.setOpen(false);
+
+        message.success('保存成功');
     }, []);
 
 
@@ -82,13 +86,6 @@ export default function EditExercise(props: EditExerciseProps)
                     name='exercise_id'
                     initialValue={props.currentExerciseData.exercise_id}>
                     <Input readOnly />
-                </Form.Item>
-                <Form.Item
-                    label="题目"
-                    name='exercise_title'
-                    initialValue={props.currentExerciseData.exercise_title}
-                >
-                    <Input />
                 </Form.Item>
                 <Form.Item label="题目分值"
                     name='exercise_score'

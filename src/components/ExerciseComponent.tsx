@@ -120,10 +120,7 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
     }, [domEl.current?.childElementCount, props.identifier]);
 
     return (
-        <Form onFinish={e =>
-        {
-            console.log(e);
-        }}>
+        <Form>
             <section
                 ref={domEl}
                 id={props.id}
