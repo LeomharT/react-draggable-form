@@ -43,12 +43,16 @@ export default function DraggableForm()
             selection = defalutSelection;
             answer = '0';
         }
+        if (type === ExerciseType.JUDGE)
+        {
+            answer = '0';
+        }
         const newComponent: ExerciseComponentType = {
             exercise_id: id,
             exercise_answer: answer,
             exercise_description: '',
             exercise_score: 1,
-            exercise_selection: selection,
+            exercise_selection: selection ?? '',
             exercise_title: '请输入题目',
             exercise_type: type,
             required: false

@@ -72,12 +72,11 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 );
             }
             case ExerciseType.JUDGE: {
-                const anwser = Number.parseInt(props.data.exercise_answer);
                 return (
-                    <Radio.Group value={Number.isNaN(anwser) ? 1 : anwser}>
+                    <Radio.Group value={props.data.exercise_answer ?? '1'}>
                         <Space direction='vertical'>
-                            <Radio value={1}>√</Radio>
-                            <Radio value={2}>x</Radio>
+                            <Radio value={'0'}>错误</Radio>
+                            <Radio value={'1'}>正确</Radio>
                         </Space>
                     </Radio.Group>
                 );

@@ -33,6 +33,15 @@ const renderAnswerSelections = (props: ExerciseComponentType): JSX.Element =>
             </Select>
         );
     }
+    if (props.exercise_type === ExerciseType.JUDGE)
+    {
+        return (
+            <Select>
+                <Option value={'0'}>错误</Option>
+                <Option value={'1'}>正确</Option>
+            </Select>
+        );
+    }
     return <Input />;
 };
 

@@ -1,5 +1,6 @@
 import { message } from "antd";
 import { ExerciseComponentType, IResponse } from "../@types/ExerciseComponentTypes";
+import { ExerciseType } from "../app/app-context";
 import { defalutSelection } from "../components/ExerciseComponent";
 import { REQUESTURL } from "../data/requests";
 
@@ -16,18 +17,21 @@ export const fetchExeriseDetail = async (): Promise<ExerciseComponentType[]> =>
 
     for (const [index, v] of data.entries())
     {
-        if (v.exercise_selection !== '')
+        if (v.exercise_type === ExerciseType.CHOICE || v.exercise_type === ExerciseType.MULTICHOICE)
         {
-            data[index] = {
-                ...data[index],
-                exercise_selection: JSON.parse(v.exercise_selection)
-            };
-        } else
-        {
-            data[index] = {
-                ...data[index],
-                exercise_selection: defalutSelection
-            };
+            if (v.exercise_selection !== '')
+            {
+                data[index] = {
+                    ...data[index],
+                    exercise_selection: JSON.parse(v.exercise_selection)
+                };
+            } else
+            {
+                data[index] = {
+                    ...data[index],
+                    exercise_selection: defalutSelection
+                };
+            }
         }
     }
 
