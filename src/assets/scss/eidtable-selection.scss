@@ -1,6 +1,7 @@
 .eidtable-selection
 {
     margin-bottom: 1px;
+    position     : relative;
     .ant-input-group-addon:first-child
     {
         position        : absolute;
@@ -16,5 +17,20 @@
         width       : 100%;
         border      : 1px solid transparent;
         padding-left: 40px;
+    }
+    >button
+    {
+        position        : absolute;
+        z-index         : 99;
+        background-color: transparent;
+        visibility      : hidden;
+        transition      : none;
+    }
+    &:hover
+    {
+        >button
+        {
+            visibility: visible;
+        }
     }
 }

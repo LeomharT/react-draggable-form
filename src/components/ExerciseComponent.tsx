@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Radio, Space, Upload } from "antd";
+import { Button, Checkbox, Form, Input, message, Radio, Space, Upload } from "antd";
 import React, { Dispatch, RefObject, useCallback, useEffect, useRef } from "react";
 import { ExerciseComponentType } from "../@types/ExerciseComponentTypes";
 import { ExerciseType } from "../app/app-context";
@@ -44,6 +44,8 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
 {
     const domEl: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
+    const { deleteExercise, updateExerciseDetailData } = props;
+
     const renderMainSection = useCallback(() =>
     {
         switch (props.data.exercise_type)
@@ -62,6 +64,24 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                                     {
                                         props.data.exercise_selection[index].label = e;
                                     }}
+                                    onDelete={() =>
+                                    {
+                                        let selection = props.data.exercise_selection as any[];
+                                        if (selection.length === 1)
+                                        {
+                                            message.error('不能少于一个选项');
+                                            return;
+                                        }
+                                        selection = [
+                                            ...selection.slice(0, index),
+                                            ...selection.slice(++index)
+                                        ];
+                                        updateExerciseDetailData(
+                                            selection,
+                                            props.index,
+                                            'exercise_selection'
+                                        );
+                                    }}
                                 />
                             )
                         }
@@ -73,7 +93,7 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 return (
                     <Checkbox.Group value={anwser}>
                         {
-                            props.data.exercise_selection.map((v: any, index: string) =>
+                            props.data.exercise_selection.map((v: any, index: number) =>
                                 <EditableSelection
                                     key={v.value}
                                     value={v.value}
@@ -82,6 +102,24 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                                     onChange={e =>
                                     {
                                         props.data.exercise_selection[index].label = e;
+                                    }}
+                                    onDelete={() =>
+                                    {
+                                        let selection = props.data.exercise_selection as any[];
+                                        if (selection.length === 1)
+                                        {
+                                            message.error('不能少于一个选项');
+                                            return;
+                                        }
+                                        selection = [
+                                            ...selection.slice(0, index),
+                                            ...selection.slice(++index)
+                                        ];
+                                        updateExerciseDetailData(
+                                            selection,
+                                            props.index,
+                                            'exercise_selection'
+                                        );
                                     }}
                                 />
                             )
@@ -117,9 +155,8 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                     <Input />
                 );
         }
-    }, [props.data.exercise_type, props.data.exercise_answer, props.data.exercise_selection]);
+    }, [updateExerciseDetailData, props.index, props.data.exercise_type, props.data.exercise_answer, props.data.exercise_selection]);
 
-    const { deleteExercise, updateExerciseDetailData } = props;
 
     //保证定位效果
     useEffect(() =>

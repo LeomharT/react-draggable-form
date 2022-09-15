@@ -1,4 +1,5 @@
-import { Checkbox, Input, Radio } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Input, Radio } from "antd";
 import React, { useCallback } from "react";
 
 export type EditAbleSelection = {
@@ -6,6 +7,7 @@ export type EditAbleSelection = {
     value: any;
     label: string;
     onChange: (e: string) => void;
+    onDelete: () => void;
 };
 
 export default function EditableSelection(props: EditAbleSelection)
@@ -34,13 +36,14 @@ export default function EditableSelection(props: EditAbleSelection)
     }, [onChange]);
 
     return (
-        <div className="eidtable-selection">
+        <Input.Group className="eidtable-selection" compact>
             <Input
                 addonBefore={renderSelections()}
                 defaultValue={props.label}
                 onChange={alterLabel}
                 placeholder='请输入选项内容'
             />
-        </div>
+            <Button icon={<CloseOutlined />} type='text' onClick={() => props.onDelete()} />
+        </Input.Group>
     );
 }

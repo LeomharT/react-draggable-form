@@ -106,6 +106,7 @@ export default function EditExercise(props: EditExerciseProps)
                     name='exercise_answer'
                     initialValue={(() =>
                     {
+                        console.log(props.currentExerciseData.exercise_answer);
                         if (props.currentExerciseData.exercise_type === ExerciseType.MULTICHOICE)
                         {
                             return props.currentExerciseData.exercise_answer.split(',');
