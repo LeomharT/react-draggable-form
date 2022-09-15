@@ -5,10 +5,13 @@ export type EditAbleSelection = {
     type: 'radio' | 'checkbox';
     value: any;
     label: string;
+    onChange: (e: string) => void;
 };
 
 export default function EditableSelection(props: EditAbleSelection)
 {
+    const { onChange } = props;
+
     const renderSelections = useCallback((): JSX.Element =>
     {
         switch (props.type)
@@ -27,13 +30,17 @@ export default function EditableSelection(props: EditAbleSelection)
 
     const alterLabel = useCallback((e: React.ChangeEvent<HTMLInputElement>) =>
     {
-        console.log(e.target.value);
-        props.value = e.target.value;
-    }, []);
+        onChange(e.target.value);
+    }, [onChange]);
 
     return (
         <div className="eidtable-selection">
-            <Input addonBefore={renderSelections()} value={props.label} onChange={alterLabel} />
+            <Input
+                addonBefore={renderSelections()}
+                defaultValue={props.label}
+                onChange={alterLabel}
+                placeholder='请输入选项内容'
+            />
         </div>
     );
 }

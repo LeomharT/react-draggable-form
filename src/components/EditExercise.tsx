@@ -27,7 +27,6 @@ const renderAnswerSelections = (props: ExerciseComponentType): JSX.Element =>
     if (props.exercise_type === ExerciseType.MULTICHOICE)
     {
         return (
-
             <Select mode="multiple" allowClear>
                 {props.exercise_selection.map((v: any) => <Option key={v.value} value={v.value}>{v.label}</Option>)}
             </Select>
@@ -49,7 +48,7 @@ export default function EditExercise(props: EditExerciseProps)
 {
     const formRef: RefObject<FormInstance> = useRef<FormInstance>(null);
 
-    const { currentExerciseData, updateExerciseDetailData } = props;
+    const { currentExerciseData, updateExerciseDetailData, setOpen } = props;
 
     const onSubmit = useCallback((data: Partial<ExerciseComponentType>, index: number, type: ExerciseType) =>
     {
@@ -64,10 +63,10 @@ export default function EditExercise(props: EditExerciseProps)
             updateExerciseDetailData(data[i], index, i);
         }
 
-        props.setOpen(false);
+        setOpen(false);
 
         message.success('保存成功');
-    }, []);
+    }, [setOpen, updateExerciseDetailData]);
 
 
     return (

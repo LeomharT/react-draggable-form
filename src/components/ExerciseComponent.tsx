@@ -52,8 +52,17 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 return (
                     <Radio.Group value={props.data.exercise_answer ?? '1'}>
                         {
-                            props.data.exercise_selection.map((v: any) =>
-                                <EditableSelection key={v.value} value={v.value} label={v.label} type='radio' />
+                            props.data.exercise_selection.map((v: any, index: number) =>
+                                <EditableSelection
+                                    key={v.value}
+                                    value={v.value}
+                                    label={v.label}
+                                    type='radio'
+                                    onChange={e =>
+                                    {
+                                        props.data.exercise_selection[index].label = e;
+                                    }}
+                                />
                             )
                         }
                     </Radio.Group>
@@ -64,8 +73,17 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 return (
                     <Checkbox.Group value={anwser}>
                         {
-                            props.data.exercise_selection.map((v: any) =>
-                                <EditableSelection key={v.value} value={v.value} label={v.label} type='checkbox' />
+                            props.data.exercise_selection.map((v: any, index: string) =>
+                                <EditableSelection
+                                    key={v.value}
+                                    value={v.value}
+                                    label={v.label}
+                                    type='checkbox'
+                                    onChange={e =>
+                                    {
+                                        props.data.exercise_selection[index].label = e;
+                                    }}
+                                />
                             )
                         }
                     </Checkbox.Group>
