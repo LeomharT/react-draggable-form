@@ -3,8 +3,11 @@ import HeadNavigate from '../components/HeadNavigate';
 export default function MarkHomeWork()
 {
     return (
-        <div>
+        <div className='mark_homework'>
             <HeadNavigate />
+            <main>
+
+            </main>
         </div>
     );
 }
