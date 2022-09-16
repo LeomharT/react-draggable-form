@@ -13,6 +13,14 @@ export interface ExerciseComponentType
     required: boolean;
 };
 
+export interface ExerciseDetailData
+{
+    login_name: string;
+    school_course_id: number;
+    school_course_sectionId: number;
+    data: ExerciseComponentType[];
+}
+
 
 export interface IResponse<T extends any = any>
 {

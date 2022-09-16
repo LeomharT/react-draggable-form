@@ -1,12 +1,12 @@
 import { message } from "antd";
-import { ExerciseComponentType, IResponse } from "../@types/ExerciseComponentTypes";
+import { ExerciseComponentType, ExerciseDetailData, IResponse } from "../@types/ExerciseComponentTypes";
 import { ExerciseType } from "../app/app-context";
 import { defalutSelection } from "../components/ExerciseComponent";
 import { REQUESTURL } from "../data/requests";
 
 export const fetchExeriseDetail = async (): Promise<ExerciseComponentType[]> =>
 {
-    const res = await (await fetch(REQUESTURL.addCourseExercise)).json() as IResponse<ExerciseComponentType[]>;
+    const res = await (await fetch(REQUESTURL.fetchExerciseDetail)).json() as IResponse<ExerciseComponentType[]>;
 
     if (res.code !== 200)
     {
@@ -36,4 +36,19 @@ export const fetchExeriseDetail = async (): Promise<ExerciseComponentType[]> =>
     }
 
     return data;
+};
+
+export const postExerseDetail = async (params: ExerciseDetailData) =>
+{
+    const res = await (await fetch(REQUESTURL.addCourseExercise, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json;'
+        },
+        body: JSON.stringify(params)
+    }
+    )).json();
+
+
+    console.log(res);
 };

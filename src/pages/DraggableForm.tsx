@@ -2,13 +2,25 @@ import { EllipsisOutlined, SearchOutlined, ShareAltOutlined, StarOutlined, UserA
 import { Button } from 'antd';
 import React, { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { ExerciseComponentType } from '../@types/ExerciseComponentTypes';
+import { ExerciseComponentType, ExerciseDetailData } from '../@types/ExerciseComponentTypes';
 import AppContext, { ExerciseType } from '../app/app-context';
 import EditExercise from '../components/EditExercise';
 import ExerciseComponent, { defalutSelection } from '../components/ExerciseComponent';
 import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
-import { fetchExeriseDetail } from '../service/exercise';
+import { fetchExeriseDetail, postExerseDetail } from '../service/exercise';
+
+const submitExerciseDetailData = async (params: ExerciseComponentType[]) =>
+{
+    const body: ExerciseDetailData = {
+        login_name: '350000_admin',
+        school_course_id: 472,
+        school_course_sectionId: 5116,
+        data: params
+    };
+
+    const res = await postExerseDetail(body);
+};
 
 export default function DraggableForm()
 {
@@ -238,7 +250,7 @@ export default function DraggableForm()
             <div className='exercise-area' >
                 <header>
                     <Button icon={<EllipsisOutlined />} shape='circle' size='small' />
-                    <Button type='primary' onClick={() => console.log(exerciseData)}>保存</Button>
+                    <Button type='primary' onClick={() => submitExerciseDetailData(exerciseData)}>保存</Button>
                     {
                         [
                             <ShareAltOutlined />,
