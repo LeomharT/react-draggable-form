@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 
@@ -11,11 +11,6 @@ export default function HeadNavigate()
         { to: '/school_course', label: '课程列表' },
         { to: '/mark_homework', label: '批改作业' },
     ]);
-
-    useEffect(() =>
-    {
-        console.log(location);
-    }, [location]);
 
     return (
         <header className="head-navigate">

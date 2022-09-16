@@ -53,10 +53,11 @@ export const postExerseDetail = async (params: ExerciseDetailData) =>
 };
 
 /** 获取课程列表 */
-export const searchSchoolCourse = async (params: SearchSchoolCourseParams) =>
+export const searchSchoolCourse = async (params: SearchSchoolCourseParams): Promise<IResponse<any>> =>
 {
-    for (const k in params)
-    {
-        console.log(k);
-    }
+    const res = await (
+        await (fetch(REQUESTURL.searchSchoolCourse + '?loginname=350000_admin&currentPage=1&pageSize=8'))
+    ).json();
+
+    return res;
 };

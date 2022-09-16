@@ -1,4 +1,18 @@
 .school_course
 {
     @extend .common_layout;
+    >main
+    {
+        width    : 1200px;
+        margin   : 0 auto;
+        display  : flex;
+        flex-flow: row wrap;
+        >div
+        {
+            >.ant-card
+            {
+
+            }
+        }
+    }
 }
