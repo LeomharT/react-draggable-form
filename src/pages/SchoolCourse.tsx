@@ -1,7 +1,13 @@
+import HeadNavigate from "../components/HeadNavigate";
 
 export default function SchoolCourse()
 {
     return (
-        <div>SchoolCourse</div>
+        <div className="school_course">
+            <HeadNavigate />
+            <main>
+
+            </main>
+        </div>
     );
 }
