@@ -1,7 +1,7 @@
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, message, Radio, Space, Upload } from "antd";
 import React, { Dispatch, RefObject, useCallback, useEffect, useRef } from "react";
-import { ExerciseComponentType } from "../@types/ExerciseComponentTypes";
+import { ExerciseComponentType } from "../@types/exercise-types";
 import { ExerciseType } from "../app/app-context";
 import EditableSelection from "./EditableSelection";
 import EditableText from "./EditableText";

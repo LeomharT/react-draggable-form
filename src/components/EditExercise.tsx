@@ -1,7 +1,7 @@
 import { Button, Drawer, Form, Input, InputNumber, message, Select, Space, Switch } from "antd";
 import { FormInstance } from "antd/es/form/Form";
 import React, { Dispatch, RefObject, useCallback, useRef } from "react";
-import { ExerciseComponentType } from "../@types/ExerciseComponentTypes";
+import { ExerciseComponentType } from "../@types/exercise-types";
 import { ExerciseType } from "../app/app-context";
 
 export type EditExerciseProps = {

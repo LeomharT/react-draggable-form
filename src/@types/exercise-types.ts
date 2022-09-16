@@ -21,7 +21,6 @@ export interface ExerciseDetailData
     data: ExerciseComponentType[];
 }
 
-
 export interface IResponse<T extends any = any>
 {
     code: number;
@@ -30,4 +29,14 @@ export interface IResponse<T extends any = any>
         [index: string]: any;
         data: T;
     };
+}
+
+export interface SearchSchoolCourseParams
+{
+    loginname: string;
+    currentPage: number;
+    pageSize: number;
+    classID?: number;
+    courseName?: string;
+    CourseLevel?: string;
 }

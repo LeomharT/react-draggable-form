@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { ExerciseComponentType, ExerciseDetailData, IResponse } from "../@types/ExerciseComponentTypes";
+import { ExerciseComponentType, ExerciseDetailData, IResponse, SearchSchoolCourseParams } from "../@types/exercise-types";
 import { ExerciseType } from "../app/app-context";
 import { defalutSelection } from "../components/ExerciseComponent";
 import { REQUESTURL } from "../data/requests";
@@ -50,4 +50,13 @@ export const postExerseDetail = async (params: ExerciseDetailData) =>
     )).json();
 
     return res;
+};
+
+/** 获取课程列表 */
+export const searchSchoolCourse = async (params: SearchSchoolCourseParams) =>
+{
+    for (const k in params)
+    {
+        console.log(k);
+    }
 };

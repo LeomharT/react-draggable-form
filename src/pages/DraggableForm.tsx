@@ -2,7 +2,7 @@ import { EllipsisOutlined, SearchOutlined, ShareAltOutlined, StarOutlined, UserA
 import { Button, message } from 'antd';
 import React, { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { ExerciseComponentType, ExerciseDetailData, IResponse } from '../@types/ExerciseComponentTypes';
+import { ExerciseComponentType, ExerciseDetailData, IResponse } from '../@types/exercise-types';
 import AppContext, { ExerciseType } from '../app/app-context';
 import EditExercise from '../components/EditExercise';
 import ExerciseComponent, { defalutSelection } from '../components/ExerciseComponent';
