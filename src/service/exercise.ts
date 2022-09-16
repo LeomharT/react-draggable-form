@@ -40,7 +40,7 @@ export const fetchExeriseDetail = async (): Promise<ExerciseComponentType[]> =>
 
 export const postExerseDetail = async (params: ExerciseDetailData) =>
 {
-    const res = await (await fetch(REQUESTURL.addCourseExercise, {
+    const res: IResponse<any> = await (await fetch(REQUESTURL.addCourseExercise, {
         method: 'POST',
         headers: {
             'content-type': 'application/json;'
@@ -49,6 +49,5 @@ export const postExerseDetail = async (params: ExerciseDetailData) =>
     }
     )).json();
 
-
-    console.log(res);
+    return res;
 };

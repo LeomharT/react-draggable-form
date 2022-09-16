@@ -1,8 +1,8 @@
 import { EllipsisOutlined, SearchOutlined, ShareAltOutlined, StarOutlined, UserAddOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import React, { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { ExerciseComponentType, ExerciseDetailData } from '../@types/ExerciseComponentTypes';
+import { ExerciseComponentType, ExerciseDetailData, IResponse } from '../@types/ExerciseComponentTypes';
 import AppContext, { ExerciseType } from '../app/app-context';
 import EditExercise from '../components/EditExercise';
 import ExerciseComponent, { defalutSelection } from '../components/ExerciseComponent';
@@ -19,7 +19,15 @@ const submitExerciseDetailData = async (params: ExerciseComponentType[]) =>
         data: params
     };
 
-    const res = await postExerseDetail(body);
+    const res = await postExerseDetail(body) as IResponse<any>;
+
+    if (res.msg === 'success')
+    {
+        message.success('保存成功');
+    } else
+    {
+        message.error('操作失败！请稍后重试');
+    }
 };
 
 export default function DraggableForm()
@@ -43,6 +51,9 @@ export default function DraggableForm()
 
     /** 传给抽屉的数据 */
     const [exerciseIndex, setExerciseIndex] = useState<number>(0);
+
+
+    const [pendding, setPendding] = useState<boolean>(false);
 
 
     const newComponent = useCallback((type = dragType.current) =>
@@ -250,7 +261,18 @@ export default function DraggableForm()
             <div className='exercise-area' >
                 <header>
                     <Button icon={<EllipsisOutlined />} shape='circle' size='small' />
-                    <Button type='primary' onClick={() => submitExerciseDetailData(exerciseData)}>保存</Button>
+                    <Button
+                        type='primary'
+                        loading={pendding}
+                        onClick={async () =>
+                        {
+                            setPendding(true);
+                            await submitExerciseDetailData(exerciseData);
+                            setPendding(false);
+                        }
+                        }>
+                        保存
+                    </Button>
                     {
                         [
                             <ShareAltOutlined />,
