@@ -1,7 +1,7 @@
 import { MutableRefObject, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import DraggableForm from '../pages/DraggableForm';
+import CreateExercise from '../pages/CreateExercise';
 import { store } from '../redux/store';
 import AppContext, { ExerciseType } from './app-context';
 
@@ -21,7 +21,7 @@ export default function App()
             }}>
                 <BrowserRouter>
                     <Routes>
-                        <Route path='/draggable_form' element={<DraggableForm />} />
+                        <Route path='/create_exercise' element={<CreateExercise />} />
                     </Routes>
                 </BrowserRouter>
             </AppContext.Provider>

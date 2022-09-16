@@ -30,7 +30,7 @@ const submitExerciseDetailData = async (params: ExerciseComponentType[]) =>
     }
 };
 
-export default function DraggableForm()
+export default function CreateExercise()
 {
     const [exerciseData, setExerciseData] = useState<ExerciseComponentType[]>([]);
 
