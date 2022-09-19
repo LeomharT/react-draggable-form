@@ -1,12 +1,13 @@
-import { Card } from "antd";
+import { Pagination } from "antd";
 import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { SchoolCourseItem } from "../@types/course-types";
 import { SearchSchoolCourseParams } from "../@types/exercise-types";
 import HeadNavigate from "../components/HeadNavigate";
+import CourseItem from "../components/school-course/CourseItem";
 import { searchSchoolCourse } from "../service/exercise";
 export default function SchoolCourse()
 {
-    const [courseList, setCourseList] = useState<any[]>([]);
+    const [courseList, setCourseList] = useState<SchoolCourseItem[]>([]);
 
     useEffect(() =>
     {
@@ -27,13 +28,11 @@ export default function SchoolCourse()
                     courseList.map(v =>
                     {
                         return (
-                            <div key={uuidv4()} style={{ width: '25%', maxWidth: '25%', padding: '5px' }}>
-                                <Card>123</Card>
-                            </div>
+                            <CourseItem key={v.ID} data={v} />
                         );
                     })
                 }
-
+                <Pagination total={100} pageSize={9} showSizeChanger={false} />
             </main>
         </div>
     );

@@ -23,6 +23,7 @@
     {
         overflow-y: auto;
         overflow-x: hidden;
-        height    : calc(100vh - 60px);
+        min-height: calc(100vh - 60px);
+        padding-bottom: 10px;
     }
 }

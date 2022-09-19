@@ -1,5 +1,6 @@
 .school_course
 {
+    overflow: auto;
     @extend .common_layout;
     >main
     {
@@ -7,12 +8,44 @@
         margin   : 0 auto;
         display  : flex;
         flex-flow: row wrap;
-        >div
+        >.course-item-wrapper
         {
+            width    : 25%;
+            max-width: 25%;
+            height   : fit-content;
+            padding  : 5px;
             >.ant-card
             {
-
+                .ant-card-body
+                {
+                    .ant-card-meta
+                    {
+                        .ant-card-meta-detail
+                        {
+                            width     : 100%;
+                            .ant-card-meta-description
+                            {
+                                display  : flex;
+                                flex-flow: row nowrap;
+                                >span:nth-of-type(2)
+                                {
+                                    margin-left: auto;
+                                }
+                            }
+                        }
+                    }
+                    color: #314659;
+                    p
+                    {
+                        margin    : 0;
+                        margin-top: 1rem;
+                    }
+                }
             }
+        }
+        >.ant-pagination
+        {
+            width: 100%;
         }
     }
 }
