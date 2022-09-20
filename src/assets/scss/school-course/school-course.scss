@@ -47,4 +47,17 @@
             float: right;
         }
     }
+    .ant-spin
+    {
+        position: absolute;
+        top     : 200px;
+        left    : calc(50% - 30px);
+    }
+    .school-course-pagination
+    {
+        width          : 100%;
+        height         : fit-content;
+        justify-content: flex-end;
+        margin-top     : auto;
+    }
 }

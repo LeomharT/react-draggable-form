@@ -23,8 +23,9 @@
 
 .common_container_layout
 {
-    height  : 100vh;
-    overflow: auto;
+    height     : 100vh;
+    overflow   : auto;
+    padding-top: 50px;
     >main
     {
         overflow-y    : auto;

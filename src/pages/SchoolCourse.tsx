@@ -1,4 +1,4 @@
-import { Pagination, Space } from "antd";
+import { Pagination, Space, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { SchoolCourseItem } from "../@types/course-types";
 import { SearchSchoolCourseParams } from "../@types/exercise-types";
@@ -9,21 +9,24 @@ export default function SchoolCourse()
 {
     const [courseList, setCourseList] = useState<SchoolCourseItem[]>([]);
 
+    const [totalPage, setTotalPage] = useState<number>(0);
+
+    const [currPage, setCurrPage] = useState<number>(1);
+
     useEffect(() =>
     {
         searchSchoolCourse({} as SearchSchoolCourseParams).then(data =>
         {
-            console.log(data);
+            setTotalPage(data.result.Total);
             setCourseList(data.result.Datas);
         });
-
-        console.log(courseList);
     }, []);
 
     return (
         <div className="school_course">
             <HeadNavigate />
             <main>
+                <Spin spinning={!Boolean(courseList.length)} tip='加载中...' size="large" ></Spin>
                 {
                     courseList.map(v =>
                     {
@@ -32,9 +35,17 @@ export default function SchoolCourse()
                         );
                     })
                 }
-                <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
-                    <Pagination total={100} pageSize={9} showSizeChanger={false} />
-                </Space>
+                {
+                    Boolean(courseList.length) && <Space className="school-course-pagination">
+                        <Pagination
+                            pageSize={12}
+                            current={currPage}
+                            total={totalPage}
+                            showSizeChanger={false}
+                            onChange={e => setCurrPage(e)}
+                        />
+                    </Space>
+                }
             </main>
         </div>
     );
