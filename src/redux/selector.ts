@@ -1,3 +1,4 @@
+import { LoginUserInfo } from "../@types/login.type";
 import { RootState } from "./reducer";
 
-export const adminSelector = (state: RootState) => state.adminReducer;
+export const loginUserInfoSelector = (state: RootState): LoginUserInfo => state.loginUserInfoReducer;

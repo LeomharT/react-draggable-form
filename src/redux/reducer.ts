@@ -1,23 +1,24 @@
 import { combineReducers } from "redux";
+import { LoginUserInfo, LoginUserType } from "../@types/login.type";
 import { ActionProps } from "./store";
 
-function adminReducer(state: string, action: ActionProps<string, string>)
+function loginUserInfoReducer(state: LoginUserInfo, action: ActionProps<string, LoginUserInfo>): LoginUserInfo
 {
-    if (typeof state === 'undefined') return '';
+    if (typeof state === 'undefined') return { loginName: 'admin', loginType: LoginUserType.SUPER_ADMIN };
     switch (action.type)
     {
-        case 'setAmind':
+        case 'setLoginUserInfo':
             state = action.payload;
             return state;
-        case 'getAdmin':
+        case 'getLoginUserInfo':
         default:
-            state = '350000_admin';
+            state = { loginName: 'admin', loginType: LoginUserType.SUPER_ADMIN };
             return state;
     }
 }
 
 export const rootReduser = combineReducers({
-    adminReducer
+    loginUserInfoReducer
 });
 
 export type RootState = ReturnType<typeof rootReduser>;
