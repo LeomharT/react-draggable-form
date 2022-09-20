@@ -56,7 +56,7 @@ export const postExerseDetail = async (params: ExerciseDetailData) =>
 export const searchSchoolCourse = async (params: SearchSchoolCourseParams): Promise<IResponse<any>> =>
 {
     const res = await (
-        await (fetch(REQUESTURL.searchSchoolCourse + '?loginname=350000_admin&currentPage=1&pageSize=8'))
+        await (fetch(REQUESTURL.searchSchoolCourse + '?loginname=350000_admin&currentPage=1&pageSize=12'))
     ).json();
 
     return res;

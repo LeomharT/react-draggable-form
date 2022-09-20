@@ -1,4 +1,4 @@
-import { Pagination } from "antd";
+import { Pagination, Space } from "antd";
 import { useEffect, useState } from "react";
 import { SchoolCourseItem } from "../@types/course-types";
 import { SearchSchoolCourseParams } from "../@types/exercise-types";
@@ -32,7 +32,9 @@ export default function SchoolCourse()
                         );
                     })
                 }
-                <Pagination total={100} pageSize={9} showSizeChanger={false} />
+                <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
+                    <Pagination total={100} pageSize={9} showSizeChanger={false} />
+                </Space>
             </main>
         </div>
     );

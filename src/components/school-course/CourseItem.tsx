@@ -1,4 +1,4 @@
-import { Button, Card } from "antd";
+import { Button, Card, Space } from "antd";
 import { useId } from "react";
 import { SchoolCourseItem } from "../../@types/course-types";
 
@@ -19,10 +19,6 @@ export default function CourseItem(props: CourseItemType)
             <Card
                 hoverable
                 cover={<img alt="cover" style={{ padding: "24px" }} src={props.data.CourseCoverUrl} />}
-                actions={[
-                    <Button>学情分析</Button>,
-                    <Button type="primary">批改作业</Button>
-                ]}
             >
                 <Meta title={props.data.CourseName}
                     description={
@@ -34,6 +30,10 @@ export default function CourseItem(props: CourseItemType)
                 <Meta description={`课程等级:${props.data.CourseLevel}`} />
                 <Meta description={`课程人数:${props.data.EnterPerson ?? 0}`} />
                 <p>{props.data.EnterDate}</p>
+                <Space direction="horizontal" style={{ width: '100%', justifyContent: 'space-between' }}>
+                    <Button>学情分析</Button>
+                    <Button type="primary">批改作业</Button>
+                </Space>
             </Card>
         </div>
     );

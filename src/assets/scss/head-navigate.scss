@@ -1,11 +1,15 @@
 .head-navigate
 {
-    width        : 100%;
-    margin       : 0 auto;
-    height       : 60px;
-    display      : flex;
-    align-items  : center;
-    border-bottom: 1px solid #E7E9E8;
+    width           : 100%;
+    margin          : 0 auto;
+    height          : 60px;
+    display         : flex;
+    align-items     : center;
+    border-bottom   : 1px solid #E7E9E8;
+    position        : sticky;
+    top             : 0;
+    background-color: #FFFFFF;
+    z-index         : 2;
     >div
     {
         width : 1200px;
@@ -17,13 +21,16 @@
     }
 }
 
-.common_layout
+.common_container_layout
 {
+    height  : 100vh;
+    overflow: auto;
     >main
     {
-        overflow-y: auto;
-        overflow-x: hidden;
-        min-height: calc(100vh - 60px);
+        overflow-y    : auto;
+        overflow-x    : hidden;
+        min-height    : calc(100vh - 60px);
         padding-bottom: 10px;
+        z-index       : 1;
     }
 }
