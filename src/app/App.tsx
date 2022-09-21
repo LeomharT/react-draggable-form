@@ -55,7 +55,9 @@ export default function App()
                     <Route path='/' element={<Navigate to={'/school_course'} />} />
                     <Route path='/create_exercise' element={<CreateExercise />} />
                     <Route path='/school_course' element={<SchoolCourse />} />
-                    <Route path='/mark_homework' element={<MarkHomeWork />} />
+                    <Route path='/mark_homework' element={<MarkHomeWork />} >
+                        <Route path=':courseSectionID' element={<MarkHomeWork />} />
+                    </Route>
                 </Routes>
             </BrowserRouter>
         </AppContext.Provider>

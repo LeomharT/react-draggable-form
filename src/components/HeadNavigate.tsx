@@ -9,7 +9,7 @@ export default function HeadNavigate()
 
     const [locations] = useState([
         { to: '/school_course', label: '课程列表' },
-        { to: '/mark_homework', label: '批改作业' },
+        { to: '/experiment_report', label: '实验报告' },
     ]);
 
     return (

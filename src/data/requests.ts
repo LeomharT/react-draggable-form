@@ -7,5 +7,6 @@ export const REQUESTURL = {
     fetchExerciseDetail: `${HOST}/CourseExercise/fetchExerciseDetail`,
     addCourseExercise: `${EVAHOST}/CourseExercise/addCourseExercise`,
     searchSchoolCourse: `${EVAHOST}/CourseExercise/SearchSchoolCourse`,
-    getClassData: `${EVAHOST}/CourseExercise/getClassData`
+    getClassData: `${EVAHOST}/CourseExercise/getClassData`,
+    searchCommitedHomeworkData: `${EVAHOST}/CourseExercise/searchCommitedHomeworkData`
 };

@@ -1,4 +1,22 @@
 .mark_homework
 {
     @extend .common_container_layout;
+
+    >.ant-tabs
+    {
+        width : 1200px;
+        height: 60px;
+        margin: 0 auto;
+        >.ant-tabs-nav
+        {
+            margin: 0;
+        }
+    }
+    >main
+    {
+        >.ant-empty
+        {
+            margin-top: 200px;
+        }
+    }
 }

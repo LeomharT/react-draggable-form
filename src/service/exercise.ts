@@ -51,3 +51,12 @@ export const postExerseDetail = async (params: ExerciseDetailData) =>
 
     return res;
 };
+
+export const searchCommitedHomeworkData = async (params: any) =>
+{
+    const url = REQUESTURL.searchCommitedHomeworkData;
+
+    const res = await (await fetch(url)).json();
+
+    console.log(res);
+};

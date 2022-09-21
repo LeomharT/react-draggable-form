@@ -18,9 +18,7 @@ export const searchSchoolCourse = async (params: SearchSchoolCourseParams): Prom
 
     url += params_arr.join('&');
 
-    const res = await (
-        await (fetch(url))
-    ).json();
+    const res = await (await (fetch(url))).json();
 
     return res;
 };

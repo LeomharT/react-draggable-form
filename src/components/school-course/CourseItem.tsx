@@ -1,5 +1,5 @@
 import { Button, Card, Divider, Space } from "antd";
-import { useId } from "react";
+import { useNavigate } from "react-router";
 import { SchoolCourseItem } from "../../@types/course-types";
 
 export type CourseItemType = {
@@ -10,10 +10,10 @@ const { Meta } = Card;
 
 export default function CourseItem(props: CourseItemType)
 {
-    const id = useId();
+    const navigate = useNavigate();
+
     return (
         <div
-            key={id}
             className="course-item-wrapper"
         >
             <Card
@@ -47,7 +47,12 @@ export default function CourseItem(props: CourseItemType)
                 <Divider />
                 <Space direction="horizontal" style={{ width: '100%', justifyContent: 'space-between' }}>
                     <Button>学情分析</Button>
-                    <Button type="primary">批改作业</Button>
+                    <Button type="primary" onClick={() =>
+                    {
+                        navigate(`/mark_homework/${props.data.ID}`);
+                    }}>
+                        批改作业
+                    </Button>
                 </Space>
             </Card>
         </div>
