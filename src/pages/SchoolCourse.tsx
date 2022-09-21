@@ -17,6 +17,8 @@ export default function SchoolCourse()
 {
     const userInfo: LoginUserInfo = useSelector(loginUserInfoSelector);
 
+    const containerRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+
     const formRef: RefObject<FormInstance> = useRef<FormInstance>(null);
 
     /** 是否加载数据中 */
@@ -34,7 +36,7 @@ export default function SchoolCourse()
     /** 所有班级(数据筛选) */
     const [allClass, setAllClass] = useState<ClassFilter[]>([]);
 
-    /** 筛选数据触发事件 */
+    /** 筛选数据 */
     const onSearchCourse = useCallback(async (params: SearchSchoolCourseParams) =>
     {
         setCourseList([]);
@@ -75,19 +77,24 @@ export default function SchoolCourse()
     }, [userInfo, onSearchCourse]);
 
     return (
-        <div className="school_course">
+        <div className="school_course" ref={containerRef}>
             <HeadNavigate />
             <Form
                 ref={formRef}
                 layout='inline'
-                onFinish={e => onSearchCourse({
-                    loginname: userInfo?.loginName,
-                    currentPage: 1,
-                    pageSize: PAGE_SIZE,
-                    courseName: e.courseName,
-                    classID: e.classId,
-                    CourseLevel: e.courseLevel
-                })}
+                onFinish={e =>
+                {
+                    onSearchCourse({
+                        loginname: userInfo?.loginName,
+                        currentPage: 1,
+                        pageSize: PAGE_SIZE,
+                        courseName: e.courseName,
+                        classID: e.classID,
+                        courseLevel: e.courseLevel
+                    });
+
+                    setCurrPage(1);
+                }}
             >
                 <Form.Item name='courseLevel' label='课程类型' initialValue={0}>
                     <Radio.Group onChange={() => formRef.current?.submit()}>
@@ -100,7 +107,7 @@ export default function SchoolCourse()
                 <Form.Item name='courseName' label='课程名称'>
                     <Input.Search placeholder="请输入班级名称" onSearch={() => formRef.current?.submit()} />
                 </Form.Item>
-                <Form.Item name='classId' label='班级名称'>
+                <Form.Item name='classID' label='班级名称'>
                     <Select placeholder='选择班级名称' allowClear onChange={() => formRef.current?.submit()}>
                         {
                             allClass.map(v =>
@@ -137,9 +144,18 @@ export default function SchoolCourse()
                             showSizeChanger={false}
                             onChange={e =>
                             {
+                                const fields = formRef.current?.getFieldsValue(['classID', 'courseName', 'courseLevel']);
+
                                 setCurrPage(e);
 
-                                console.log(formRef.current?.getFieldsValue(['courseLevel']));
+                                onSearchCourse({
+                                    loginname: userInfo?.loginName,
+                                    pageSize: PAGE_SIZE,
+                                    currentPage: e,
+                                    ...fields,
+                                });
+
+                                containerRef.current?.scrollTo({ top: 0 });
                             }}
                         />
                     </Space>

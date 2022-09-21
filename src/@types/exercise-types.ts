@@ -39,5 +39,5 @@ export interface SearchSchoolCourseParams
     pageSize: number;
     classID?: number;
     courseName?: string;
-    CourseLevel?: string;
+    courseLevel?: string;
 }

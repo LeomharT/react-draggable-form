@@ -35,8 +35,13 @@
                             }
                         }
                     }
+                    >.ant-divider
+                    {
+                        border: none;
+                    }
                 }
             }
+
         }
         >.ant-pagination
         {
