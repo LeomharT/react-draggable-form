@@ -1,19 +1,28 @@
 export interface SchoolCourseItem
 {
     ClassName: string;
+    ClassSize: number;
     CourseCoverUrl: string;
-    CourseIntroduction: string;
-    CourseIntroductionHtml: string;
     CourseLevel: number;
     CourseName: string;
-    EnterDate: string;
-    EnterPerson: number;
     ID: number;
-    Publisher: string;
     SchoolId: number;
-    Sections: any[];
     StandardCourseId: number;
     State: number;
-    TeacherId: number;
-    VersionNumber: string;
+    TeacherName: string;
+    SubmitedCount: number;
+    CorrectedCount: number;
+}
+
+
+export interface ClassFilter
+{
+    ClassName: string;
+    EnterDate: string;
+    EnterPerson: number;
+    Grade: string;
+    ID: number;
+    SchoolId: string;
+    Session: string;
+    State: 1;
 }

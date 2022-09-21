@@ -17,6 +17,7 @@
             {
                 .ant-card-body
                 {
+                    color: #314659;
                     .ant-card-meta
                     {
                         .ant-card-meta-detail
@@ -24,8 +25,9 @@
                             width     : 100%;
                             .ant-card-meta-description
                             {
-                                display  : flex;
-                                flex-flow: row nowrap;
+                                display      : flex;
+                                flex-flow    : row nowrap;
+                                margin-bottom: 5px;
                                 >span:nth-of-type(2)
                                 {
                                     margin-left: auto;
@@ -33,25 +35,24 @@
                             }
                         }
                     }
-                    color: #314659;
-                    p
-                    {
-                        margin: 1rem 0;
-                    }
                 }
             }
         }
         >.ant-pagination
         {
             width: 100%;
-            float: right;
         }
     }
     .ant-spin
     {
         position: absolute;
-        top     : 200px;
+        top     : 300px;
         left    : calc(50% - 30px);
+        z-index : 5;
+    }
+    .ant-empty
+    {
+        margin: 200px auto;
     }
     .school-course-pagination
     {
@@ -59,5 +60,39 @@
         height         : fit-content;
         justify-content: flex-end;
         margin-top     : auto;
+    }
+    >.ant-form
+    {
+        width         : calc(1200px - 10px);
+        margin        : 0 auto;
+        margin-top    : 5px;
+        padding       : 10px;
+        padding-bottom: 0;
+        border        : 1px solid #f0f0f0;
+        >.ant-form-item:nth-of-type(1)
+        {
+            width: 100%;
+            .ant-radio-button-wrapper
+            {
+                border    : none;
+                box-shadow: none;
+                &::before
+                {
+                    display: none;
+                }
+            }
+        }
+        .ant-input
+        {
+            width: 300px;
+        }
+        .ant-select
+        {
+            min-width: 200px;
+            .ant-select-clear
+            {
+                line-height: 10px;
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-import { Button, Card, Space } from "antd";
+import { Button, Card, Divider, Space } from "antd";
 import { useId } from "react";
 import { SchoolCourseItem } from "../../@types/course-types";
 
@@ -24,12 +24,27 @@ export default function CourseItem(props: CourseItemType)
                     description={
                         <>
                             <span>{`课程名称:${props.data.ClassName}`}</span>
-                            <span>{`授课老师:${props.data.TeacherId ?? ''}`}</span>
+                            <span>{`授课老师:${props.data.TeacherName ?? ''}`}</span>
                         </>
-                    } />
-                <Meta description={`课程等级:${props.data.CourseLevel}`} />
-                <Meta description={`课程人数:${props.data.EnterPerson ?? 0}`} />
-                <p>{props.data.EnterDate}</p>
+                    }
+                />
+                <Meta
+                    description={
+                        <>
+                            <span>{`课程等级:${props.data.CourseLevel}`}</span>
+                            <span>{`课程人数:${props.data.ClassSize ?? 0}`}</span>
+                        </>
+                    }
+                />
+                <Meta
+                    description={
+                        <>
+                            <span>{`已提交:${props.data.SubmitedCount}`}</span>
+                            <span>{`已批改:${props.data.CorrectedCount}`}</span>
+                        </>
+                    }
+                />
+                <Divider />
                 <Space direction="horizontal" style={{ width: '100%', justifyContent: 'space-between' }}>
                     <Button>学情分析</Button>
                     <Button type="primary">批改作业</Button>

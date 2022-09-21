@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
-import { LoginUserInfo, LoginUserType } from "../@types/login.type";
+import { LoginUserInfo } from "../@types/login.type";
 import { ActionProps } from "./store";
 
-function loginUserInfoReducer(state: LoginUserInfo, action: ActionProps<string, LoginUserInfo>): LoginUserInfo
+function loginUserInfoReducer(state: LoginUserInfo, action: ActionProps<string, LoginUserInfo>): LoginUserInfo | null
 {
-    if (typeof state === 'undefined') return { loginName: 'admin', loginType: LoginUserType.SUPER_ADMIN };
+    if (typeof state === 'undefined') return null;
     switch (action.type)
     {
         case 'setLoginUserInfo':
@@ -12,7 +12,6 @@ function loginUserInfoReducer(state: LoginUserInfo, action: ActionProps<string, 
             return state;
         case 'getLoginUserInfo':
         default:
-            state = { loginName: 'admin', loginType: LoginUserType.SUPER_ADMIN };
             return state;
     }
 }

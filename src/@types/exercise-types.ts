@@ -33,6 +33,7 @@ export interface IResponse<T extends any = any>
 
 export interface SearchSchoolCourseParams
 {
+    [key: string]: any;
     loginname: string;
     currentPage: number;
     pageSize: number;
