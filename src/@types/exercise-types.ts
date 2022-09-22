@@ -28,6 +28,7 @@ export interface IResponse<T extends any = any>
     result: {
         [index: string]: any;
         data: T;
+        Datas: T;
     };
 }
 
@@ -40,4 +41,29 @@ export interface SearchSchoolCourseParams
     classID?: number;
     courseName?: string;
     courseLevel?: string;
+}
+
+
+export interface SearchCommitedHomeworkParams
+{
+    courseSectionID: string;
+    currentPage: number;
+    pageSize: number;
+    submitStudentId?: string;
+    correctStatus?: string;
+}
+
+
+export interface HomeworkDataItem
+{
+    CorrectDate: string;
+    CorrectStatus: number;
+    CorrectUserId: number;
+    ExercisesId: number;
+    ID: number;
+    Score: number;
+    SectionName: string;
+    SubmitDate: string;
+    SubmitStatus: number;
+    SubmitStudentId: string;
 }

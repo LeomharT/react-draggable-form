@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { ExerciseComponentType, ExerciseDetailData, IResponse } from "../@types/exercise-types";
+import { ExerciseComponentType, ExerciseDetailData, IResponse, SearchCommitedHomeworkParams } from "../@types/exercise-types";
 import { ExerciseType } from "../app/app-context";
 import { defalutSelection } from "../components/ExerciseComponent";
 import { REQUESTURL } from "../data/requests";
@@ -52,11 +52,23 @@ export const postExerseDetail = async (params: ExerciseDetailData) =>
     return res;
 };
 
-export const searchCommitedHomeworkData = async (params: any) =>
+export const searchCommitedHomeworkData = async (params: SearchCommitedHomeworkParams): Promise<IResponse> =>
 {
-    const url = REQUESTURL.searchCommitedHomeworkData;
+    let url = REQUESTURL.searchCommitedHomeworkData + '?';
+
+    const params_arr: string[] = [];
+
+    for (const k in params)
+    {
+        if (params[k])
+        {
+            params_arr.push(`${k}=${params[k]}`);
+        }
+    }
+
+    url += params_arr.join('&');
 
     const res = await (await fetch(url)).json();
 
-    console.log(res);
+    return res;
 };

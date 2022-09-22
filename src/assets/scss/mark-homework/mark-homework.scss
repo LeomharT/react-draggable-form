@@ -14,9 +14,43 @@
     }
     >main
     {
+        width : 1200px;
+        margin: 0 auto;
         >.ant-empty
         {
             margin-top: 200px;
         }
     }
+}
+
+
+.ant-popover
+{
+    padding-top: 0;
+    .ant-popover-inner-content
+    {
+        padding: 0 !important;
+    }
+}
+
+.popover-menu
+{
+    border: none;
+
+    .ant-menu-item
+    {
+        display    : flex;
+        align-items: center;
+        &:hover
+        {
+            color           : #585a5a;
+            background-color: #eff0f0 !important;
+        }
+    }
+    .ant-menu-item-selected
+    {
+        color           : #111111;
+        background-color: transparent !important;
+    }
+
 }
