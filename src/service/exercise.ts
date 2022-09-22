@@ -72,3 +72,13 @@ export const searchCommitedHomeworkData = async (params: SearchCommitedHomeworkP
 
     return res;
 };
+
+export const getSectionCourse = async (ID: string) =>
+{
+    return await (await fetch(REQUESTURL.getSectionCourse + `?ID=${ID}`)).json();
+};
+
+export const getsubmitedStudentData = async () =>
+{
+    return await (await fetch(REQUESTURL.getsubmitedStudentData)).json();
+};

@@ -1,10 +1,10 @@
 import { FormOutlined, MoreOutlined, ProfileOutlined, RedoOutlined } from '@ant-design/icons';
-import { Button, Empty, Menu, Popover, Table, Tabs, Tag } from 'antd';
+import { Button, Empty, Form, FormInstance, Menu, Popover, Select, Table, Tabs, Tag } from 'antd';
 import { ColumnType } from 'antd/lib/table';
-import { useCallback, useEffect, useState } from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HomeworkDataItem, SearchCommitedHomeworkParams } from '../@types/exercise-types';
-import { searchCommitedHomeworkData } from '../service/exercise';
+import { getSectionCourse, getsubmitedStudentData, searchCommitedHomeworkData } from '../service/exercise';
 
 const PAGE_SIZE = 20;
 
@@ -64,13 +64,21 @@ const columns: ColumnType<HomeworkDataItem>[] = [
     }
 ];
 
+const { Option } = Select;
+
 export default function MarkHomeWork()
 {
     const navigate = useNavigate();
 
+    const formRef: RefObject<FormInstance> = useRef<FormInstance>(null);
+
     const { courseSectionID } = useParams();
 
     const [homeworkList, setHomeworkList] = useState<HomeworkDataItem[]>([]);
+
+    const [chapters, setChapters] = useState<any[]>([]);
+
+    const [submittedStd, setSubmittedStd] = useState<any[]>([]);
 
     const onSearchHomworkData = useCallback(async (params: SearchCommitedHomeworkParams) =>
     {
@@ -93,6 +101,28 @@ export default function MarkHomeWork()
 
     }, [courseSectionID, onSearchHomworkData]);
 
+    useEffect(() =>
+    {
+        if (!courseSectionID) return;
+
+        getSectionCourse(courseSectionID).then(data =>
+        {
+            setChapters(data.result);
+        });
+
+    }, [courseSectionID]);
+
+    useEffect(() =>
+    {
+        if (!courseSectionID) return;
+
+        getsubmitedStudentData().then(data =>
+        {
+            setSubmittedStd(data.result);
+        });
+
+    }, [courseSectionID]);
+
     return (
         <div className='mark_homework'>
             <Tabs
@@ -103,9 +133,35 @@ export default function MarkHomeWork()
                 ]}
                 tabBarExtraContent={{
                     right:
-                        <>
-                            <Button>123</Button>
-                        </>
+                        <Form ref={formRef} layout='inline' onFinish={e =>
+                        {
+                            if (!courseSectionID) return;
+
+                            onSearchHomworkData({
+                                currentPage: 1,
+                                courseSectionID,
+                                pageSize: PAGE_SIZE,
+                                ...e
+                            });
+
+                        }}>
+                            <Form.Item label='学生' name={'submitStudentId'}>
+                                <Select allowClear placeholder='请选择学生姓名' onChange={() => formRef.current?.submit()}>
+                                    {submittedStd.map(v => <Option key={v.id} value={v.id}>{v.submitedName}</Option>)}
+                                </Select>
+                            </Form.Item>
+                            <Form.Item label='状态' name={'correctStatus'}>
+                                <Select allowClear placeholder='请选择批改状态' onChange={() => formRef.current?.submit()}>
+                                    <Option value={1}>未批改</Option>
+                                    <Option value={2}>已批改</Option>
+                                </Select>
+                            </Form.Item>
+                            <Form.Item label='章节' name={'courseSectionID'}>
+                                <Select allowClear placeholder='请选择章节名称' onChange={() => formRef.current?.submit()}>
+                                    {chapters.map(v => <Option key={v?.ID} value={v?.ID}>{v?.SectionName}</Option>)}
+                                </Select>
+                            </Form.Item>
+                        </Form>
                 }}
             >
             </Tabs>

@@ -11,6 +11,20 @@
         {
             margin: 0;
         }
+        .ant-tabs-extra-content
+        {
+            height     : 100%;
+            display    : flex;
+            align-items: center;
+            .ant-select
+            {
+                width: 150px;
+                .ant-select-clear
+                {
+                    line-height: 10px;
+                }
+            }
+        }
     }
     >main
     {
