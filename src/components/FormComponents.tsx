@@ -1,7 +1,8 @@
-import { AlignLeftOutlined, CheckCircleOutlined, CheckSquareOutlined, DoubleLeftOutlined, DoubleRightOutlined, EditOutlined, LeftOutlined, OrderedListOutlined, SearchOutlined, SyncOutlined, UnorderedListOutlined, UploadOutlined } from "@ant-design/icons";
+import { AlignLeftOutlined, CheckCircleOutlined, CheckSquareOutlined, DoubleLeftOutlined, DoubleRightOutlined, EditOutlined, OrderedListOutlined, SearchOutlined, SyncOutlined, UnorderedListOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Card, Divider, Input } from "antd";
 import React, { RefObject, useCallback, useContext, useRef, useState } from "react";
 import AppContext, { AppContextType, ExerciseType } from "../app/app-context";
+import { UrlParams } from "../pages/CreateExercise";
 import BookSvg from "./BookSvg";
 
 
@@ -14,7 +15,11 @@ const Exercises: { type: ExerciseType, icon: React.ReactNode; }[] = [
     { type: ExerciseType.UPLOAD, icon: <UploadOutlined /> },
 ];
 
-export default function FormComponents()
+export type FormComponentsProps = {
+    urlParams: UrlParams;
+};
+
+export default function FormComponents(props: FormComponentsProps)
 {
     const cardRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
@@ -130,9 +135,8 @@ export default function FormComponents()
         <>
             <Card className='form-components' ref={cardRef} data-fold={isFold}>
                 <header>
-                    <Button type="text" icon={<LeftOutlined />} />
                     <BookSvg />
-                    <span>课程名称xxx</span>
+                    <span>{props?.urlParams?.school_courseName}</span>
                 </header>
                 <Divider />
                 <main className="drag-components">

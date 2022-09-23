@@ -22,7 +22,7 @@ export default function SchoolCourse()
     const formRef: RefObject<FormInstance> = useRef<FormInstance>(null);
 
     /** 是否加载数据中 */
-    const [pendding, setPendding] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
     /** 课程列表 */
     const [courseList, setCourseList] = useState<SchoolCourseItem[]>([]);
@@ -41,11 +41,11 @@ export default function SchoolCourse()
     {
         setCourseList([]);
 
-        setPendding(true);
+        setLoading(true);
 
         const res = await searchSchoolCourse(params);
 
-        setPendding(false);
+        setLoading(false);
 
         setTotalPage(res.result.Total);
 
@@ -123,7 +123,7 @@ export default function SchoolCourse()
                 </Form.Item>
             </Form>
             <main>
-                <Spin spinning={pendding} tip='加载中...' size="large"></Spin>
+                <Spin spinning={loading} tip='加载中...' size="large"></Spin>
                 {
                     courseList.map(v =>
                     {
@@ -133,10 +133,10 @@ export default function SchoolCourse()
                     })
                 }
                 {
-                    (Boolean(courseList.length === 0) && !pendding) && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='没有相关课程' />
+                    (Boolean(courseList.length === 0) && !loading) && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='没有相关课程' />
                 }
                 {
-                    !pendding && <Space className="school-course-pagination">
+                    !loading && <Space className="school-course-pagination">
                         <Pagination
                             pageSize={12}
                             current={currPage}

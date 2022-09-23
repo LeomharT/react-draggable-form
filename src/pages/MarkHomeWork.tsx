@@ -80,13 +80,19 @@ export default function MarkHomeWork()
 
     const [submittedStd, setSubmittedStd] = useState<any[]>([]);
 
+    const [loading, setLoading] = useState<boolean>(true);
+
     const onSearchHomworkData = useCallback(async (params: SearchCommitedHomeworkParams) =>
     {
+        setLoading(true);
+
         const res = await searchCommitedHomeworkData(params);
 
         if (res.code !== 200) return;
 
         setHomeworkList(res.result.Datas);
+
+        setLoading(false);
     }, []);
 
     useEffect(() =>
@@ -129,7 +135,7 @@ export default function MarkHomeWork()
                 size='large'
                 items={[
                     { label: '已提交学生', key: 'submitted' },
-                    { label: '未提交学生', key: 'unsubmitted' },
+                    // { label: '未提交学生', key: 'unsubmitted' },
                 ]}
                 tabBarExtraContent={{
                     right:
@@ -166,8 +172,10 @@ export default function MarkHomeWork()
             >
             </Tabs>
             <main>
+                {/* TODO 分页 */}
                 <Table
                     columns={columns}
+                    loading={loading}
                     size='large'
                     rowKey={'ID'}
                     dataSource={homeworkList}

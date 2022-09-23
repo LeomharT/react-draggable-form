@@ -10,8 +10,28 @@ import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
 import { fetchExeriseDetail, postExerseDetail } from '../service/exercise';
 
-const submitExerciseDetailData = async (params: ExerciseComponentType[]) =>
+export interface UrlParams
 {
+    login_name: string;
+    school_course_id: string;
+    school_courseName: string;
+    school_course_sectionId: string;
+    school_course_sectionName: string;
+}
+
+const submitExerciseDetailData = async (params: ExerciseComponentType[], urlParams: UrlParams) =>
+{
+
+    if (Object.keys(urlParams).length !== 5)
+    {
+        message.error('请从校本课程处登陆使用');
+        return;
+    } else
+    {
+        console.log(urlParams);
+        return;
+    }
+
     const body: ExerciseDetailData = {
         login_name: '350000_admin',
         school_course_id: 472,
@@ -54,6 +74,9 @@ export default function CreateExercise()
 
 
     const [pendding, setPendding] = useState<boolean>(false);
+
+
+    const [urlParams, setUrlParams] = useState<UrlParams>({} as UrlParams);
 
 
     const newComponent = useCallback((type = dragType.current) =>
@@ -255,9 +278,25 @@ export default function CreateExercise()
 
     }, [setCurrentId]);
 
+
+    useEffect(() =>
+    {
+        const params = new URLSearchParams(window.location.href.split('?')[1]);
+
+        const obj = {};
+
+        for (const [k, v] of params.entries())
+        {
+            obj[k] = v;
+        }
+
+        setUrlParams({ ...obj } as UrlParams);
+
+    }, [setUrlParams]);
+
     return (
         <div className="draggable-form">
-            <FormComponents />
+            <FormComponents urlParams={urlParams} />
             <div className='exercise-area' >
                 <header>
                     <Button icon={<EllipsisOutlined />} shape='circle' size='small' />
@@ -267,7 +306,7 @@ export default function CreateExercise()
                         onClick={async () =>
                         {
                             setPendding(true);
-                            await submitExerciseDetailData(exerciseData);
+                            await submitExerciseDetailData(exerciseData, urlParams);
                             setPendding(false);
                         }
                         }>
@@ -282,7 +321,7 @@ export default function CreateExercise()
                         ].map((v, index) => <Button icon={v} key={index} type='text' />)
                     }
                     <div style={{ marginRight: 'auto' }}>
-                        XXX课程
+                        {urlParams.school_course_sectionName}
                     </div>
                 </header>
                 <main onScroll={switchAnchor}>
