@@ -1,0 +1,46 @@
+@keyframes spinning {
+    0% {
+        stroke-dasharray: 1,200;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90,150;
+        stroke-dashoffset: -40px;
+    }
+    100% {
+        stroke-dasharray: 90,150;
+        stroke-dashoffset: -120px;
+    }
+}
+@keyframes looping
+{
+    from{
+        rotate: 0deg;
+    }to{
+        rotate: 360deg;
+    }
+}
+
+.homework-detail
+{
+    width          : 100vw;
+    height         : 100vh;
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+    >svg
+    {
+        width    : 50px;
+        height   : 50px;
+        animation: looping 1.5s linear infinite;
+        >circle
+        {
+            animation        : spinning 1.5s ease-in infinite;
+            stroke-dasharray : 90, 150;
+            stroke-dashoffset: 0;
+            stroke-width     : 2;
+            stroke           : #409eff;
+            stroke-linecap   : round;
+        }
+    }
+}
