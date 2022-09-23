@@ -170,7 +170,7 @@ export default function MarkHomeWork()
                                     <Option value={2}>已批改</Option>
                                 </Select>
                             </Form.Item>
-                            <Form.Item label='章节' name={'courseSectionID'}>
+                            <Form.Item label='章节' name={'schoolcourseSectionID'}>
                                 <Select allowClear placeholder='请选择章节名称' onChange={() => formRef.current?.submit()}>
                                     {chapters.map(v => <Option key={v?.ID} value={v?.ID}>{v?.SectionName}</Option>)}
                                 </Select>
