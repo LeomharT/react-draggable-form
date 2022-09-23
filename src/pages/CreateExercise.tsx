@@ -26,16 +26,12 @@ const submitExerciseDetailData = async (params: ExerciseComponentType[], urlPara
     {
         message.error('请从校本课程处登陆使用');
         return;
-    } else
-    {
-        console.log(urlParams);
-        return;
     }
 
     const body: ExerciseDetailData = {
-        login_name: '350000_admin',
-        school_course_id: 472,
-        school_course_sectionId: 5116,
+        login_name: urlParams.login_name,
+        school_course_id: Number.parseInt(urlParams.school_course_id),
+        school_course_sectionId: Number.parseInt(urlParams.school_course_sectionId),
         data: params
     };
 
