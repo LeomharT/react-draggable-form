@@ -41,13 +41,21 @@ const columns: ColumnType<HomeworkDataItem>[] = [
         title: '操作',
         dataIndex: 'Action',
         key: 'Action',
-        render: () =>
+        render: (_, record) =>
         {
             return (
                 <Popover
                     content={
                         <Menu mode='vertical' className='popover-menu' items={[
-                            { label: '批改作业', key: "mark", icon: <FormOutlined /> },
+                            {
+                                label: '批改作业',
+                                key: "mark",
+                                icon: <FormOutlined />,
+                                onClick: () =>
+                                {
+                                    console.log(record.ID, record.SchoolCourseSectionID);
+                                }
+                            },
                             { label: '重新批改', key: "remark", icon: <RedoOutlined /> },
                             { label: '详情', key: "detail", icon: <ProfileOutlined /> },
                         ]}>

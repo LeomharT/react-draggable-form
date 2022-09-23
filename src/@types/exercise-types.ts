@@ -66,4 +66,5 @@ export interface HomeworkDataItem
     SubmitDate: string;
     SubmitStatus: number;
     SubmitStudentId: string;
+    SchoolCourseSectionID: number;
 }

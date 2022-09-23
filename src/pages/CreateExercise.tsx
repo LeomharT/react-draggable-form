@@ -262,19 +262,6 @@ export default function CreateExercise()
         });
     }, [setExerciseData]);
 
-
-    useEffect(() =>
-    {
-
-        fetchExeriseDetail().then(data =>
-        {
-            setCurrentId(data[0].exercise_id);
-            setExerciseData(data);
-        });
-
-    }, [setCurrentId]);
-
-
     useEffect(() =>
     {
         const params = new URLSearchParams(window.location.href.split('?')[1]);
@@ -290,6 +277,23 @@ export default function CreateExercise()
 
     }, [setUrlParams]);
 
+    useEffect(() =>
+    {
+        const params = new URLSearchParams(window.location.href.split('?')[1]);
+
+        if (!params.has('school_course_sectionId')) return;
+
+        fetchExeriseDetail(params.get('school_course_sectionId') as string).then(data =>
+        {
+            setCurrentId(data[0].exercise_id);
+            setExerciseData(data);
+        });
+
+    }, [setCurrentId]);
+
+
+
+
     return (
         <div className="draggable-form">
             <FormComponents urlParams={urlParams} />
@@ -304,8 +308,7 @@ export default function CreateExercise()
                             setPendding(true);
                             await submitExerciseDetailData(exerciseData, urlParams);
                             setPendding(false);
-                        }
-                        }>
+                        }}>
                         保存
                     </Button>
                     {
