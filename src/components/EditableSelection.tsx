@@ -42,6 +42,7 @@ export default function EditableSelection(props: EditAbleSelection)
                 defaultValue={props.label}
                 onChange={alterLabel}
                 placeholder='请输入选项内容'
+                onFocus={e => e.target.select()}
             />
             <Button icon={<CloseOutlined />} type='text' onClick={() => props.onDelete()} />
         </Input.Group>
