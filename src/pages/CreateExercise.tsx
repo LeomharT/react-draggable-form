@@ -285,7 +285,7 @@ export default function CreateExercise()
 
         fetchExeriseDetail(params.get('school_course_sectionId') as string).then(data =>
         {
-            setCurrentId(data[0].exercise_id);
+            setCurrentId(data[0]?.exercise_id);
             setExerciseData(data);
         });
 
