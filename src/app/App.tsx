@@ -59,7 +59,9 @@ export default function App()
                     <Route path='/mark_homework' element={<MarkHomeWork />} >
                         <Route path=':courseSectionID' element={<MarkHomeWork />} />
                     </Route>
-                    <Route path='/homework_detail' element={<HomeWorkDetail />} />
+                    <Route path='/homework_detail' element={<HomeWorkDetail />} >
+                        <Route path=':courseSectionID' element={<MarkHomeWork />} />
+                    </Route>
                 </Routes>
             </BrowserRouter>
         </AppContext.Provider>

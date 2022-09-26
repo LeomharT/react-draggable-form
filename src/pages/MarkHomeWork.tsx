@@ -88,7 +88,7 @@ export default function MarkHomeWork()
 
     const [submittedStd, setSubmittedStd] = useState<any[]>([]);
 
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const onSearchHomworkData = useCallback(async (params: SearchCommitedHomeworkParams) =>
     {
