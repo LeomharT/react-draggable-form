@@ -1,4 +1,3 @@
-import { message } from "antd";
 import { ExerciseComponentType, ExerciseDetailData, IResponse, SearchCommitedHomeworkParams } from "../@types/exercise-types";
 import { ExerciseType } from "../app/app-context";
 import { defalutSelection } from "../components/ExerciseComponent";
@@ -10,7 +9,6 @@ export const fetchExeriseDetail = async (schoolCourseSectionId: string): Promise
 
     if (res.code !== 200)
     {
-        message.error('请求出错请刷新重试');
         return [];
     }
     const { Datas } = res.result;

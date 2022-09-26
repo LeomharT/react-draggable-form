@@ -1,5 +1,5 @@
 import { EllipsisOutlined, SearchOutlined, ShareAltOutlined, StarOutlined, UserAddOutlined } from '@ant-design/icons';
-import { Button, message } from 'antd';
+import { Button, message, Result } from 'antd';
 import React, { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ExerciseComponentType, ExerciseDetailData, IResponse } from '../@types/exercise-types';
@@ -291,8 +291,17 @@ export default function CreateExercise()
 
     }, [setCurrentId]);
 
-
-
+    if (Object.keys(urlParams).length !== 5)
+    {
+        return (
+            <Result
+                status="404"
+                title="404"
+                subTitle="没有找到对应课程请关闭重试"
+            // extra={<Button type="primary">Back Home</Button>}
+            />
+        );
+    }
 
     return (
         <div className="draggable-form">
