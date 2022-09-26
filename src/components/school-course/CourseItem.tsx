@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { SchoolCourseItem } from "../../@types/course-types";
 import { LoginUserType } from "../../@types/login.type";
+import { isMicroApp } from "../../app/App";
 import { HOST } from "../../data/requests";
 import { loginUserInfoSelector } from "../../redux/selector";
 
@@ -19,14 +20,18 @@ export default function CourseItem(props: CourseItemType)
 
     const userInfo = useSelector(loginUserInfoSelector);
 
-    const renderNavigateButton = useCallback((loginType: LoginUserType, data: SchoolCourseItem) =>
+    const renderNavigateButton = useCallback((loginType: LoginUserType, data: SchoolCourseItem, login_name: string) =>
     {
         if (loginType === LoginUserType.STUDENT)
         {
             return (
                 <Button type="primary" onClick={() =>
                 {
-                    window.open(`${HOST}/homework_detail?ID=${data.ID}&CourseName=${data.CourseName}`, '_blank');
+                    if (!isMicroApp) return;
+                    window.open(
+                        `${HOST}/homework_detail?ID=${data.ID}&CourseName=${data.CourseName}&login_name=${login_name}`,
+                        '_blank'
+                    );
                 }}>
                     进入作业
                 </Button>
@@ -77,7 +82,7 @@ export default function CourseItem(props: CourseItemType)
                 <Divider />
                 <Space direction="horizontal" style={{ width: '100%', justifyContent: 'space-between' }}>
                     <Button>学情分析</Button>
-                    {renderNavigateButton(userInfo.loginType, props.data)}
+                    {renderNavigateButton(userInfo.loginType, props.data, userInfo.loginName)}
                 </Space>
             </Card>
         </div>

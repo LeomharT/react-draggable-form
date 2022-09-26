@@ -80,3 +80,9 @@ export const getsubmitedStudentData = async () =>
 {
     return await (await fetch(REQUESTURL.getsubmitedStudentData)).json();
 };
+
+
+export const getwhetherCompeleSectionCourse = async (id: string, login_name: string) =>
+{
+    return await (await fetch(REQUESTURL.getwhetherCompeleSectionCourse + `?ID=${id}&login_name=${login_name}`)).json();
+};

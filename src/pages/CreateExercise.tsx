@@ -391,7 +391,7 @@ export default function CreateExercise()
                             )
                         }
                     </div>
-                    <aside className='side-navi'>
+                    <aside className='toc-side-navi'>
                         <p style={{ fontWeight: "bold", marginLeft: "18px" }}>TOC</p>
                         <ul>
                             {

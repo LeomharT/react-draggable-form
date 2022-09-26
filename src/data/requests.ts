@@ -10,5 +10,6 @@ export const REQUESTURL = {
     getClassData: `${EVAHOST}/CourseExercise/getClassData`,
     searchCommitedHomeworkData: `${EVAHOST}/CourseExercise/searchCommitedHomeworkData`,
     getSectionCourse: `${EVAHOST}/CourseExercise/getSectionCourse`,
-    getsubmitedStudentData: `${EVAHOST}/CourseExercise/getsubmitedStudentData`
+    getsubmitedStudentData: `${EVAHOST}/CourseExercise/getsubmitedStudentData`,
+    getwhetherCompeleSectionCourse: `${EVAHOST}/CourseExercise/getwhetherCompeleSectionCourse`,
 };
