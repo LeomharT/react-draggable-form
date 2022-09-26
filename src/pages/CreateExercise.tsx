@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ExerciseComponentType, ExerciseDetailData, IResponse } from '../@types/exercise-types';
 import AppContext, { ExerciseType } from '../app/app-context';
 import EditExercise from '../components/EditExercise';
-import ExerciseComponent, { defalutSelection } from '../components/ExerciseComponent';
+import ExerciseComponent from '../components/ExerciseComponent';
 import FormComponents from '../components/FormComponents';
 import useDebounce from '../hooks/useDebounce';
 import { fetchExeriseDetail, postExerseDetail } from '../service/exercise';
@@ -75,14 +75,28 @@ export default function CreateExercise()
     const [urlParams, setUrlParams] = useState<UrlParams>({} as UrlParams);
 
 
-    const newComponent = useCallback((type = dragType.current) =>
+    const newComponent = useCallback((type: ExerciseType) =>
     {
         const id = uuidv4().substring(0, 8);
         let selection;
         let answer = '';
         if (type === ExerciseType.CHOICE || type === ExerciseType.MULTICHOICE)
         {
-            selection = defalutSelection;
+            selection = [
+                {
+                    value: '0',
+                    label: '选项1'
+                }, {
+                    value: '1',
+                    label: '选项2'
+                }, {
+                    value: '2',
+                    label: '选项3'
+                }, {
+                    value: '3',
+                    label: '选项4'
+                },
+            ];
             answer = '0';
         }
         if (type === ExerciseType.JUDGE)
@@ -101,7 +115,7 @@ export default function CreateExercise()
         };
 
         return newComponent;
-    }, [dragType]);
+    }, []);
 
 
     const identifier: RefObject<HTMLDivElement> = useRef<HTMLDivElement>((() =>
