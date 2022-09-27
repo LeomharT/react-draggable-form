@@ -86,3 +86,18 @@ export const getwhetherCompeleSectionCourse = async (id: string, login_name: str
 {
     return await (await fetch(REQUESTURL.getwhetherCompeleSectionCourse + `?ID=${id}&login_name=${login_name}`)).json();
 };
+
+
+export const uploadAttached = async (file: File) =>
+{
+    const formData = new FormData();
+
+    formData.set('file', file);
+
+    const res = await (await fetch(REQUESTURL.file_upload, {
+        method: 'POST',
+        body: formData
+    })).json();
+
+    return res;
+};

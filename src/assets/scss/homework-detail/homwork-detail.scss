@@ -88,16 +88,60 @@
         }
         >main
         {
-            width       : 100%;
-            height      : calc(100vh - 60px);
-            overflow    : auto;
-            box-sizing  : border-box;
-            padding-left: 20px;
-            display     : flex;
+            width          : 100%;
+            height         : calc(100vh - 60px);
+            overflow       : auto;
+            box-sizing     : border-box;
+            padding-left   : 20px;
+            padding-bottom : 20px;
+            display        : flex;
+            scroll-behavior: smooth;
             >.ant-form
             {
                 width        : 100%;
+                height       : max-content;
                 padding-right: 20px;
+            }
+            .homework-item
+            {
+                margin-bottom: 50px;
+                >header
+                {
+                    .exercise-tags
+                    {
+                        display      : flex;
+                        flex-flow    : row nowrap;
+                        gap          : 5px;
+                        margin-bottom: 20px;
+                        >span
+                        {
+                            height          : 100%;
+                            background-color: rgba(0,0,0,.028);
+                            font-size       : 14px;
+                            padding         : 0 7px;
+                        }
+                    }
+                    .exercise-titles
+                    {
+                        .ant-form-item-row
+                        {
+                            align-items: center;
+                        }
+                        .ant-form-item-label
+                        {
+                            font-weight: bold;
+                            >label
+                            {
+                                font-size: 20px;
+                            }
+                        }
+                        h5
+                        {
+                            font-weight: 300;
+                            margin     : 0;
+                        }
+                    }
+                }
             }
         }
     }

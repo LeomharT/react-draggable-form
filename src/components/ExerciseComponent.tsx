@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, message, Radio, Space, Upload } from "antd";
+import { Button, Checkbox, Form, Input, message, Radio, Space } from "antd";
 import React, { Dispatch, RefObject, useCallback, useEffect, useRef } from "react";
 import { ExerciseComponentType } from "../@types/exercise-types";
 import { ExerciseType } from "../app/app-context";
@@ -185,9 +185,7 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 );
             case ExerciseType.UPLOAD:
                 return (
-                    <Upload >
-                        <Button icon={<UploadOutlined />}>点击上传</Button>
-                    </Upload>
+                    <Button icon={<UploadOutlined />} onClick={e => e.preventDefault()}>点击上传</Button>
                 );
             case ExerciseType.BLANK:
             default:
