@@ -153,7 +153,7 @@ export default function HomeWorkDetail()
         if (res.msg === 'success') message.success('提交成功');
 
         await getChapterList(urlParams, currChapter);
-    }, []);
+    }, [getChapterList]);
 
 
     useEffect(() =>
