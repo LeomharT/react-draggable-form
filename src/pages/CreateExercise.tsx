@@ -7,6 +7,7 @@ import AppContext, { ExerciseType } from '../app/app-context';
 import EditExercise from '../components/EditExercise';
 import ExerciseComponent from '../components/ExerciseComponent';
 import FormComponents from '../components/FormComponents';
+import Toc, { TocForwardRef } from '../components/Toc';
 import useDebounce from '../hooks/useDebounce';
 import { fetchExeriseDetail, postExerseDetail } from '../service/exercise';
 
@@ -51,8 +52,8 @@ export default function CreateExercise()
     const [exerciseData, setExerciseData] = useState<ExerciseComponentType[]>([]);
 
 
-    /** 当前锚点 */
-    const [currentId, setCurrentId] = useState<string>('');
+    /** 锚点组件 */
+    const TocRef = useRef<TocForwardRef>({} as TocForwardRef);
 
 
     const { dragging, dragType } = useContext(AppContext);
@@ -148,8 +149,7 @@ export default function CreateExercise()
         }
 
         //滚到底不触发
-        if (!(scroll_top + main_el.clientHeight === main_el.scrollHeight)) setCurrentId(id);
-
+        if (!(scroll_top + main_el.clientHeight === main_el.scrollHeight)) TocRef.current?.setCurrentId(id);
     }, 200);
 
 
@@ -299,11 +299,10 @@ export default function CreateExercise()
 
         fetchExeriseDetail(params.get('school_course_sectionId') as string).then(data =>
         {
-            setCurrentId(data[0]?.exercise_id);
             setExerciseData(data);
         });
 
-    }, [setCurrentId]);
+    }, [setExerciseData]);
 
     if (Object.keys(urlParams).length !== 5)
     {
@@ -391,27 +390,7 @@ export default function CreateExercise()
                             )
                         }
                     </div>
-                    <aside className='toc-side-navi'>
-                        <p style={{ fontWeight: "bold", marginLeft: "18px" }}>TOC</p>
-                        <ul>
-                            {
-                                exerciseData.map(v =>
-                                    <li key={v.exercise_id}>
-                                        <Button
-                                            type={v.exercise_id === currentId ? 'link' : 'text'}
-                                            href={`#${v.exercise_id}`}
-                                            data-current={v.exercise_id === currentId}
-                                            onClick={() =>
-                                            {
-                                                setCurrentId(v.exercise_id);
-                                            }}>
-                                            {v.exercise_title}
-                                        </Button>
-                                    </li>
-                                )
-                            }
-                        </ul>
-                    </aside>
+                    <Toc exerciseData={exerciseData} ref={TocRef} />
                 </main>
             </div>
             <EditExercise

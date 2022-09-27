@@ -1,18 +1,19 @@
-import { BarsOutlined, EllipsisOutlined, SearchOutlined, ShareAltOutlined, StarOutlined, UserAddOutlined } from "@ant-design/icons";
-import { Badge, Button, Card, Divider, Result, Skeleton } from "antd";
+import { EllipsisOutlined } from "@ant-design/icons";
+import { Button, Empty, Form, Result, Spin } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { ExerciseComponentType } from "../@types/exercise-types";
-import BookSvg from "../components/BookSvg";
+import ChapterSelector from "../components/homework-detail/ChapterSelector";
+import Toc from "../components/Toc";
 import useUrlParams from "../hooks/useUrlParams";
 import { fetchExeriseDetail, getwhetherCompeleSectionCourse } from "../service/exercise";
 
-type HomeWorkDetailURLParams = {
+export type HomeWorkDetailURLParams = {
     ID: string;
     CourseName: string;
     login_name: string;
 };
 
-type ChapterItem = {
+export type ChapterItem = {
     schoolcourseSectionID: number;
     SectionName: string;
     Status: string;
@@ -22,40 +23,53 @@ export default function HomeWorkDetail()
 {
     const urlParams = useUrlParams<HomeWorkDetailURLParams>();
 
+    const [loading, setLoading] = useState<boolean>(true);
+
     const [chapterList, setChapterList] = useState<ChapterItem[]>([]);
 
-    const [currChapter, setCurrChapter] = useState<ChapterItem>({} as ChapterItem);
+    const [currChapter, setCurrChapter] = useState<ChapterItem | null>(null);
 
     const [exerciseData, setExerciseData] = useState<ExerciseComponentType[]>([]);
 
-    /** 当前锚点 */
-    const [currentId, setCurrentId] = useState<string>('');
-
     const getHomeWorkDetail = useCallback(async (school_course_sectionId: string) =>
     {
+        setLoading(true);
+
         fetchExeriseDetail(school_course_sectionId).then(data =>
         {
             setExerciseData(data);
+
+            setLoading(false);
         });
     }, []);
 
+
     useEffect(() =>
     {
+        setLoading(true);
+
         if (!Object.keys(urlParams).length) return;
 
         getwhetherCompeleSectionCourse(urlParams?.ID, urlParams.login_name).then((data: { result: ChapterItem[]; }) =>
         {
             setChapterList(data.result);
+
             setCurrChapter(data.result[0]);
+
+            setLoading(false);
         });
 
     }, [setChapterList, urlParams.ID, urlParams.login_name, urlParams]);
 
+
     useEffect(() =>
     {
-        if (!currChapter.schoolcourseSectionID) return;
+        if (!currChapter) return;
+
         getHomeWorkDetail(currChapter.schoolcourseSectionID.toString());
-    }, [currChapter.schoolcourseSectionID, getHomeWorkDetail]);
+
+    }, [currChapter, getHomeWorkDetail]);
+
 
     if (!urlParams.CourseName || !urlParams.ID || !urlParams.login_name)
     {
@@ -64,95 +78,62 @@ export default function HomeWorkDetail()
                 status="404"
                 title="404"
                 subTitle="没有找到对应课程请关闭重试"
-            // extra={<Button type="primary">Back Home</Button>}
+            />
+        );
+    }
+
+
+    if (!currChapter && !loading)
+    {
+        return (
+            <Result
+                status="404"
+                title="404"
+                subTitle="没有找到对应课程请关闭重试"
             />
         );
     }
 
     return (
         <div className="homework-detail">
-            <Card className="chapter-navi">
-                <header>
-                    <BookSvg />
-                    <span>{urlParams.CourseName}</span>
-                </header>
-                <Divider />
-                <p><Button icon={<BarsOutlined />} type='text' />章节</p>
-                {
-                    chapterList.map(v =>
-                    {
-                        return (
-                            <Badge.Ribbon
-                                text={v.Status}
-                                key={v.schoolcourseSectionID}
-                                color={v.Status === '未完成' ? 'red' : 'green'}
-                            >
-                                <Card
-                                    className="chapter-item"
-                                    data-iscurr={currChapter?.SectionName === v.SectionName}
-                                    hoverable
-                                    onClick={() =>
-                                    {
-                                        setCurrChapter(v);
-                                        console.log(v.schoolcourseSectionID);
-                                    }}
-                                >
-                                    {v.SectionName}
-                                </Card>
-                            </Badge.Ribbon>
-                        );
-                    })
-                }
-            </Card>
+            <ChapterSelector
+                urlParams={urlParams}
+                chapterList={chapterList}
+                currChapter={currChapter}
+                setCurrChapter={setCurrChapter}
+            />
             <div className="exercise-area">
                 <header>
                     <Button icon={<EllipsisOutlined />} shape='circle' size='small' />
                     <Button
                         type='primary'
+                        disabled={!exerciseData.length}
                         onClick={async () =>
                         {
 
                         }}>
                         保存
                     </Button>
-                    {
-                        [
-                            <ShareAltOutlined />,
-                            <UserAddOutlined />,
-                            <StarOutlined />,
-                            <SearchOutlined />,
-                        ].map((v, index) => <Button icon={v} key={index} type='text' />)
-                    }
                     <div style={{ marginRight: 'auto' }}>
-                        {currChapter.SectionName}
+                        {currChapter?.SectionName}
                     </div>
                 </header>
                 <main>
-                    <div>
-
-                        <Skeleton active />
-                    </div>
-                    <aside className='toc-side-navi'>
-                        <p style={{ fontWeight: "bold", marginLeft: "18px" }}>TOC</p>
-                        <ul>
+                    <Form>
+                        {loading && <Spin spinning={loading} delay={500} />}
+                        {!exerciseData.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='该章节暂时没有作业' />}
+                        {
+                            exerciseData.map(v =>
                             {
-                                exerciseData.map(v =>
-                                    <li key={v.exercise_id}>
-                                        <Button
-                                            type={v.exercise_id === currentId ? 'link' : 'text'}
-                                            href={`#${v.exercise_id}`}
-                                            data-current={v.exercise_id === currentId}
-                                            onClick={() =>
-                                            {
-                                                setCurrentId(v.exercise_id);
-                                            }}>
-                                            {v.exercise_title}
-                                        </Button>
-                                    </li>
-                                )
-                            }
-                        </ul>
-                    </aside>
+                                return (
+                                    <div key={v.exercise_id}>
+
+                                    </div>
+                                );
+                            })
+                        }
+                    </Form>
+                    <Toc exerciseData={exerciseData} />
                 </main>
             </div>
         </div>
