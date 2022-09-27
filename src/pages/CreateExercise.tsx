@@ -30,7 +30,7 @@ const submitExerciseDetailData = async (params: ExerciseComponentType[], urlPara
     }
 
     const body: ExerciseDetailData = {
-        login_name: urlParams.login_name,
+        login_name: urlParams.login_name.split('#')[0],
         school_course_id: Number.parseInt(urlParams.school_course_id),
         school_course_sectionId: Number.parseInt(urlParams.school_course_sectionId),
         data: params

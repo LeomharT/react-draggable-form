@@ -1,6 +1,7 @@
 import { EllipsisOutlined } from "@ant-design/icons";
-import { Button, Empty, Form, Result, Spin } from "antd";
-import { useCallback, useEffect, useState } from "react";
+import { Button, Empty, Form, FormInstance, Input, Result, Spin } from "antd";
+import FormItem from "antd/es/form/FormItem";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { ExerciseComponentType } from "../@types/exercise-types";
 import ChapterSelector from "../components/homework-detail/ChapterSelector";
 import Toc from "../components/Toc";
@@ -21,6 +22,8 @@ export type ChapterItem = {
 
 export default function HomeWorkDetail()
 {
+    const formRef: RefObject<FormInstance> = useRef<FormInstance>(null);
+
     const urlParams = useUrlParams<HomeWorkDetailURLParams>();
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -110,7 +113,7 @@ export default function HomeWorkDetail()
                         disabled={!exerciseData.length}
                         onClick={async () =>
                         {
-
+                            formRef.current?.submit();
                         }}>
                         保存
                     </Button>
@@ -119,16 +122,19 @@ export default function HomeWorkDetail()
                     </div>
                 </header>
                 <main>
-                    <Form>
+                    <Form ref={formRef} onFinish={e =>
+                    {
+                        console.log(e);
+                    }}>
                         {loading && <Spin spinning={loading} delay={500} />}
                         {!exerciseData.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='该章节暂时没有作业' />}
                         {
                             exerciseData.map(v =>
                             {
                                 return (
-                                    <div key={v.exercise_id}>
-
-                                    </div>
+                                    <FormItem key={v.exercise_id} name={v.exercise_id} rules={[{ required: v.required, message: '该题目不能为空' }]}>
+                                        <Input />
+                                    </FormItem>
                                 );
                             })
                         }
