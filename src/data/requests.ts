@@ -12,5 +12,6 @@ export const REQUESTURL = {
     getSectionCourse: `${EVAHOST}/CourseExercise/getSectionCourse`,
     getsubmitedStudentData: `${EVAHOST}/CourseExercise/getsubmitedStudentData`,
     getwhetherCompeleSectionCourse: `${EVAHOST}/CourseExercise/getwhetherCompeleSectionCourse`,
-    file_upload: `${EVAHOST}/CourseExercise/file_upload`
+    file_upload: `${EVAHOST}/CourseExercise/file_upload`,
+    submitHomework: `${EVAHOST}/CourseExercise/submitHomework`
 };

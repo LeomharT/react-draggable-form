@@ -7,7 +7,7 @@ import { ExerciseType } from "../app/app-context";
 import ChapterSelector from "../components/homework-detail/ChapterSelector";
 import Toc from "../components/Toc";
 import useUrlParams from "../hooks/useUrlParams";
-import { fetchExeriseDetail, getwhetherCompeleSectionCourse, uploadAttached } from "../service/exercise";
+import { fetchExeriseDetail, getwhetherCompeleSectionCourse, submitHomework, uploadAttached } from "../service/exercise";
 
 export type HomeWorkDetailURLParams = {
     ID: string;
@@ -107,6 +107,26 @@ export default function HomeWorkDetail()
 
     const [exerciseData, setExerciseData] = useState<ExerciseComponentType[]>([]);
 
+    const getChapterList = useCallback(async (prarms: HomeWorkDetailURLParams, chapter?: ChapterItem) =>
+    {
+        const res = await getwhetherCompeleSectionCourse(prarms?.ID, prarms.login_name);
+
+        setChapterList(res.result);
+
+        if (chapter)
+        {
+            setCurrChapter(chapter);
+
+        } else
+        {
+            if (res.result) setCurrChapter(res.result[0]);
+        }
+
+        setLoading(false);
+
+    }, [setChapterList, setCurrChapter, setLoading]);
+
+
     const getHomeWorkDetail = useCallback(async (school_course_sectionId: string) =>
     {
         setLoading(true);
@@ -120,7 +140,7 @@ export default function HomeWorkDetail()
     }, []);
 
 
-    const submitHomeworkData = useCallback((e: any, urlParams: HomeWorkDetailURLParams, currChapter: ChapterItem) =>
+    const submitHomeworkData = useCallback(async (e: any, urlParams: HomeWorkDetailURLParams, currChapter: ChapterItem) =>
     {
         const body = {
             login_name: urlParams.login_name.split('#')[0],
@@ -128,7 +148,11 @@ export default function HomeWorkDetail()
             data: e
         };
 
-        console.log(body);
+        const res = await submitHomework(body);
+
+        if (res.msg === 'success') message.success('提交成功');
+
+        await getChapterList(urlParams, currChapter);
     }, []);
 
 
@@ -138,16 +162,9 @@ export default function HomeWorkDetail()
 
         if (!Object.keys(urlParams).length) return;
 
-        getwhetherCompeleSectionCourse(urlParams?.ID, urlParams.login_name).then((data: { result: ChapterItem[]; }) =>
-        {
-            setChapterList(data.result);
+        getChapterList(urlParams);
 
-            if (data.result) setCurrChapter(data.result[0]);
-
-            setLoading(false);
-        });
-
-    }, [setChapterList, urlParams.ID, urlParams.login_name, urlParams]);
+    }, [getChapterList, urlParams]);
 
 
     useEffect(() =>

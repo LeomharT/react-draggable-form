@@ -101,3 +101,16 @@ export const uploadAttached = async (file: File) =>
 
     return res;
 };
+
+export const submitHomework = async (data: { login_name: string; school_course_sectionId: number; data: any; }): Promise<IResponse> =>
+{
+    const res = await (await fetch(REQUESTURL.submitHomework, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })).json();
+
+    return res;
+};
