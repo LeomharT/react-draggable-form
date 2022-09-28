@@ -38,6 +38,9 @@ export default function ChapterSelector(props: ChapterSelectorProps)
                                 onClick={() =>
                                 {
                                     props.setCurrChapter(v);
+
+                                    if (props.currChapter?.schoolcourseSectionID === v.schoolcourseSectionID) return;
+
                                     props.getHomeworkDetail(v?.homeworkId);
                                 }}
                             >
