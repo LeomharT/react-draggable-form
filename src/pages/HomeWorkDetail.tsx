@@ -1,5 +1,5 @@
 import { EllipsisOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Empty, Form, FormInstance, Input, message, Radio, Result, Space, Spin, Typography, Upload } from "antd";
+import { Button, Checkbox, Empty, Form, FormInstance, Input, message, Radio, Result, Space, Spin, Typography, Upload, UploadFile } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { ExerciseComponentType, HomeworkReply } from "../@types/exercise-types";
@@ -22,7 +22,7 @@ export type ChapterItem = {
     homeworkId: string;
 };
 
-const renderHomeworkItem = (data: ExerciseComponentType, id: string, formRef: RefObject<FormInstance>) =>
+const renderHomeworkItem = (data: ExerciseComponentType, formRef: RefObject<FormInstance>) =>
 {
     switch (data.exercise_type)
     {
@@ -71,14 +71,31 @@ const renderHomeworkItem = (data: ExerciseComponentType, id: string, formRef: Re
             );
         }
         case ExerciseType.UPLOAD: {
+            const fileList: UploadFile[] = [];
+
             return (
                 <Upload
-                    showUploadList={false}
+                    fileList={fileList}
+                    onRemove={(): void =>
+                    {
+                        fileList.length = 0;
+
+                        formRef.current?.setFieldValue(data.exercise_id, '');
+                    }}
                     customRequest={async (e) =>
                     {
                         const res = await uploadAttached(e.file as File);
 
-                        formRef.current?.setFieldValue(id, res);
+                        formRef.current?.setFieldValue(data.exercise_id, res);
+
+                        fileList.length = 0;
+
+                        fileList.push({
+                            uid: data.exercise_id,
+                            status: 'done',
+                            name: (e.file as File).name,
+                            url: res,
+                        });
                     }}
                 >
                     <Button icon={<UploadOutlined />}>点击上传</Button>
@@ -284,7 +301,7 @@ export default function HomeWorkDetail()
                                             }
                                             rules={[{ required: Boolean(v.required), message: '该题目不能为空' }]}
                                         >
-                                            {renderHomeworkItem(v, v.exercise_id, formRef)}
+                                            {renderHomeworkItem(v, formRef)}
                                         </FormItem>
                                     </section>
                                 );
