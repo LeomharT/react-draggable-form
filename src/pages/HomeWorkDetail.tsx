@@ -144,7 +144,10 @@ export default function HomeWorkDetail()
     {
         for (const k in e)
         {
-            e[k] = JSON.stringify(e[k]);
+            if (typeof e[k] === 'object')
+            {
+                e[k] = JSON.stringify(e[k]);
+            }
         }
 
         const body = {
