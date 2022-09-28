@@ -132,16 +132,18 @@ export default function HomeWorkDetail()
     }, [setChapterList, setCurrChapter, setLoading]);
 
 
-    const getExerciseDetail = useCallback(async (schoolCourseSectionId: string) =>
+    const getExerciseDetail = useCallback(async (schoolCourseSectionId: string, homeworkId: string) =>
     {
         setLoading(true);
 
-        fetchExerciseDetail(schoolCourseSectionId).then(data =>
-        {
-            setExerciseData(data);
+        await getHomeworkDetail(homeworkId);
 
-            setLoading(false);
-        });
+        const exercise_data = await fetchExerciseDetail(schoolCourseSectionId);
+
+        setExerciseData(exercise_data);
+
+        setLoading(false);
+
     }, [setExerciseData, setLoading]);
 
 
@@ -152,6 +154,7 @@ export default function HomeWorkDetail()
         setHomeworkDetail(res.result);
 
     }, [setHomeworkDetail]);
+
 
     const submitHomeworkData = useCallback(async (e: any, urlParams: HomeWorkDetailURLParams, currChapter: ChapterItem) =>
     {
@@ -192,18 +195,9 @@ export default function HomeWorkDetail()
     {
         if (!currChapter) return;
 
-        getExerciseDetail(currChapter.schoolcourseSectionID.toString());
+        getExerciseDetail(currChapter.schoolcourseSectionID.toString(), currChapter.homeworkId);
 
-    }, [currChapter, getExerciseDetail]);
-
-
-    useEffect(() =>
-    {
-        if (!chapterList.length) return;
-
-        getHomeworkDetail(chapterList[0].homeworkId);
-
-    }, [chapterList, getHomeworkDetail]);
+    }, [currChapter, getExerciseDetail, getHomeworkDetail]);
 
 
     if (!urlParams.CourseName || !urlParams.ID || !urlParams.login_name)
@@ -286,7 +280,7 @@ export default function HomeWorkDetail()
                                         <FormItem
                                             name={v.exercise_id}
                                             initialValue={
-                                                homeworkDetail && homeworkDetail[index]?.ExercisesReply
+                                                homeworkDetail ? homeworkDetail[index]?.ExercisesReply : ''
                                             }
                                             rules={[{ required: Boolean(v.required), message: '该题目不能为空' }]}
                                         >
