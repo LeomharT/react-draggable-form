@@ -142,6 +142,11 @@ export default function HomeWorkDetail()
 
     const submitHomeworkData = useCallback(async (e: any, urlParams: HomeWorkDetailURLParams, currChapter: ChapterItem) =>
     {
+        for (const k in e)
+        {
+            e[k] = JSON.stringify(e[k]);
+        }
+
         const body = {
             login_name: urlParams.login_name.split('#')[0],
             school_course_sectionId: currChapter.schoolcourseSectionID,
