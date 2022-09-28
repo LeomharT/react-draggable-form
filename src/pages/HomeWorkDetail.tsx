@@ -153,7 +153,10 @@ export default function HomeWorkDetail()
     {
         setLoading(true);
 
-        await getHomeworkDetail(homeworkId);
+        if (homeworkId)
+        {
+            await getHomeworkDetail(homeworkId);
+        }
 
         const exercise_data = await fetchExerciseDetail(schoolCourseSectionId);
 
@@ -247,7 +250,6 @@ export default function HomeWorkDetail()
                 chapterList={chapterList}
                 currChapter={currChapter}
                 setCurrChapter={setCurrChapter}
-                getHomeworkDetail={getHomeworkDetail}
             />
             <div className="exercise-area">
                 <header>
