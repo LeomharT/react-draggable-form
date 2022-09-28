@@ -1,10 +1,10 @@
 import { IResponse, SearchSchoolCourseParams } from "../@types/exercise-types";
-import { REQUESTURL } from "../data/requests";
+import { REQUEST_URL } from "../data/requests";
 
 /** 获取课程列表 */
 export const searchSchoolCourse = async (params: SearchSchoolCourseParams): Promise<IResponse<any>> =>
 {
-    let url = REQUESTURL.searchSchoolCourse + '?';
+    let url = REQUEST_URL.searchSchoolCourse + '?';
 
     const params_arr: string[] = [];
 
@@ -27,7 +27,7 @@ export const searchSchoolCourse = async (params: SearchSchoolCourseParams): Prom
 export const getClassData = async (loginName: string) =>
 {
     const res = await (
-        await (fetch(REQUESTURL.getClassData + `?login_name=${loginName}`))
+        await (fetch(REQUEST_URL.getClassData + `?login_name=${loginName}`))
     ).json();
 
     return res;

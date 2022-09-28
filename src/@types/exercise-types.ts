@@ -68,3 +68,16 @@ export interface HomeworkDataItem
     SubmitStudentId: string;
     SchoolCourseSectionID: number;
 }
+
+
+export interface HomeworkReply
+{
+    ID: number;
+    Comment: string | null;
+    ExercisesAnnexFile: string | null;
+    ExercisesDetailId: number;
+    ExercisesReply: string;
+    HomeworkId: string;
+    LoginName: string;
+    Score: string;
+}

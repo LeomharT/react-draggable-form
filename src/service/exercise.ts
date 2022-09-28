@@ -1,11 +1,12 @@
 import { ExerciseComponentType, ExerciseDetailData, IResponse, SearchCommitedHomeworkParams } from "../@types/exercise-types";
 import { ExerciseType } from "../app/app-context";
 import { defalutSelection } from "../components/ExerciseComponent";
-import { REQUESTURL } from "../data/requests";
+import { REQUEST_URL } from "../data/requests";
 
-export const fetchExeriseDetail = async (schoolCourseSectionId: string): Promise<ExerciseComponentType[]> =>
+/** 获取作业内容 */
+export const fetchExerciseDetail = async (schoolCourseSectionId: string): Promise<ExerciseComponentType[]> =>
 {
-    const res = await (await fetch(REQUESTURL.getCourseSectionExerciseDetail + `?schoolCourseSectionId=${schoolCourseSectionId}`)).json() as IResponse<ExerciseComponentType[]>;
+    const res = await (await fetch(REQUEST_URL.getCourseSectionExerciseDetail + `?schoolCourseSectionId=${schoolCourseSectionId}`)).json() as IResponse<ExerciseComponentType[]>;
 
     if (res.code !== 200)
     {
@@ -36,9 +37,10 @@ export const fetchExeriseDetail = async (schoolCourseSectionId: string): Promise
     return Datas;
 };
 
+/** 创建作业 */
 export const postExerseDetail = async (params: ExerciseDetailData) =>
 {
-    const res: IResponse<any> = await (await fetch(REQUESTURL.addCourseExercise, {
+    const res: IResponse<any> = await (await fetch(REQUEST_URL.addCourseExercise, {
         method: 'POST',
         headers: {
             'content-type': 'application/json;'
@@ -50,9 +52,10 @@ export const postExerseDetail = async (params: ExerciseDetailData) =>
     return res;
 };
 
+/** 搜索提交作业列表 */
 export const searchCommitedHomeworkData = async (params: SearchCommitedHomeworkParams): Promise<IResponse> =>
 {
-    let url = REQUESTURL.searchCommitedHomeworkData + '?';
+    let url = REQUEST_URL.searchCommitedHomeworkData + '?';
 
     const params_arr: string[] = [];
 
@@ -71,30 +74,32 @@ export const searchCommitedHomeworkData = async (params: SearchCommitedHomeworkP
     return res;
 };
 
+/** 获取课程章节(下拉框) */
 export const getSectionCourse = async (ID: string) =>
 {
-    return await (await fetch(REQUESTURL.getSectionCourse + `?ID=${ID}`)).json();
+    return await (await fetch(REQUEST_URL.getSectionCourse + `?ID=${ID}`)).json();
 };
 
+/** 获取提交作业学生 */
 export const getsubmitedStudentData = async () =>
 {
-    return await (await fetch(REQUESTURL.getsubmitedStudentData)).json();
+    return await (await fetch(REQUEST_URL.getsubmitedStudentData)).json();
 };
 
-
+/** 获取作业章节 */
 export const getwhetherCompeleSectionCourse = async (id: string, login_name: string) =>
 {
-    return await (await fetch(REQUESTURL.getwhetherCompeleSectionCourse + `?ID=${id}&login_name=${login_name}`)).json();
+    return await (await fetch(REQUEST_URL.getwhetherCompeleSectionCourse + `?ID=${id}&login_name=${login_name}`)).json();
 };
 
-
+/** 上传作业附件 */
 export const uploadAttached = async (file: File) =>
 {
     const formData = new FormData();
 
     formData.set('file', file);
 
-    const res = await (await fetch(REQUESTURL.file_upload, {
+    const res = await (await fetch(REQUEST_URL.file_upload, {
         method: 'POST',
         body: formData
     })).json();
@@ -102,9 +107,10 @@ export const uploadAttached = async (file: File) =>
     return res;
 };
 
+/** 提交作业 */
 export const submitHomework = async (data: { login_name: string; school_course_sectionId: number; data: any; }): Promise<IResponse> =>
 {
-    const res = await (await fetch(REQUESTURL.submitHomework, {
+    const res = await (await fetch(REQUEST_URL.submitHomework, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
@@ -113,4 +119,11 @@ export const submitHomework = async (data: { login_name: string; school_course_s
     })).json();
 
     return res;
+};
+
+
+/** 获取学生提交作业详情 */
+export const getCourseSectionHomeworkDetail = async (homeworkId: string) =>
+{
+    return await (await fetch(REQUEST_URL.getCourseSectionHomeworkDetail + `?homeworkId=${homeworkId}`)).json();
 };

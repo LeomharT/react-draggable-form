@@ -2,12 +2,12 @@ import { EllipsisOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Empty, Form, FormInstance, Input, message, Radio, Result, Space, Spin, Typography, Upload } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
-import { ExerciseComponentType } from "../@types/exercise-types";
+import { ExerciseComponentType, HomeworkReply } from "../@types/exercise-types";
 import { ExerciseType } from "../app/app-context";
 import ChapterSelector from "../components/homework-detail/ChapterSelector";
 import Toc from "../components/Toc";
 import useUrlParams from "../hooks/useUrlParams";
-import { fetchExeriseDetail, getwhetherCompeleSectionCourse, submitHomework, uploadAttached } from "../service/exercise";
+import { fetchExerciseDetail, getCourseSectionHomeworkDetail, getwhetherCompeleSectionCourse, submitHomework, uploadAttached } from "../service/exercise";
 
 export type HomeWorkDetailURLParams = {
     ID: string;
@@ -19,6 +19,7 @@ export type ChapterItem = {
     schoolcourseSectionID: number;
     SectionName: string;
     Status: string;
+    homeworkId: string;
 };
 
 const renderHomeworkItem = (data: ExerciseComponentType, id: string, formRef: RefObject<FormInstance>) =>
@@ -105,7 +106,11 @@ export default function HomeWorkDetail()
 
     const [currChapter, setCurrChapter] = useState<ChapterItem | null>(null);
 
+    /** 作业模板 */
     const [exerciseData, setExerciseData] = useState<ExerciseComponentType[]>([]);
+
+    /** 作业内容 */
+    const [homeworkDetail, setHomeworkDetail] = useState<HomeworkReply[]>([]);
 
     const getChapterList = useCallback(async (prarms: HomeWorkDetailURLParams, chapter?: ChapterItem) =>
     {
@@ -127,18 +132,26 @@ export default function HomeWorkDetail()
     }, [setChapterList, setCurrChapter, setLoading]);
 
 
-    const getHomeWorkDetail = useCallback(async (school_course_sectionId: string) =>
+    const getExerciseDetail = useCallback(async (schoolCourseSectionId: string) =>
     {
         setLoading(true);
 
-        fetchExeriseDetail(school_course_sectionId).then(data =>
+        fetchExerciseDetail(schoolCourseSectionId).then(data =>
         {
             setExerciseData(data);
 
             setLoading(false);
         });
-    }, []);
+    }, [setExerciseData, setLoading]);
 
+
+    const getHomeworkDetail = useCallback(async (homeworkId: string) =>
+    {
+        const res = await getCourseSectionHomeworkDetail(homeworkId);
+
+        setHomeworkDetail(res.result);
+
+    }, [setHomeworkDetail]);
 
     const submitHomeworkData = useCallback(async (e: any, urlParams: HomeWorkDetailURLParams, currChapter: ChapterItem) =>
     {
@@ -179,9 +192,18 @@ export default function HomeWorkDetail()
     {
         if (!currChapter) return;
 
-        getHomeWorkDetail(currChapter.schoolcourseSectionID.toString());
+        getExerciseDetail(currChapter.schoolcourseSectionID.toString());
 
-    }, [currChapter, getHomeWorkDetail]);
+    }, [currChapter, getExerciseDetail]);
+
+
+    useEffect(() =>
+    {
+        if (!chapterList.length) return;
+
+        getHomeworkDetail(chapterList[0].homeworkId);
+
+    }, [chapterList, getHomeworkDetail]);
 
 
     if (!urlParams.CourseName || !urlParams.ID || !urlParams.login_name)
@@ -214,6 +236,7 @@ export default function HomeWorkDetail()
                 chapterList={chapterList}
                 currChapter={currChapter}
                 setCurrChapter={setCurrChapter}
+                getHomeworkDetail={getHomeworkDetail}
             />
             <div className="exercise-area">
                 <header>
@@ -262,6 +285,9 @@ export default function HomeWorkDetail()
                                         </header>
                                         <FormItem
                                             name={v.exercise_id}
+                                            initialValue={
+                                                homeworkDetail && homeworkDetail[index]?.ExercisesReply
+                                            }
                                             rules={[{ required: Boolean(v.required), message: '该题目不能为空' }]}
                                         >
                                             {renderHomeworkItem(v, v.exercise_id, formRef)}

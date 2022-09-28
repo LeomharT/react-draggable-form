@@ -9,7 +9,7 @@ import ExerciseComponent from '../components/ExerciseComponent';
 import FormComponents from '../components/FormComponents';
 import Toc, { TocForwardRef } from '../components/Toc';
 import useDebounce from '../hooks/useDebounce';
-import { fetchExeriseDetail, postExerseDetail } from '../service/exercise';
+import { fetchExerciseDetail, postExerseDetail } from '../service/exercise';
 
 export interface UrlParams
 {
@@ -297,7 +297,7 @@ export default function CreateExercise()
 
         if (!params.has('school_course_sectionId')) return;
 
-        fetchExeriseDetail(params.get('school_course_sectionId') as string).then(data =>
+        fetchExerciseDetail(params.get('school_course_sectionId') as string).then(data =>
         {
             setExerciseData(data);
         });

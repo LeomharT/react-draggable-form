@@ -9,6 +9,7 @@ export type ChapterSelectorProps = {
     chapterList: ChapterItem[];
     currChapter: ChapterItem | null;
     setCurrChapter: React.Dispatch<React.SetStateAction<ChapterItem | null>>;
+    getHomeworkDetail: (homeworkId: string) => Promise<void>;
 };
 
 export default function ChapterSelector(props: ChapterSelectorProps)
@@ -37,7 +38,7 @@ export default function ChapterSelector(props: ChapterSelectorProps)
                                 onClick={() =>
                                 {
                                     props.setCurrChapter(v);
-                                    console.log(v.schoolcourseSectionID);
+                                    props.getHomeworkDetail(v?.homeworkId);
                                 }}
                             >
                                 {v.SectionName}
