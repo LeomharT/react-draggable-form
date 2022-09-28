@@ -9,6 +9,8 @@ import Toc from "../components/Toc";
 import useUrlParams from "../hooks/useUrlParams";
 import { fetchExerciseDetail, getCourseSectionHomeworkDetail, getwhetherCompeleSectionCourse, submitHomework, uploadAttached } from "../service/exercise";
 
+const { TextArea } = Input;
+
 export type HomeWorkDetailURLParams = {
     ID: string;
     CourseName: string;
@@ -22,7 +24,7 @@ export type ChapterItem = {
     homeworkId: string;
 };
 
-const renderHomeworkItem = (data: ExerciseComponentType, formRef: RefObject<FormInstance>) =>
+const renderHomeworkItem = (data: ExerciseComponentType, homeworkDetail: HomeworkReply | null, formRef: RefObject<FormInstance>) =>
 {
     switch (data.exercise_type)
     {
@@ -102,6 +104,13 @@ const renderHomeworkItem = (data: ExerciseComponentType, formRef: RefObject<Form
                 </Upload>
             );
         }
+        case ExerciseType.SHORTANSWER: {
+            return (
+                <TextArea autoSize={{ minRows: 5 }}>
+
+                </TextArea>
+            );
+        }
         case ExerciseType.BLANK:
         default: {
             return (
@@ -178,6 +187,8 @@ export default function HomeWorkDetail()
 
     const submitHomeworkData = useCallback(async (e: any, urlParams: HomeWorkDetailURLParams, currChapter: ChapterItem) =>
     {
+        console.log(e);
+
         for (const k in e)
         {
             if (typeof e[k] === 'object')
@@ -299,11 +310,11 @@ export default function HomeWorkDetail()
                                         <FormItem
                                             name={v.exercise_id}
                                             initialValue={
-                                                homeworkDetail ? homeworkDetail[index]?.ExercisesReply : ''
+                                                homeworkDetail.length ? homeworkDetail[index]?.ExercisesReply : ''
                                             }
                                             rules={[{ required: Boolean(v.required), message: '该题目不能为空' }]}
                                         >
-                                            {renderHomeworkItem(v, formRef)}
+                                            {renderHomeworkItem(v, homeworkDetail[index], formRef)}
                                         </FormItem>
                                     </section>
                                 );
