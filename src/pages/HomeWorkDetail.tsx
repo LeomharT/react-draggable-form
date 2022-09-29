@@ -158,6 +158,15 @@ export default function HomeWorkDetail()
     }, [setChapterList, setCurrChapter, setLoading]);
 
 
+    const getHomeworkDetail = useCallback(async (homeworkId: string) =>
+    {
+        const res = await getCourseSectionHomeworkDetail(homeworkId);
+
+        setHomeworkDetail(res.result);
+
+    }, [setHomeworkDetail]);
+
+
     const getExerciseDetail = useCallback(async (schoolCourseSectionId: string, homeworkId: string) =>
     {
         setLoading(true);
@@ -173,22 +182,11 @@ export default function HomeWorkDetail()
 
         setLoading(false);
 
-    }, [setExerciseData, setLoading]);
-
-
-    const getHomeworkDetail = useCallback(async (homeworkId: string) =>
-    {
-        const res = await getCourseSectionHomeworkDetail(homeworkId);
-
-        setHomeworkDetail(res.result);
-
-    }, [setHomeworkDetail]);
+    }, [setExerciseData, setLoading, getHomeworkDetail]);
 
 
     const submitHomeworkData = useCallback(async (e: any, urlParams: HomeWorkDetailURLParams, currChapter: ChapterItem) =>
     {
-        console.log(e);
-
         for (const k in e)
         {
             if (typeof e[k] === 'object')
