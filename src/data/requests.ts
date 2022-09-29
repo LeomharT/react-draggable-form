@@ -14,5 +14,6 @@ export const REQUEST_URL = {
     getwhetherCompeleSectionCourse: `${EVAHOST}/CourseExercise/getwhetherCompeleSectionCourse`,
     file_upload: `${EVAHOST}/CourseExercise/file_upload`,
     submitHomework: `${EVAHOST}/CourseExercise/submitHomework`,
-    getCourseSectionHomeworkDetail: `${EVAHOST}/CourseExercise/getCourseSectionHomeworkDetail`
+    getCourseSectionHomeworkDetail: `${EVAHOST}/CourseExercise/getCourseSectionHomeworkDetail`,
+    deleteFile: `${EVAHOST}/CourseExercise/deletefile`
 };

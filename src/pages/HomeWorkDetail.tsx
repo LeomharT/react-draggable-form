@@ -7,7 +7,7 @@ import { ExerciseType } from "../app/app-context";
 import ChapterSelector from "../components/homework-detail/ChapterSelector";
 import Toc from "../components/Toc";
 import useUrlParams from "../hooks/useUrlParams";
-import { fetchExerciseDetail, getCourseSectionHomeworkDetail, getwhetherCompeleSectionCourse, submitHomework, uploadAttached } from "../service/exercise";
+import { deleteFile, fetchExerciseDetail, getCourseSectionHomeworkDetail, getwhetherCompeleSectionCourse, submitHomework, uploadAttached } from "../service/exercise";
 
 const { TextArea } = Input;
 
@@ -78,8 +78,10 @@ const renderHomeworkItem = (data: ExerciseComponentType, homeworkDetail: Homewor
             return (
                 <Upload
                     fileList={fileList}
-                    onRemove={(): void =>
+                    onRemove={async (e) =>
                     {
+                        await deleteFile(e.url as string);
+
                         fileList.length = 0;
 
                         formRef.current?.setFieldValue(data.exercise_id, '');

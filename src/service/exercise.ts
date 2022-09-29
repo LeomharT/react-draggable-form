@@ -127,3 +127,9 @@ export const getCourseSectionHomeworkDetail = async (homeworkId: string) =>
 {
     return await (await fetch(REQUEST_URL.getCourseSectionHomeworkDetail + `?homeworkId=${homeworkId}`)).json();
 };
+
+
+export const deleteFile = async (fileName: string): Promise<IResponse> =>
+{
+    return await (await fetch(REQUEST_URL.deleteFile + `?filename=${fileName}`)).json();
+};

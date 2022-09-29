@@ -22,7 +22,7 @@ export default function CourseItem(props: CourseItemType)
 
     const renderNavigateButton = useCallback((loginType: LoginUserType, data: SchoolCourseItem, login_name: string) =>
     {
-        if (loginType !== LoginUserType.STUDENT)
+        if (loginType === LoginUserType.STUDENT)
         {
             return (
                 <Button type="primary" onClick={() =>
