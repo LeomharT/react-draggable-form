@@ -1,7 +1,7 @@
 import { FormOutlined, MoreOutlined, ProfileOutlined, RedoOutlined } from '@ant-design/icons';
 import { Button, Empty, Form, FormInstance, Menu, Popover, Select, Table, Tabs, Tag } from 'antd';
 import { ColumnType } from 'antd/lib/table';
-import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HomeworkDataItem, SearchCommitedHomeworkParams } from '../@types/exercise-types';
 import { getSectionCourse, getsubmitedStudentData, searchCommitedHomeworkData } from '../service/exercise';
@@ -9,68 +9,7 @@ import { getSectionCourse, getsubmitedStudentData, searchCommitedHomeworkData } 
 const PAGE_SIZE = 20;
 
 
-const columns: ColumnType<HomeworkDataItem>[] = [
-    {
-        title: '所属章节',
-        dataIndex: 'SectionName',
-        key: 'SectionName',
-        render: (text: string) => <a>{text}</a>,
-    },
-    {
-        title: '作业状态',
-        dataIndex: 'CorrectStatus',
-        key: 'CorrectStatus',
-        render: (data: number) => data === 1 ? <Tag color='error'>未批改</Tag> : <Tag color='success'>已批改</Tag>
-    },
-    {
-        title: '作业分数',
-        dataIndex: 'Score',
-        key: 'Score',
-    },
-    {
-        title: '提交时间',
-        dataIndex: 'SubmitDate',
-        key: 'SubmitDate',
-    },
-    {
-        title: '学生',
-        dataIndex: 'SubmitStudentId',
-        key: 'SubmitStudentId',
-    },
-    {
-        title: '操作',
-        dataIndex: 'Action',
-        key: 'Action',
-        render: (_, record) =>
-        {
-            return (
-                <Popover
-                    content={
-                        <Menu mode='vertical' className='popover-menu' items={[
-                            {
-                                label: '批改作业',
-                                key: "mark",
-                                icon: <FormOutlined />,
-                                onClick: () =>
-                                {
-                                    console.log(record.ID, record.SchoolCourseSectionID);
-                                }
-                            },
-                            { label: '重新批改', key: "remark", icon: <RedoOutlined /> },
-                            { label: '详情', key: "detail", icon: <ProfileOutlined /> },
-                        ]}>
-                        </Menu>
-                    }
-                    trigger='focuse'
-                    showArrow={false}
-                    placement='bottomRight'
-                >
-                    <Button icon={<MoreOutlined />} type='text' />
-                </Popover>
-            );
-        }
-    }
-];
+// const columns: ColumnType<HomeworkDataItem>[] =
 
 const { Option } = Select;
 
@@ -89,6 +28,75 @@ export default function MarkHomeWork()
     const [submittedStd, setSubmittedStd] = useState<any[]>([]);
 
     const [loading, setLoading] = useState<boolean>(false);
+
+    const columns = useMemo<ColumnType<HomeworkDataItem>[]>(() =>
+    {
+        return (
+            [
+                {
+                    title: '所属章节',
+                    dataIndex: 'SectionName',
+                    key: 'SectionName',
+                    render: (text: string) => <a>{text}</a>,
+                },
+                {
+                    title: '作业状态',
+                    dataIndex: 'CorrectStatus',
+                    key: 'CorrectStatus',
+                    render: (data: number) => data === 1 ? <Tag color='error'>未批改</Tag> : <Tag color='success'>已批改</Tag>
+                },
+                {
+                    title: '作业分数',
+                    dataIndex: 'Score',
+                    key: 'Score',
+                },
+                {
+                    title: '提交时间',
+                    dataIndex: 'SubmitDate',
+                    key: 'SubmitDate',
+                },
+                {
+                    title: '学生',
+                    dataIndex: 'SubmitStudentId',
+                    key: 'SubmitStudentId',
+                },
+                {
+                    title: '操作',
+                    dataIndex: 'Action',
+                    key: 'Action',
+                    render: (_: any, record: HomeworkDataItem) =>
+                    {
+                        return (
+                            <Popover
+                                content={
+                                    <Menu mode='vertical' className='popover-menu' items={[
+                                        {
+                                            label: '批改作业',
+                                            key: "mark",
+                                            icon: <FormOutlined />,
+                                            onClick: () =>
+                                            {
+                                                navigate('/edit_homwork_score');
+                                                console.log(record.ID, record.SchoolCourseSectionID);
+                                            }
+                                        },
+                                        { label: '重新批改', key: "remark", icon: <RedoOutlined /> },
+                                        { label: '详情', key: "detail", icon: <ProfileOutlined /> },
+                                    ]}>
+                                    </Menu>
+                                }
+                                trigger='focuse'
+                                showArrow={false}
+                                placement='bottomRight'
+                            >
+                                <Button icon={<MoreOutlined />} type='text' />
+                            </Popover>
+                        );
+                    }
+                }
+            ]
+        );
+    }, [navigate]);
 
     const onSearchHomworkData = useCallback(async (params: SearchCommitedHomeworkParams) =>
     {

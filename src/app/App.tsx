@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { LoginUserInfo, LoginUserType } from '../@types/login.type';
 import CreateExercise from '../pages/CreateExercise';
+import EditHomeworkScore from '../pages/EditHomeworkScore';
 import HomeWorkDetail from '../pages/HomeWorkDetail';
 import MarkHomeWork from '../pages/MarkHomeWork';
 import SchoolCourse from '../pages/SchoolCourse';
@@ -60,6 +61,7 @@ export default function App()
                         <Route path=':courseSectionID' element={<MarkHomeWork />} />
                     </Route>
                     <Route path='/homework_detail' element={<HomeWorkDetail />} />
+                    <Route path='/edit_homwork_score' element={<EditHomeworkScore />} />
                 </Routes>
             </BrowserRouter>
         </AppContext.Provider>
