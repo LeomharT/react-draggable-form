@@ -76,8 +76,15 @@ export default function MarkHomeWork()
                                             icon: <FormOutlined />,
                                             onClick: () =>
                                             {
-                                                navigate('/edit_homwork_score');
-                                                console.log(record.ID, record.SchoolCourseSectionID);
+                                                console.log(record);
+                                                navigate(
+                                                    '/edit_homwork_score', {
+                                                    state: {
+                                                        homeworkId: record.ID,
+                                                        schoolCourseSectionID: record.SchoolCourseSectionID,
+                                                        sectionName: record.SectionName
+                                                    }
+                                                });
                                             }
                                         },
                                         { label: '重新批改', key: "remark", icon: <RedoOutlined /> },
@@ -138,7 +145,7 @@ export default function MarkHomeWork()
     {
         if (!courseSectionID) return;
 
-        getsubmitedStudentData().then(data =>
+        getsubmitedStudentData(courseSectionID).then(data =>
         {
             setSubmittedStd(data.result);
         });

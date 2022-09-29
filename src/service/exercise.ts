@@ -81,9 +81,9 @@ export const getSectionCourse = async (ID: string) =>
 };
 
 /** 获取提交作业学生 */
-export const getsubmitedStudentData = async () =>
+export const getsubmitedStudentData = async (id: string) =>
 {
-    return await (await fetch(REQUEST_URL.getsubmitedStudentData)).json();
+    return await (await fetch(REQUEST_URL.getsubmitedStudentData + `?ID=${id}`)).json();
 };
 
 /** 获取作业章节 */

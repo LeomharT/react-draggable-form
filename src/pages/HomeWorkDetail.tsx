@@ -1,6 +1,5 @@
 import { EllipsisOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Empty, Form, FormInstance, Input, message, Radio, Result, Space, Spin, Typography, Upload, UploadFile } from "antd";
-import FormItem from "antd/es/form/FormItem";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { ExerciseComponentType, HomeworkReply } from "../@types/exercise-types";
 import { ExerciseType } from "../app/app-context";
@@ -307,7 +306,7 @@ export default function HomeWorkDetail()
                                                 </Form.Item>
                                             </div>
                                         </header>
-                                        <FormItem
+                                        <Form.Item
                                             name={v.exercise_id}
                                             initialValue={
                                                 homeworkDetail.length ? homeworkDetail[index]?.ExercisesReply : ''
@@ -315,7 +314,7 @@ export default function HomeWorkDetail()
                                             rules={[{ required: Boolean(v.required), message: '该题目不能为空' }]}
                                         >
                                             {renderHomeworkItem(v, homeworkDetail[index], formRef)}
-                                        </FormItem>
+                                        </Form.Item>
                                     </section>
                                 );
                             })

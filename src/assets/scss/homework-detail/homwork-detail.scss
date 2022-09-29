@@ -1,3 +1,42 @@
+.homework-item-header
+{
+    .exercise-tags
+    {
+        display      : flex;
+        flex-flow    : row nowrap;
+        gap          : 5px;
+        margin-bottom: 20px;
+        >span
+        {
+            height          : 100%;
+            background-color: rgba(0,0,0,.028);
+            font-size       : 14px;
+            padding         : 0 7px;
+        }
+    }
+    .exercise-titles
+    {
+        .ant-form-item-row
+        {
+            align-items: center;
+        }
+        .ant-form-item-label
+        {
+            font-weight: bold;
+            >label
+            {
+                font-size: 20px;
+            }
+        }
+        h5
+        {
+            font-weight: 300;
+            margin     : 0;
+        }
+    }
+}
+
+
 .homework-detail
 {
     width     : 100vw;
@@ -110,40 +149,7 @@
                 margin-bottom: 50px;
                 >header
                 {
-                    .exercise-tags
-                    {
-                        display      : flex;
-                        flex-flow    : row nowrap;
-                        gap          : 5px;
-                        margin-bottom: 20px;
-                        >span
-                        {
-                            height          : 100%;
-                            background-color: rgba(0,0,0,.028);
-                            font-size       : 14px;
-                            padding         : 0 7px;
-                        }
-                    }
-                    .exercise-titles
-                    {
-                        .ant-form-item-row
-                        {
-                            align-items: center;
-                        }
-                        .ant-form-item-label
-                        {
-                            font-weight: bold;
-                            >label
-                            {
-                                font-size: 20px;
-                            }
-                        }
-                        h5
-                        {
-                            font-weight: 300;
-                            margin     : 0;
-                        }
-                    }
+                    @extend .homework-item-header;
                 }
             }
         }
