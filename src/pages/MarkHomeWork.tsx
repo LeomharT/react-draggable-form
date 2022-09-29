@@ -71,12 +71,9 @@ export default function MarkHomeWork()
                                 content={
                                     <Menu mode='vertical' className='popover-menu' items={[
                                         {
-                                            label: '批改作业',
-                                            key: "mark",
-                                            icon: <FormOutlined />,
+                                            label: '批改作业', key: "mark", icon: <FormOutlined />,
                                             onClick: () =>
                                             {
-                                                console.log(record);
                                                 navigate(
                                                     '/edit_homwork_score', {
                                                     state: {
@@ -87,8 +84,34 @@ export default function MarkHomeWork()
                                                 });
                                             }
                                         },
-                                        { label: '重新批改', key: "remark", icon: <RedoOutlined /> },
-                                        { label: '详情', key: "detail", icon: <ProfileOutlined /> },
+                                        {
+                                            label: '重新批改', key: "remark", icon: <RedoOutlined />,
+                                            onClick: () =>
+                                            {
+                                                navigate(
+                                                    '/edit_homwork_score', {
+                                                    state: {
+                                                        homeworkId: record.ID,
+                                                        schoolCourseSectionID: record.SchoolCourseSectionID,
+                                                        sectionName: record.SectionName
+                                                    }
+                                                });
+                                            }
+                                        },
+                                        {
+                                            label: '详情', key: "detail", icon: <ProfileOutlined />,
+                                            onClick: () =>
+                                            {
+                                                navigate(
+                                                    '/edit_homwork_score', {
+                                                    state: {
+                                                        homeworkId: record.ID,
+                                                        schoolCourseSectionID: record.SchoolCourseSectionID,
+                                                        sectionName: record.SectionName
+                                                    }
+                                                });
+                                            }
+                                        },
                                     ]}>
                                     </Menu>
                                 }
