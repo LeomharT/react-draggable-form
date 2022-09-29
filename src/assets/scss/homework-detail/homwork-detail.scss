@@ -6,7 +6,10 @@
     display   : flex;
     flex-flow : row nowrap;
     overflow  : hidden;
-
+    .ant-spin-container
+    {
+        height: 100%;
+    }
     .chapter-navi
     {
         width      : 300px;

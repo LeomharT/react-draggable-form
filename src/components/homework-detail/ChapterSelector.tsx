@@ -14,7 +14,7 @@ export type ChapterSelectorProps = {
 export default function ChapterSelector(props: ChapterSelectorProps)
 {
     return (
-        <Spin spinning={!Boolean(props.chapterList.length)}>
+        <Spin spinning={!Boolean(props.chapterList.length)} className='chapter-navi-spin'>
             <Card className="chapter-navi">
                 <header>
                     <BookSvg />
