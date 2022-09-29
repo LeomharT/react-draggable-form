@@ -262,10 +262,17 @@ export default function EditHomeworkScore()
                                     {renderHomeworkItem(v, homeworkDetail[index])}
                                 </div>
                                 <div className="exercise-score">
-                                    <Form.Item label='分数' initialValue={0} name={`${v.exercise_id}Score`}>
+                                    <Form.Item
+                                        label='分数'
+                                        initialValue={homeworkDetail[index].Score ?? 0}
+                                        name={`${v.exercise_id}Score`}
+                                    >
                                         <InputNumber min={0} max={v.exercise_score} />
                                     </Form.Item>
-                                    <Form.Item initialValue={''} name={`${v.exercise_id}Comment`}>
+                                    <Form.Item
+                                        initialValue={homeworkDetail[index].Comment ?? ''}
+                                        name={`${v.exercise_id}Comment`}
+                                    >
                                         <TextArea placeholder="请输入评语" />
                                     </Form.Item>
                                 </div>
