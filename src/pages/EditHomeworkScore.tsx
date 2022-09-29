@@ -1,10 +1,12 @@
 import { EllipsisOutlined, LeftOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, FormInstance, Input, Radio, Result, Space, Typography, Upload, UploadFile } from "antd";
+import { Button, Checkbox, Form, FormInstance, Input, InputNumber, message, Radio, Result, Space, Typography, Upload, UploadFile } from "antd";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { ExerciseComponentType, HomeworkReply } from "../@types/exercise-types";
 import { ExerciseType } from "../app/app-context";
-import { fetchExerciseDetail, getCourseSectionHomeworkDetail } from "../service/exercise";
+import { loginUserInfoSelector } from "../redux/selector";
+import { correctHomework, fetchExerciseDetail, getCourseSectionHomeworkDetail } from "../service/exercise";
 
 const { TextArea } = Input;
 
@@ -94,6 +96,8 @@ export default function EditHomeworkScore()
 {
     const navigate = useNavigate();
 
+    const userInfo = useSelector(loginUserInfoSelector);
+
     /** 路由状态 */
     const { homeworkId, schoolCourseSectionID, sectionName } = useLocation().state as any;
 
@@ -135,13 +139,51 @@ export default function EditHomeworkScore()
     }, [setExerciseData, setLoading, getHomeworkDetail]);
 
 
+    const submitHomeworkScore = useCallback(async (e: any, loginName: string, homeworkId: string) =>
+    {
+        const data_arr: any[] = [];
+
+        for (const k in e)
+        {
+            data_arr.push(e[k]);
+        }
+
+        const scores = [];
+
+        for (let i = 0; i < data_arr.length; i += 2)
+        {
+            const obj = {
+                Score: data_arr[i],
+                Comment: data_arr[i + 1]
+            };
+
+            scores.push(obj);
+        }
+
+        const body = {
+            ID: homeworkId,
+            login_name: loginName,
+            data: scores
+        };
+
+        setLoading(true);
+
+        const res = await correctHomework(body);
+
+        setLoading(false);
+
+        if (res.msg) message.success('保存成功');
+
+    }, []);
+
+
     useEffect(() =>
     {
         if (!homeworkId || !schoolCourseSectionID) return;
 
         getExerciseDetail(schoolCourseSectionID, homeworkId);
 
-    }, [homeworkId, schoolCourseSectionID]);
+    }, [homeworkId, schoolCourseSectionID, getExerciseDetail]);
 
 
     /** 隐藏原始头部导航 */
@@ -175,12 +217,17 @@ export default function EditHomeworkScore()
     }
 
     return (
-        <div className="edit-homwork-score">
+        <Form
+            className="edit-homwork-score"
+            ref={formRef}
+            onFinish={e => submitHomeworkScore(e, userInfo.loginName, homeworkId)}
+        >
             <header>
                 <Button icon={<EllipsisOutlined />} shape='circle' size='small' />
                 <Button
                     type='primary'
                     disabled={!exerciseData.length}
+                    loading={loading}
                     onClick={() => formRef.current?.submit()}
                 >
                     保存
@@ -191,30 +238,42 @@ export default function EditHomeworkScore()
                 <Button type="text" icon={<LeftOutlined />} onClick={() => navigate(-1)} />
             </header>
             <main>
-                {exerciseData.map((v, index) =>
-                {
-                    return (
-                        <section key={v.exercise_id} className="homework-item">
-                            <header>
-                                <div className="exercise-tags">
-                                    <span>
-                                        {v.exercise_type}
-                                    </span>
-                                    <span>
-                                        {v.exercise_score.toString()}分
-                                    </span>
+                <div className="exercise-asnwers">
+                    {exerciseData.map((v, index) =>
+                    {
+                        return (
+                            <section key={v.exercise_id} className="homework-item">
+                                <div className="exercise-answers">
+                                    <header>
+                                        <div className="exercise-tags">
+                                            <span>
+                                                {v.exercise_type}
+                                            </span>
+                                            <span>
+                                                {v.exercise_score.toString()}分
+                                            </span>
+                                        </div>
+                                        <div className="exercise-titles">
+                                            <Form.Item label={(index + 1).toString().padStart(2, '0')} >
+                                                <Typography.Title level={5}>{v.exercise_title}</Typography.Title>
+                                            </Form.Item>
+                                        </div>
+                                    </header>
+                                    {renderHomeworkItem(v, homeworkDetail[index])}
                                 </div>
-                                <div className="exercise-titles">
-                                    <Form.Item label={(index + 1).toString().padStart(2, '0')} >
-                                        <Typography.Title level={5}>{v.exercise_title}</Typography.Title>
+                                <div className="exercise-score">
+                                    <Form.Item label='分数' initialValue={0} name={`${v.exercise_id}Score`}>
+                                        <InputNumber min={0} max={v.exercise_score} />
+                                    </Form.Item>
+                                    <Form.Item initialValue={''} name={`${v.exercise_id}Comment`}>
+                                        <TextArea placeholder="请输入评语" />
                                     </Form.Item>
                                 </div>
-                            </header>
-                            {renderHomeworkItem(v, homeworkDetail[index])}
-                        </section>
-                    );
-                })}
-            </main>
-        </div>
+                            </section>
+                        );
+                    })}
+                </div>
+            </main >
+        </Form >
     );
 }

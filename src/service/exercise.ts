@@ -128,8 +128,20 @@ export const getCourseSectionHomeworkDetail = async (homeworkId: string) =>
     return await (await fetch(REQUEST_URL.getCourseSectionHomeworkDetail + `?homeworkId=${homeworkId}`)).json();
 };
 
-
+/** 删除附件 */
 export const deleteFile = async (fileName: string): Promise<IResponse> =>
 {
     return await (await fetch(REQUEST_URL.deleteFile + `?filename=${fileName}`)).json();
+};
+
+/** 提交老师批改作业成绩 */
+export const correctHomework = async (body: any) =>
+{
+    return await (await fetch(REQUEST_URL.correctHomework, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    })).json();
 };

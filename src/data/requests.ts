@@ -15,5 +15,6 @@ export const REQUEST_URL = {
     file_upload: `${EVAHOST}/CourseExercise/file_upload`,
     submitHomework: `${EVAHOST}/CourseExercise/submitHomework`,
     getCourseSectionHomeworkDetail: `${EVAHOST}/CourseExercise/getCourseSectionHomeworkDetail`,
-    deleteFile: `${EVAHOST}/CourseExercise/deletefile`
+    deleteFile: `${EVAHOST}/CourseExercise/deletefile`,
+    correctHomework: `${EVAHOST}/CourseExercise/correctHomework`,
 };
