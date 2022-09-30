@@ -1,4 +1,5 @@
-export const HOST = 'http://localhost:3000';
+// export const HOST = 'http://localhost:3000';
+export const HOST = 'http://localhost:8080/pages/SchoolExercise/SchoolExercise.html';
 
 export const EVAHOST = 'http://10.22.10.63:5000';
 

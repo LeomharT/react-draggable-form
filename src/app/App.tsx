@@ -19,7 +19,11 @@ const setBasePath = (): string =>
     if (isMicroApp)
     {
         base_name += 'student_auxiliary_center';
+    } else
+    {
+        base_name += 'pages/SchoolExercise/SchoolExercise.html';
     }
+
     return base_name;
 };
 

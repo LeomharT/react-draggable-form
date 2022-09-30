@@ -74,6 +74,16 @@ const renderHomeworkItem = (data: ExerciseComponentType, homeworkDetail: Homewor
         case ExerciseType.UPLOAD: {
             const fileList: UploadFile[] = [];
 
+            if (homeworkDetail?.ExercisesReply !== '')
+            {
+                fileList.push({
+                    uid: homeworkDetail?.ExercisesReply as string,
+                    name: homeworkDetail?.ExercisesReply as string,
+                    status: 'done',
+                    url: homeworkDetail?.ExercisesReply as string
+                });
+            }
+
             return (
                 <Upload
                     fileList={fileList}
@@ -207,7 +217,9 @@ export default function HomeWorkDetail()
         if (res.msg === 'success') message.success('提交成功');
 
         await getChapterList(urlParams, currChapter);
-    }, [getChapterList]);
+        await getHomeworkDetail(currChapter.homeworkId);
+
+    }, [getChapterList, getHomeworkDetail]);
 
 
     useEffect(() =>
