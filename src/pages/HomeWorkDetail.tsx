@@ -98,6 +98,8 @@ const renderHomeworkItem = (data: ExerciseComponentType, homeworkDetail: Homewor
                     }}
                     customRequest={async (e) =>
                     {
+                        message.loading({ content: "上传文件中", key: "uoloading" });
+
                         const res = await uploadAttached(e.file as File);
 
                         formRef.current?.setFieldValue(data.exercise_id, res);
@@ -110,6 +112,8 @@ const renderHomeworkItem = (data: ExerciseComponentType, homeworkDetail: Homewor
                             name: (e.file as File).name,
                             url: res,
                         });
+
+                        message.success({ content: "上传成功", key: "uoloading" });
                     }}
                 >
                     <Button icon={<UploadOutlined />}>点击上传</Button>
