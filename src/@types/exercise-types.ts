@@ -1,4 +1,5 @@
 import { ExerciseType } from "../app/app-context";
+import { LoginUserType } from "./login.type";
 
 export interface ExerciseComponentType
 {
@@ -36,6 +37,7 @@ export interface SearchSchoolCourseParams
 {
     [key: string]: any;
     loginname: string;
+    loginType: LoginUserType;
     currentPage: number;
     pageSize: number;
     classID?: number;

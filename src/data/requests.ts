@@ -9,6 +9,8 @@ export const REQUEST_URL = {
     getCourseSectionExerciseDetail: `${EVAHOST}/CourseExercise/getCourseSectionExerciseDetail`,
     addCourseExercise: `${EVAHOST}/CourseExercise/addCourseExercise`,
     searchSchoolCourse: `${EVAHOST}/CourseExercise/SearchSchoolCourse`,
+    teacherSearchSchoolCourse: `${EVAHOST}/CourseExercise/TeacherSearchSchoolCourse`,
+    studentSearchSchoolCourse: `${EVAHOST}/CourseExercise/StudentSearchSchoolCourse`,
     getClassData: `${EVAHOST}/CourseExercise/getClassData`,
     searchCommitedHomeworkData: `${EVAHOST}/CourseExercise/searchCommitedHomeworkData`,
     getSectionCourse: `${EVAHOST}/CourseExercise/getSectionCourse`,

@@ -71,6 +71,7 @@ export default function SchoolCourse()
 
         onSearchCourse({
             loginname: userInfo.loginName,
+            loginType: userInfo.loginType,
             pageSize: PAGE_SIZE,
             currentPage: 1,
         });
@@ -95,6 +96,7 @@ export default function SchoolCourse()
                 {
                     onSearchCourse({
                         loginname: userInfo?.loginName,
+                        loginType: userInfo?.loginType,
                         currentPage: 1,
                         pageSize: PAGE_SIZE,
                         courseName: e.courseName,
@@ -159,6 +161,7 @@ export default function SchoolCourse()
 
                                 onSearchCourse({
                                     loginname: userInfo?.loginName,
+                                    loginType: userInfo?.loginType,
                                     pageSize: PAGE_SIZE,
                                     currentPage: e,
                                     ...fields,

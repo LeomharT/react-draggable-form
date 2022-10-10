@@ -141,6 +141,19 @@ export default function MarkHomeWork()
         setLoading(false);
     }, []);
 
+    const setSectionCourse = useCallback(async (courseSectionID: string) =>
+    {
+        const res = await getSectionCourse(courseSectionID);
+
+        setChapters(res.result);
+    }, []);
+
+    const setSubMitedStudentData = useCallback(async (courseSectionID: string) =>
+    {
+        const res = await getsubmitedStudentData(courseSectionID);
+        setSubmittedStd(res.result);
+    }, []);
+
     useEffect(() =>
     {
         if (!courseSectionID) return;
@@ -151,29 +164,11 @@ export default function MarkHomeWork()
             pageSize: PAGE_SIZE,
         });
 
-    }, [courseSectionID, onSearchHomworkData]);
+        setSectionCourse(courseSectionID);
 
-    useEffect(() =>
-    {
-        if (!courseSectionID) return;
+        setSubMitedStudentData(courseSectionID);
 
-        getSectionCourse(courseSectionID).then(data =>
-        {
-            setChapters(data.result);
-        });
-
-    }, [courseSectionID]);
-
-    useEffect(() =>
-    {
-        if (!courseSectionID) return;
-
-        getsubmitedStudentData(courseSectionID).then(data =>
-        {
-            setSubmittedStd(data.result);
-        });
-
-    }, [courseSectionID]);
+    }, [courseSectionID, onSearchHomworkData, setSectionCourse, setSubMitedStudentData]);
 
     return (
         <div className='mark_homework'>
@@ -229,7 +224,6 @@ export default function MarkHomeWork()
                     locale={{
                         emptyText:
                             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='没有相关作业'>
-                                <Button type='link' children='返回课程列表' onClick={() => navigate('/school_course')} />
                             </Empty>
                     }}
                 />
