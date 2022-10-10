@@ -1,9 +1,10 @@
-import { Empty, Form, FormInstance, Input, Pagination, Radio, Select, Space, Spin } from "antd";
+import { Empty, Form, FormInstance, Input, Pagination, Radio, Result, Select, Space, Spin } from "antd";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { ClassFilter, SchoolCourseItem } from "../@types/course-types";
 import { SearchSchoolCourseParams } from "../@types/exercise-types";
 import { LoginUserInfo } from "../@types/login.type";
+import { isMicroApp } from "../app/App";
 import HeadNavigate from "../components/HeadNavigate";
 import CourseItem from "../components/school-course/CourseItem";
 import { loginUserInfoSelector } from "../redux/selector";
@@ -75,6 +76,14 @@ export default function SchoolCourse()
         });
 
     }, [userInfo, onSearchCourse]);
+
+    if (!isMicroApp) return (
+        <Result
+            status="404"
+            title="404"
+            subTitle="没有找到界面"
+        />
+    );
 
     return (
         <div className="school_course" ref={containerRef}>
