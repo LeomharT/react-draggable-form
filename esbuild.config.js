@@ -6,9 +6,10 @@ console.time('\u001b[1;35mTotal time\u001b[1;36m');
 
 await esbuild.build({
     entryPoints: ['./src/index.tsx'],
-    outdir: 'dist',
+    // outdir: 'dist',
+    outdir: '/home/liaozhengyang/projects/star-net/web/pages/SchoolExercise',
     bundle: true,
-    minify: true,
+    minify: false,
     watch: true,
     assetNames: 'assets/[name]-[hash]',
     loader: {

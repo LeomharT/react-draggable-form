@@ -72,9 +72,10 @@ const renderHomeworkItem = (data: ExerciseComponentType, homeworkDetail: Homewor
             );
         }
         case ExerciseType.UPLOAD: {
+
             const fileList: UploadFile[] = [];
 
-            if (homeworkDetail?.ExercisesReply !== '')
+            if (homeworkDetail?.ExercisesReply)
             {
                 fileList.push({
                     uid: homeworkDetail?.ExercisesReply as string,
@@ -158,13 +159,14 @@ export default function HomeWorkDetail()
         if (chapter)
         {
             setCurrChapter(chapter);
-
         } else
         {
             if (res.result) setCurrChapter(res.result[0]);
         }
 
         setLoading(false);
+
+        return res.result;
 
     }, [setChapterList, setCurrChapter, setLoading]);
 
@@ -216,8 +218,14 @@ export default function HomeWorkDetail()
 
         if (res.msg === 'success') message.success('提交成功');
 
-        await getChapterList(urlParams, currChapter);
-        await getHomeworkDetail(currChapter.homeworkId);
+        const new_chapter_list: ChapterItem[] = await getChapterList(urlParams, currChapter);
+
+        const homework_id = new_chapter_list.find(v => v.schoolcourseSectionID === currChapter.schoolcourseSectionID)?.homeworkId;
+
+        if (homework_id)
+        {
+            await getHomeworkDetail(homework_id);
+        }
 
     }, [getChapterList, getHomeworkDetail]);
 
