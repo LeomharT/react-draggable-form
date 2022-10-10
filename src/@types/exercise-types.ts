@@ -30,7 +30,7 @@ export interface IResponse<T extends any = any>
         [index: string]: any;
         data: T;
         Datas: T;
-    };
+    } | any;
 }
 
 export interface SearchSchoolCourseParams

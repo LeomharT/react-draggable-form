@@ -1,5 +1,5 @@
 import { Button, Card, Divider, Space } from "antd";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { SchoolCourseItem } from "../../@types/course-types";
@@ -7,6 +7,7 @@ import { LoginUserType } from "../../@types/login.type";
 import { isMicroApp } from "../../app/App";
 import { HOST } from "../../data/requests";
 import { loginUserInfoSelector } from "../../redux/selector";
+import CourseChapterInfo from "./CourseChapterInfo";
 
 export type CourseItemType = {
     data: SchoolCourseItem;
@@ -19,6 +20,8 @@ export default function CourseItem(props: CourseItemType)
     const navigate = useNavigate();
 
     const userInfo = useSelector(loginUserInfoSelector);
+
+    const [isOpen, setOpen] = useState<boolean>(false);
 
     const renderNavigateButton = useCallback((loginType: LoginUserType, data: SchoolCourseItem, login_name: string) =>
     {
@@ -81,7 +84,19 @@ export default function CourseItem(props: CourseItemType)
                 />
                 <Divider />
                 <Space direction="horizontal" style={{ width: '100%', justifyContent: 'space-between' }}>
-                    <Button>学情分析</Button>
+                    {
+                        userInfo.loginType === LoginUserType.STUDENT
+                            ? <Button>学情分析</Button>
+                            : <>
+                                <Button onClick={() => setOpen(true)}>创建作业</Button>
+                                <CourseChapterInfo
+                                    ID={props.data.ID}
+                                    courseName={props.data.CourseName}
+                                    onCancel={() => setOpen(false)}
+                                    isOpen={isOpen}
+                                />
+                            </>
+                    }
                     {renderNavigateButton(userInfo.loginType, props.data, userInfo.loginName)}
                 </Space>
             </Card>

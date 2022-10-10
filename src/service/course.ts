@@ -43,3 +43,14 @@ export const getClassData = async (loginName: string) =>
 
     return res;
 };
+
+
+/** 获取课程章节 */
+export const getCourseSections = async (courseId: number) =>
+{
+    const res = await (
+        await (fetch(REQUEST_URL.getCourseSections + `?ID=${courseId}`))
+    ).json();
+
+    return res;
+};

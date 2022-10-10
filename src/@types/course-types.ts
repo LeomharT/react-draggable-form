@@ -26,3 +26,32 @@ export interface ClassFilter
     Session: string;
     State: 1;
 }
+
+
+
+export interface CourseChapter
+{
+    CaseAnnexHtmlUrl: string;
+    CaseAnnexUrl: string;
+    CaseType: string;
+    CaseUrl: string;
+    Children: CourseChapter[];
+    CodelabId: string;
+    CoursePPtUrl: string;
+    CourseVideoUrl: string;
+    CoursewarePdfUrl: string;
+    ExampleAnnexHtmlUrl: string;
+    ExampleAnnexUrl: string;
+    ExampleRemark: string;
+    ExampleTitle: string;
+    ID: number;
+    ParentId: number;
+    RefId: string;
+    SchoolCourseId: number;
+    SchoolCoursewarePdfUrl: string;
+    SectionName: string;
+    SectionRemark: string;
+    SectionRemarkUrl: string;
+    Sorting: number;
+    WaffleUrl: string;
+}

@@ -21,4 +21,5 @@ export const REQUEST_URL = {
     getCourseSectionHomeworkDetail: `${EVAHOST}/CourseExercise/getCourseSectionHomeworkDetail`,
     deleteFile: `${EVAHOST}/CourseExercise/deletefile`,
     correctHomework: `${EVAHOST}/CourseExercise/correctHomework`,
+    getCourseSections: `${EVAHOST}/getCourseSections`,  //获取章节
 };
