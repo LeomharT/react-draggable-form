@@ -128,6 +128,7 @@ export default function CourseChapterInfo(props: CourseChapterInfoProps)
             open={props.isOpen}
             onCancel={props.onCancel}
             destroyOnClose
+            title={`${props.courseName}`}
             footer={null}
         >
             <Form layout="horizontal">

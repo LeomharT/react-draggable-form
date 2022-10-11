@@ -224,6 +224,7 @@ export default function MarkHomeWork()
                     locale={{
                         emptyText:
                             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='没有相关作业'>
+                                <Button type='link' children='返回课程列表' onClick={() => navigate(-1)} />
                             </Empty>
                     }}
                 />
