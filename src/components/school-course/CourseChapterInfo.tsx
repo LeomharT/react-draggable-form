@@ -90,7 +90,7 @@ export default function CourseChapterInfo(props: CourseChapterInfoProps)
     /** 章节列表-树型结构 */
     const [chapterList, setChapterList] = useState<CourseChapter[]>([]);
 
-    /** 一维数据 */
+    /** 章节列表-一维数据 */
     const [planList, setPlanList] = useState<CourseChapter[]>([]);
 
     /** 当前选择的章节数据 */

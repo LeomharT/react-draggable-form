@@ -8,7 +8,6 @@ export const EVAHOST = 'http://10.22.7.14:32222';
 export const REQUEST_URL = {
     getCourseSectionExerciseDetail: `${EVAHOST}/CourseExercise/getCourseSectionExerciseDetail`,
     addCourseExercise: `${EVAHOST}/CourseExercise/addCourseExercise`,
-    searchSchoolCourse: `${EVAHOST}/CourseExercise/SearchSchoolCourse`,
     teacherSearchSchoolCourse: `${EVAHOST}/CourseExercise/TeacherSearchSchoolCourse`,
     studentSearchSchoolCourse: `${EVAHOST}/CourseExercise/StudentSearchSchoolCourse`,
     getClassData: `${EVAHOST}/CourseExercise/getClassData`,

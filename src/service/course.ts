@@ -9,10 +9,10 @@ export const searchSchoolCourse = async (params: SearchSchoolCourseParams): Prom
 
     if (params.loginType === LoginUserType.STUDENT)
     {
-        url = REQUEST_URL.searchSchoolCourse;
+        url = REQUEST_URL.studentSearchSchoolCourse;
     } else
     {
-        url = REQUEST_URL.searchSchoolCourse;
+        url = REQUEST_URL.teacherSearchSchoolCourse;
     }
 
     url += '?';
