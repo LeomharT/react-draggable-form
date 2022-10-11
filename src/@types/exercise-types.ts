@@ -55,6 +55,14 @@ export interface SearchCommitedHomeworkParams
     correctStatus?: string;
 }
 
+export interface GetUnsubmitedStudentDetailParams
+{
+    courseSectionID: string,
+    schoolcourseSectionID: number,
+    pageSize: number,
+    currentPage: number,
+}
+
 
 export interface HomeworkDataItem
 {
@@ -69,6 +77,21 @@ export interface HomeworkDataItem
     SubmitStatus: number;
     SubmitStudentId: string;
     SchoolCourseSectionID: number;
+}
+
+export interface HomeworkUnsubmittedDataItem
+{
+    ID: number;
+    schoolcourseSectionID: number;
+    sectionName: string;
+    totalStudent: number;
+    unsubmitdeCount: number;
+}
+
+export interface HomeworkUnsubmittedDetailDataItem
+{
+    studentName: string;
+    studentNumber: string;
 }
 
 

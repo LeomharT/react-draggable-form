@@ -1,4 +1,4 @@
-import { ExerciseComponentType, ExerciseDetailData, IResponse, SearchCommitedHomeworkParams } from "../@types/exercise-types";
+import { ExerciseComponentType, ExerciseDetailData, GetUnsubmitedStudentDetailParams, IResponse, SearchCommitedHomeworkParams } from "../@types/exercise-types";
 import { ExerciseType } from "../app/app-context";
 import { defalutSelection } from "../components/ExerciseComponent";
 import { REQUEST_URL } from "../data/requests";
@@ -144,4 +144,32 @@ export const correctHomework = async (body: any) =>
         },
         body: JSON.stringify(body)
     })).json();
+};
+
+/** 获取未提交学生数据 */
+export const getUnsubmitedStudent = async (courseSectionID: string) =>
+{
+    return await (await fetch(`${REQUEST_URL.getUnsubmitedStudent}?courseSectionID=${courseSectionID}`)).json();
+};
+
+
+export const getUnsubmitedStudentDetail = async (params: GetUnsubmitedStudentDetailParams) =>
+{
+    let url = REQUEST_URL.getUnsubmitedStudentDetail + '?';
+
+    const params_arr: string[] = [];
+
+    for (const k in params)
+    {
+        if (params[k])
+        {
+            params_arr.push(`${k}=${params[k]}`);
+        }
+    }
+
+    url += params_arr.join('&');
+
+    const res = await (await fetch(url)).json();
+
+    return res;
 };
