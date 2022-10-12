@@ -4,7 +4,6 @@ import { ColumnType } from 'antd/lib/table';
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HomeworkDataItem, HomeworkUnsubmittedDataItem, SearchCommitedHomeworkParams } from '../@types/exercise-types';
-import BookSvg from '../components/BookSvg';
 import UnsubmittedStudentDetail from '../components/markhomework/UnsubmittedStudentDetail';
 import { getSectionCourse, getsubmitedStudentData, getUnsubmitedStudent, searchCommitedHomeworkData } from '../service/exercise';
 
@@ -62,7 +61,7 @@ export default function MarkHomeWork()
                     title: '章节名称',
                     dataIndex: 'SectionName',
                     key: 'SectionName',
-                    render: (text: string) => <a><BookSvg />{text}</a>,
+                    render: (text: string) => <a>{text}</a>,
                 }, {
                     title: '作业状态',
                     dataIndex: 'CorrectStatus',
@@ -151,7 +150,7 @@ export default function MarkHomeWork()
                     title: '章节名称',
                     dataIndex: 'sectionName',
                     key: 'sectionName',
-                    render: (text: string) => <a><BookSvg />{text}</a>,
+                    render: (text: string) => <a>{text}</a>,
                 }, {
                     title: '班级人数',
                     dataIndex: 'totalStudent',

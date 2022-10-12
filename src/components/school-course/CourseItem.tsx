@@ -1,3 +1,4 @@
+import { RightOutlined } from "@ant-design/icons";
 import { Button, Card, Divider, Space } from "antd";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
@@ -41,10 +42,15 @@ export default function CourseItem(props: CourseItemType)
             );
         }
         return (
-            <Button type="primary" onClick={() =>
-            {
-                navigate(`/mark_homework/${data.ID}`);
-            }}>
+            <Button type="text"
+                style={{
+                    display: 'flex', flexFlow: "row-reverse nowrap", alignItems: 'center'
+                }}
+                icon={<RightOutlined />}
+                onClick={() =>
+                {
+                    navigate(`/mark_homework/${data.ID}`);
+                }}>
                 批改作业
             </Button>
         );
@@ -88,7 +94,7 @@ export default function CourseItem(props: CourseItemType)
                         userInfo.loginType === LoginUserType.STUDENT
                             ? <Button>学情分析</Button>
                             : <>
-                                <Button onClick={() => setOpen(true)}>创建作业</Button>
+                                <Button onClick={() => setOpen(true)} type='primary'>创建作业</Button>
                                 <CourseChapterInfo
                                     ID={props.data.ID}
                                     courseName={props.data.CourseName}
