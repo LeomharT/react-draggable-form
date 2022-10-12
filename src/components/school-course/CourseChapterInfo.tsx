@@ -120,6 +120,8 @@ export default function CourseChapterInfo(props: CourseChapterInfoProps)
 
         setCourseSections(ID);
 
+        return () => setCurrentSelect(undefined);
+
     }, [ID, isOpen, setCourseSections]);
 
     return (

@@ -9,7 +9,7 @@ await esbuild.build({
     // outdir: 'dist',
     outdir: '/home/liaozhengyang/projects/star-net/web/pages/SchoolExercise',
     bundle: true,
-    minify: false,
+    minify: true,
     watch: true,
     assetNames: 'assets/[name]-[hash]',
     loader: {
