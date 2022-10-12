@@ -264,14 +264,18 @@ export default function CreateExercise()
 
         setExerciseData(prve =>
         {
+            const isUp = exerciseIndex > index;
+
             const move_item = prve.splice(exerciseIndex, 1)[0];
 
             const before: ExerciseComponentType[] = [];
             const after: ExerciseComponentType[] = [];
 
+            const position = isUp ? index : index - 1;
+
             for (let i = 0; i < prve.length; i++)
             {
-                if (i <= index - 1) before.push(prve[i]);
+                if (i <= position) before.push(prve[i]);
                 else after.push(prve[i]);
             }
 
