@@ -1,16 +1,19 @@
-import { DeleteOutlined, EditOutlined, PlusCircleOutlined, UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, HolderOutlined, PlusCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, message, Radio, Space } from "antd";
-import React, { Dispatch, RefObject, useCallback, useEffect, useRef } from "react";
+import React, { Dispatch, RefObject, useCallback, useContext, useEffect, useRef } from "react";
+import ReactDOM from "react-dom/client";
 import { ExerciseComponentType } from "../@types/exercise-types";
-import { ExerciseType } from "../app/app-context";
+import AppContext, { AppContextType, ExerciseType } from "../app/app-context";
 import EditableSelection from "./EditableSelection";
 import EditableText from "./EditableText";
+import { Exercises } from "./FormComponents";
 
 type ExerciseComponentProps = {
     id: string;
     index: number,
     identifier: RefObject<HTMLDivElement>;
     data: ExerciseComponentType,
+    mainRef: RefObject<HTMLDivElement>,
     setOpen: Dispatch<React.SetStateAction<boolean>>,
     deleteExercise: (index: number) => void;
     updateExerciseDetailData: (value: any, index: number, field: keyof ExerciseComponentType) => void;
@@ -19,7 +22,6 @@ type ExerciseComponentProps = {
     onMouseLeave: (e: React.MouseEvent) => void;
     onMouseUp: (e: React.MouseEvent) => void;
     onMouseMove: (e: React.MouseEvent) => void;
-
 };
 
 const { TextArea } = Input;
@@ -43,6 +45,10 @@ export const defalutSelection = [
 export default function ExerciseComponent(props: ExerciseComponentProps)
 {
     const domEl: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+
+    const { setReorder } = useContext<AppContextType>(AppContext);
+
+    const { mainRef: list } = props;
 
     const { deleteExercise, updateExerciseDetailData } = props;
 
@@ -195,6 +201,70 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
         }
     }, [updateExerciseDetailData, props.index, props.data.exercise_type, props.data.exercise_answer, props.data.exercise_selection]);
 
+    const onReOrder = useCallback((e: React.PointerEvent, type: ExerciseType) =>
+    {
+        const exercise_item = Exercises.find(v => v.type === type);
+
+        if (!exercise_item) return;
+
+        domEl.current!.style.opacity = '0';
+        domEl.current!.style.height = '0px';
+
+        setReorder(true);
+
+        const div = document.createElement('div') as HTMLDivElement;
+        div.classList.add('reorder-float');
+
+        const downX = e.clientX; //鼠标X
+        const downY = e.clientY - 25; //鼠标Y
+
+        //初始位置
+        div.style.right = 200 + 'px';
+        div.style.top = downY + 'px';
+
+        list.current?.appendChild(div);
+
+        const root = ReactDOM.createRoot(div);
+
+        root.render(
+            <div>
+                <Button icon={exercise_item.icon} type='text' />
+                {exercise_item.type}
+            </div>
+        );
+
+        window.onmousemove = event =>
+        {
+            const moveX = event.clientX;
+            const moveY = event.clientY;
+
+            const positionX = moveX - downX;
+            const positionY = moveY - downY;
+
+            div.style.right = 200 - positionX + 'px';
+            div.style.top = downY - 25 + positionY + 'px';
+        };
+
+        window.onpointerup = () =>
+        {
+            if (list.current?.contains(div)) list.current?.removeChild(div);
+
+            window.onpointerup = null;
+
+            window.onmousemove = null;
+
+            root.unmount();
+
+            domEl.current!.style.opacity = '1';
+            domEl.current!.style.height = 'fit-content';
+
+            //下轮宏任务开始在设为false
+            setTimeout(() =>
+            {
+                setReorder(false);
+            }, 10);
+        };
+    }, [list, setReorder]);
 
     //保证定位效果
     useEffect(() =>
@@ -272,6 +342,13 @@ export default function ExerciseComponent(props: ExerciseComponentProps)
                 </main>
                 {/* 选项 */}
                 <div className="component-options">
+                    <Button icon={<HolderOutlined />} type='text'
+                        onPointerDown={e =>
+                        {
+                            props.setExerciseIndex(props.index);
+                            onReOrder(e, props.data.exercise_type);
+                        }}
+                    />
                     <Button icon={<EditOutlined />} type='link' onClick={() =>
                     {
                         props.setExerciseIndex(props.index);

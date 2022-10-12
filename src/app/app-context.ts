@@ -4,6 +4,8 @@ export type AppContextType = {
     dragging: boolean;
     setDragging: React.Dispatch<React.SetStateAction<boolean>>;
     dragType: MutableRefObject<ExerciseType>;
+    reorder: boolean,
+    setReorder: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export enum ExerciseType

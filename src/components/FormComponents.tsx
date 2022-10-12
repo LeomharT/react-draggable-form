@@ -6,7 +6,7 @@ import { UrlParams } from "../pages/CreateExercise";
 import BookSvg from "./BookSvg";
 
 
-const Exercises: { type: ExerciseType, icon: React.ReactNode; }[] = [
+export const Exercises: { type: ExerciseType, icon: React.ReactNode; }[] = [
     { type: ExerciseType.BLANK, icon: <EditOutlined /> },
     { type: ExerciseType.CHOICE, icon: <CheckSquareOutlined /> },
     { type: ExerciseType.MULTICHOICE, icon: <OrderedListOutlined /> },

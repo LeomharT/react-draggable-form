@@ -33,6 +33,8 @@ export default function App()
 
     const [dragging, setDragging] = useState<boolean>(false);
 
+    const [reorder, setReorder] = useState<boolean>(false);
+
     const dragType: MutableRefObject<ExerciseType> = useRef(ExerciseType.BLANK);
 
     useLayoutEffect(() =>
@@ -55,6 +57,8 @@ export default function App()
             dragging,
             setDragging,
             dragType,
+            reorder,
+            setReorder,
         }}>
             <BrowserRouter basename={setBasePath()}>
                 <Routes>

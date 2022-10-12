@@ -37,9 +37,11 @@
             display        : flex;
             flex-flow      : row nowrap;
             scroll-behavior: smooth;
-            >div
+            >div:nth-of-type(1)
             {
-                width    : calc(100% - 280px);
+                width   : calc(100% - 280px);
+                height  : 100%;
+                position: relative;
             }
         }
 

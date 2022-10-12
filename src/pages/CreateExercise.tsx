@@ -52,11 +52,15 @@ export default function CreateExercise()
     const [exerciseData, setExerciseData] = useState<ExerciseComponentType[]>([]);
 
 
+    /** 主列表区域 */
+    const mainRef = useRef<HTMLDivElement>(null);
+
+
     /** 锚点组件 */
     const TocRef = useRef<TocForwardRef>({} as TocForwardRef);
 
 
-    const { dragging, dragType } = useContext(AppContext);
+    const { dragging, dragType, reorder } = useContext(AppContext);
 
 
     /** 是否在列表头部插入 */
@@ -251,6 +255,31 @@ export default function CreateExercise()
     }, [setExerciseData, newComponent]);
 
 
+    /** 重新排序 */
+    const reorderComponents = useCallback((e: React.MouseEvent, index: number, exerciseIndex: number) =>
+    {
+        e.stopPropagation();
+
+        clearIdentifier(e);
+
+        setExerciseData(prve =>
+        {
+            const move_item = prve.splice(exerciseIndex, 1)[0];
+
+            const before: ExerciseComponentType[] = [];
+            const after: ExerciseComponentType[] = [];
+
+            for (let i = 0; i < prve.length; i++)
+            {
+                if (i <= index - 1) before.push(prve[i]);
+                else after.push(prve[i]);
+            }
+
+            return [...before, move_item, ...after];
+        });
+    }, [clearIdentifier]);
+
+
     /** 更新题目 */
     const updateExerciseDetailData = useCallback((value: any, index: number, field: keyof ExerciseComponentType) =>
     {
@@ -345,7 +374,7 @@ export default function CreateExercise()
                         {urlParams.school_course_sectionName}
                     </div>
                 </header>
-                <main onScroll={switchAnchor}>
+                <main onScroll={switchAnchor} ref={mainRef}>
                     <div onMouseUp={e =>
                     {
                         if (!dragging) return;
@@ -364,25 +393,27 @@ export default function CreateExercise()
                                     deleteExercise={deleteExercise}
                                     updateExerciseDetailData={updateExerciseDetailData}
                                     setExerciseIndex={setExerciseIndex}
+                                    mainRef={mainRef}
                                     onMouseEnter={e =>
                                     {
-                                        if (!dragging) return;
-                                        positionIdentifier(e);
                                         e.stopPropagation();
+                                        if (!dragging && !reorder) return;
+                                        positionIdentifier(e);
                                     }}
                                     onMouseLeave={e =>
                                     {
-                                        if (!dragging) return;
+                                        if (!dragging && !reorder) return;
                                         clearIdentifier(e);
                                     }}
                                     onMouseUp={e =>
                                     {
-                                        if (!dragging) return;
-                                        insertNewComponent(e, index, dragType.current, isBefore);
+                                        if (dragging) insertNewComponent(e, index, dragType.current, isBefore);
+
+                                        if (reorder) reorderComponents(e, index, exerciseIndex);
                                     }}
                                     onMouseMove={e =>
                                     {
-                                        if (!dragging) return;
+                                        if (!dragging && !reorder) return;
                                         if (arr.indexOf(v) !== 0) return;
                                         insertBefore(e);
                                     }}
