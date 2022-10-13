@@ -26,10 +26,11 @@ export interface IResponse<T extends any = any>
 {
     code: number;
     msg: string;
-    result: {
+    result?: {
         [index: string]: any;
-        data: T;
-        Datas: T;
+        data?: T;
+        Datas?: T;
+        Total?: number;
     } | any;
 }
 
@@ -77,6 +78,7 @@ export interface HomeworkDataItem
     SubmitStatus: number;
     SubmitStudentId: string;
     SchoolCourseSectionID: number;
+    TotalScore: number;
 }
 
 export interface HomeworkUnsubmittedDataItem

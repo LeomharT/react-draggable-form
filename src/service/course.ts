@@ -1,6 +1,6 @@
 import { IResponse, SearchSchoolCourseParams } from "../@types/exercise-types";
 import { LoginUserType } from "../@types/login.type";
-import { REQUEST_URL } from "../data/requests";
+import { fetchData, REQUEST_URL } from "../data/requests";
 
 /** 获取课程列表 */
 export const searchSchoolCourse = async (params: SearchSchoolCourseParams): Promise<IResponse<any>> =>
@@ -29,7 +29,7 @@ export const searchSchoolCourse = async (params: SearchSchoolCourseParams): Prom
 
     url += params_arr.join('&');
 
-    const res = await (await (fetch(url))).json();
+    const res = await (await (fetchData(url))).json();
 
     return res;
 };
@@ -38,7 +38,7 @@ export const searchSchoolCourse = async (params: SearchSchoolCourseParams): Prom
 export const getClassData = async (loginName: string) =>
 {
     const res = await (
-        await (fetch(REQUEST_URL.getClassData + `?login_name=${loginName}`))
+        await (fetchData(REQUEST_URL.getClassData + `?login_name=${loginName}`))
     ).json();
 
     return res;
@@ -49,7 +49,7 @@ export const getClassData = async (loginName: string) =>
 export const getCourseSections = async (courseId: number) =>
 {
     const res = await (
-        await (fetch(REQUEST_URL.getCourseSections + `?ID=${courseId}`))
+        await (fetchData(REQUEST_URL.getCourseSections + `?ID=${courseId}`))
     ).json();
 
     return res;

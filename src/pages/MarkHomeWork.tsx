@@ -1,5 +1,5 @@
 import { FormOutlined, LeftOutlined, MoreOutlined, ProfileOutlined, RedoOutlined } from '@ant-design/icons';
-import { Button, Empty, Form, FormInstance, Menu, Popover, Select, Table, Tabs, Tag } from 'antd';
+import { Button, Empty, Form, FormInstance, Menu, Popover, Progress, Select, Table, Tabs, Tag } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -71,6 +71,28 @@ export default function MarkHomeWork()
                     title: '作业分数',
                     dataIndex: 'Score',
                     key: 'Score',
+                    render: (v: any, record: HomeworkDataItem) =>
+                    {
+                        let percent = v ? v / record.TotalScore : 0;
+
+                        percent = percent * 100;
+
+                        let status: "active" | "success" | "normal" | "exception" = 'normal';
+
+                        if (percent > 90) status = 'success';
+
+                        if (percent < 60) status = 'exception';
+
+                        return (<div style={{ display: "flex", flexFlow: 'row nowrap', gap: '5px' }}>
+                            <Progress
+                                type='line'
+                                showInfo={false}
+                                percent={percent}
+                                status={status}
+                            />
+                            <span>{v ?? 0}/{record.TotalScore}</span>
+                        </div>);
+                    }
                 }, {
                     title: '提交时间',
                     dataIndex: 'SubmitDate',
