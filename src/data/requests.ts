@@ -14,7 +14,7 @@ export const fetchData = async (input: RequestInfo | URL, init?: RequestInit) =>
         ...init,
         headers: {
             ...init?.headers,
-            token: token ?? ''
+            Authorization: `Beare ${token}` ?? ''
         }
     });
 };

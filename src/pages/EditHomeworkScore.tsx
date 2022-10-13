@@ -70,9 +70,7 @@ const renderHomeworkItem = (data: ExerciseComponentType, homeworkDetail: Homewor
                 name: answer,
             });
             return (
-                <Upload
-                    fileList={fileList}
-                >
+                <Upload fileList={fileList}>
                 </Upload>
             );
         }

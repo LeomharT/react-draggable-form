@@ -1,12 +1,12 @@
 import { ExerciseComponentType, ExerciseDetailData, GetUnsubmitedStudentDetailParams, IResponse, SearchCommitedHomeworkParams } from "../@types/exercise-types";
 import { ExerciseType } from "../app/app-context";
 import { defalutSelection } from "../components/ExerciseComponent";
-import { REQUEST_URL } from "../data/requests";
+import { fetchData, REQUEST_URL } from "../data/requests";
 
 /** 获取作业内容 */
 export const fetchExerciseDetail = async (schoolCourseSectionId: string): Promise<ExerciseComponentType[]> =>
 {
-    const res = await (await fetch(REQUEST_URL.getCourseSectionExerciseDetail + `?schoolCourseSectionId=${schoolCourseSectionId}`)).json() as IResponse<ExerciseComponentType[]>;
+    const res = await (await fetchData(REQUEST_URL.getCourseSectionExerciseDetail + `?schoolCourseSectionId=${schoolCourseSectionId}`)).json() as IResponse<ExerciseComponentType[]>;
 
     if (res.code !== 200)
     {
@@ -40,7 +40,7 @@ export const fetchExerciseDetail = async (schoolCourseSectionId: string): Promis
 /** 创建作业 */
 export const postExerseDetail = async (params: ExerciseDetailData) =>
 {
-    const res: IResponse<any> = await (await fetch(REQUEST_URL.addCourseExercise, {
+    const res: IResponse<any> = await (await fetchData(REQUEST_URL.addCourseExercise, {
         method: 'POST',
         headers: {
             'content-type': 'application/json;'
@@ -69,7 +69,7 @@ export const searchCommitedHomeworkData = async (params: SearchCommitedHomeworkP
 
     url += params_arr.join('&');
 
-    const res = await (await fetch(url)).json();
+    const res = await (await fetchData(url)).json();
 
     return res;
 };
@@ -77,19 +77,19 @@ export const searchCommitedHomeworkData = async (params: SearchCommitedHomeworkP
 /** 获取课程章节(下拉框) */
 export const getSectionCourse = async (ID: string) =>
 {
-    return await (await fetch(REQUEST_URL.getSectionCourse + `?ID=${ID}`)).json();
+    return await (await fetchData(REQUEST_URL.getSectionCourse + `?ID=${ID}`)).json();
 };
 
 /** 获取提交作业学生 */
 export const getsubmitedStudentData = async (id: string) =>
 {
-    return await (await fetch(REQUEST_URL.getsubmitedStudentData + `?ID=${id}`)).json();
+    return await (await fetchData(REQUEST_URL.getsubmitedStudentData + `?ID=${id}`)).json();
 };
 
 /** 获取作业章节 */
 export const getwhetherCompeleSectionCourse = async (id: string, login_name: string) =>
 {
-    return await (await fetch(REQUEST_URL.getwhetherCompeleSectionCourse + `?ID=${id}&login_name=${login_name}`)).json();
+    return await (await fetchData(REQUEST_URL.getwhetherCompeleSectionCourse + `?ID=${id}&login_name=${login_name}`)).json();
 };
 
 /** 上传作业附件 */
@@ -99,7 +99,7 @@ export const uploadAttached = async (file: File) =>
 
     formData.set('file', file);
 
-    const res = await (await fetch(REQUEST_URL.file_upload, {
+    const res = await (await fetchData(REQUEST_URL.file_upload, {
         method: 'POST',
         body: formData
     })).json();
@@ -110,7 +110,7 @@ export const uploadAttached = async (file: File) =>
 /** 提交作业 */
 export const submitHomework = async (data: { login_name: string; school_course_sectionId: number; data: any; }): Promise<IResponse> =>
 {
-    const res = await (await fetch(REQUEST_URL.submitHomework, {
+    const res = await (await fetchData(REQUEST_URL.submitHomework, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
@@ -125,19 +125,19 @@ export const submitHomework = async (data: { login_name: string; school_course_s
 /** 获取学生提交作业详情 */
 export const getCourseSectionHomeworkDetail = async (homeworkId: string) =>
 {
-    return await (await fetch(REQUEST_URL.getCourseSectionHomeworkDetail + `?homeworkId=${homeworkId}`)).json();
+    return await (await fetchData(REQUEST_URL.getCourseSectionHomeworkDetail + `?homeworkId=${homeworkId}`)).json();
 };
 
 /** 删除附件 */
 export const deleteFile = async (fileName: string): Promise<IResponse> =>
 {
-    return await (await fetch(REQUEST_URL.deleteFile + `?filename=${fileName}`)).json();
+    return await (await fetchData(REQUEST_URL.deleteFile + `?filename=${fileName}`)).json();
 };
 
 /** 提交老师批改作业成绩 */
 export const correctHomework = async (body: any) =>
 {
-    return await (await fetch(REQUEST_URL.correctHomework, {
+    return await (await fetchData(REQUEST_URL.correctHomework, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
@@ -149,7 +149,7 @@ export const correctHomework = async (body: any) =>
 /** 获取未提交学生数据 */
 export const getUnsubmitedStudent = async (courseSectionID: string) =>
 {
-    return await (await fetch(`${REQUEST_URL.getUnsubmitedStudent}?courseSectionID=${courseSectionID}`)).json();
+    return await (await fetchData(`${REQUEST_URL.getUnsubmitedStudent}?courseSectionID=${courseSectionID}`)).json();
 };
 
 
@@ -169,7 +169,7 @@ export const getUnsubmitedStudentDetail = async (params: GetUnsubmitedStudentDet
 
     url += params_arr.join('&');
 
-    const res = await (await fetch(url)).json();
+    const res = await (await fetchData(url)).json();
 
     return res;
 };
