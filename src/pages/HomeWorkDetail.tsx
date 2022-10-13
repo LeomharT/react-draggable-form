@@ -90,7 +90,11 @@ const renderHomeworkItem = (data: ExerciseComponentType, homeworkDetail: Homewor
                     fileList={fileList}
                     onRemove={async (e) =>
                     {
-                        await deleteFile(e.url as string);
+                        const file = {
+                            [data.exercise_id]: e.url
+                        };
+
+                        await deleteFile(JSON.stringify(file) as string);
 
                         fileList.length = 0;
 
