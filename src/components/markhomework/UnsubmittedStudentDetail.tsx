@@ -51,11 +51,14 @@ export default function UnsubmittedStudentDetail(props: UnsubmittedStudentDetail
     return (
         <Modal
             open={props.isOpen}
-            onCancel={props.onCancel}
+            onCancel={e =>
+            {
+                props.onCancel(e);
+                setCurrentPage(1);
+            }}
             title='未提交学生列表'
-            destroyOnClose
+            destroyOnClose={true}
             footer={null}
-
         >
             <Table
                 rowKey='studentNumber'
@@ -63,7 +66,8 @@ export default function UnsubmittedStudentDetail(props: UnsubmittedStudentDetail
                 pagination={{
                     onChange: (e) => setCurrentPage(e),
                     total: total,
-                    pageSize: PAGE_SIZE
+                    pageSize: PAGE_SIZE,
+                    current: currentPage
                 }}
                 columns={[
                     {
